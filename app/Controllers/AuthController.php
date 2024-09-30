@@ -4,12 +4,31 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
-use App\Models\RoleModel;
+
+
+/** PENGADUAN CONTROLLER
+ * Menangani berbagai fungsi terkait pengaduan 
+
+    * FUNGSI INDEX
+    * Mengarahkan user ke halaman login
+
+    * FUNGSI LOGIN
+    * Mengambil input nip dan username user
+    * Melakukan proses validasi data
+    * Mengirimkan data ke API WBS
+    * Menyimpan data response ke session 
+    * Menghandle error dan mengembalikannya ke user 
+
+    * FUNGSI LOGOUT
+    * Menghapus data session
+    * Mengarahkan user ke halaman login
+*/
 
 class AuthController extends BaseController
 {
 
     public function index() {
+        // Mengembalikan view login index
         return view('login/LoginIndex');
     }
     
@@ -48,7 +67,7 @@ class AuthController extends BaseController
                 ]
             ]
         ]);
-
+        // Handle error validasi
         if (!$valid) {
             $sessError = [
                 'errNip' => $validation->getError('nip'),
@@ -64,7 +83,7 @@ class AuthController extends BaseController
         $apiEndpoint = getenv('API_ENDPOINT');
 
         try {
-            // Buat header Authorization menggunakan Basic Auth
+            // Membuat header Authorization Basic Auth
             $headers = [
                 'Authorization: Basic ' . base64_encode($apiUser . ':' . $apiPass)
             ];
@@ -75,36 +94,40 @@ class AuthController extends BaseController
                 'password' => $password
             ];
 
-            // Initialize cURL
+            // Initialisasi cURL
             $ch = curl_init();
 
-            // Set cURL options
+            // Setting opsi cURL 
             curl_setopt($ch, CURLOPT_URL, $apiEndpoint);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $post_fields);
 
-            // Execute the request
+            // Jalankan request
             $response = curl_exec($ch);
 
+            // Handle error API
             if (curl_errno($ch)) {
                 session()->setFlashdata('error', 'Error: ' . curl_error($ch));
                 return redirect()->to(site_url('login/index'));
-            } else {
+            } 
+            // Handle login jika berhasil
+            else {
                 $responseData = json_decode($response, true);
 
                 if (isset($responseData['data']['nip'], $responseData['data']['level'])) {
                     // Reset jumlah percobaan login setelah berhasil
                     session()->remove('login_attempt');
                     session()->remove('lockout_time');
-
+                    
+                    // Simpan data dari response ke session
                     session()->set([
                         'logged_in' => true,
                         'nip' => $responseData['data']['nip'],
                         'level' => [$responseData['data']['level']],
                     ]);
-
+                    // Arahkan ke dashboard
                     return redirect()->to('/dashboard');
                 } else {
                     // Jika login gagal, tambah percobaan
@@ -122,19 +145,17 @@ class AuthController extends BaseController
                     return redirect()->to(site_url('login/index'));
                 }
             }
-
             curl_close($ch);
+            // Handle jika tidak dapat terhubung ke API
         } catch (\Exception $e) {
             session()->setFlashdata('error', 'Gagal menghubungi server API: ' . $e->getMessage());
             return redirect()->to(site_url('login/index'));
         }
     }
 
-
     public function logout() {
         // Hapus semua data session
         session()->destroy();
-        
         // Redirect ke halaman login
         return redirect()->to(site_url('login/index'));
     }

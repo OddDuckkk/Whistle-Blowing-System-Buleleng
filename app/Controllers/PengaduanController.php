@@ -47,16 +47,6 @@ use App\Models\PihakTerlibatModel;
 */
 
 class PengaduanController extends BaseController {
-    // Inisialisasi model
-    protected $pengaduanModel;
-    protected $pihakTerlibatModel;
-    protected $lampiranModel;
-
-    public function __construct() {
-        $this->pengaduanModel = new PengaduanModel();
-        $this->pihakTerlibatModel = new PihakTerlibatModel();
-        $this->lampiranModel = new LampiranModel();
-    }
 
     public function getAll() {
         /** Mengambil semua data pengaduan */

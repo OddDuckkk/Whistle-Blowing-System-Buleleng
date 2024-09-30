@@ -8,6 +8,9 @@ use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use App\Models\PengaduanModel;
+use App\Models\LampiranModel;
+use App\Models\PihakTerlibatModel;
 
 /**
  * Class BaseController
@@ -47,7 +50,11 @@ abstract class BaseController extends Controller
      * @return void
      */
 
-     protected $session;
+    protected $session;
+    protected $pengaduanModel;
+    protected $pihakTerlibatModel;
+    protected $lampiranModel;
+
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
         // Do Not Edit This Line
@@ -55,6 +62,9 @@ abstract class BaseController extends Controller
 
         // Preload any models, libraries, etc, here.
         $this->session = \Config\Services::session();
+        $this->pengaduanModel = new PengaduanModel();
+        $this->pihakTerlibatModel = new PihakTerlibatModel();
+        $this->lampiranModel = new LampiranModel();
         
     }
     // daftarkan semua model disini
