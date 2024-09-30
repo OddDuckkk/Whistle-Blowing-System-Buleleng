@@ -44,4 +44,8 @@ class PengaduanModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    public function findByUserId($userId)
+    {
+        return $this->where('user_id', $userId)->findAll();
+    }
 }

@@ -43,4 +43,12 @@ class PihakTerlibatModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function findByPengaduanId($pengaduanId) {
+        return $this->where('pengaduan_id', $pengaduanId)->findAll();
+    }
+
+    public function deleteByPengaduanId($pengaduanId) {
+        return $this->where('pengaduan_id', $pengaduanId)->delete();
+    }
 }
