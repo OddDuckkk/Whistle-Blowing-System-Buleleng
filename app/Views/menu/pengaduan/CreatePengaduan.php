@@ -3,7 +3,7 @@
 Buat Pengaduan
 <?= $this->endSection('judul') ?>
 <?= $this->section('subjudul') ?>
-Formulir Aduan Baru
+<a href="<?= base_url('pengaduan/user/1'); ?>" class="btn btn-primary"><i class="fa fa-arrow-left"></i>     Kembali</a>
 <?= $this->endSection('subjudul') ?>
 <?= $this->section('isi') ?>
 

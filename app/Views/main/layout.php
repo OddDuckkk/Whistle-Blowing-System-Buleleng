@@ -63,6 +63,7 @@
                     <!-- Sidebar Menu -->
                     <nav class="mt-2">
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                            <!-- Menu general, menu yang selalu ada -->
                             <li class="nav-header">General</li>
                             <li class="nav-item <?= (uri_string() == 'pengaduan') ? 'active' : ''; ?>">
                                 <a href="/dashboard" class="nav-link <?= (uri_string() == 'dashboard') ? 'active' : ''; ?>">
@@ -72,29 +73,38 @@
                                     </p>
                                 </a>
                             </li>
-                            <li class="nav-item <?= (preg_match('/^pengaduan\/user\/\d+$/', uri_string()) || uri_string() == 'pengaduan/create') ? 'menu-open menu-is-opening' : ''; ?>">
-                                <a href="#" class="nav-link <?= (preg_match('/^pengaduan\/user\/\d+$/', uri_string()) || uri_string() == 'pengaduan/create') ? 'active' : ''; ?>">
-                                    <i class="nav-icon fa fa-tasks"></i>
+
+                            <!-- Cek apakah user memiliki role "pelapor" -->
+                            <?php if (in_array('user', session()->get('level'))): ?>
+                            <li class="nav-header">Pelapor</li>
+                            <li class="nav-item <?= (preg_match('/^pengaduan\/user\/\d+$/', uri_string()) || uri_string() == 'pengaduan/create') ? 'active' : ''; ?>">
+                                <a href="/pengaduan/user/1" class="nav-link <?= (preg_match('/^pengaduan\/user\/\d+$/', uri_string()) || uri_string() == 'pengaduan/create') ? 'active' : ''; ?>">
+                                    <i class="nav-icon fa fa-tachometer-alt"></i>
                                     <p>
                                         Pengaduan
-                                        <i class="right fas fa-angle-left"></i>
                                     </p>
                                 </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/pengaduan/create" class="nav-link <?= (uri_string() == 'pengaduan/create') ? 'active' : ''; ?>">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Buat Pengaduan</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="/pengaduan/user/1" class="nav-link <?= (preg_match('/^pengaduan\/user\/\d+$/', uri_string())) ? 'active' : ''; ?>">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Pengaduan Saya</p>
-                                        </a>
-                                    </li>
-                                </ul>
                             </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fa fa-tachometer-alt"></i>
+                                    <p>
+                                        Riwayat Pengaduan
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fa fa-tachometer-alt"></i>
+                                    <p>
+                                        Bookmarks
+                                    </p>
+                                </a>
+                            </li>
+                            <?php endif ?>
+
+                            <!-- Cek apakah user memiliki role "operator" -->
+                            <?php if (in_array('operator', session()->get('level'))): ?>
                             <li class="nav-item <?= (uri_string() == 'pengaduan') ? 'active' : ''; ?>">
                                 <a href="/pengaduan" class="nav-link <?= (uri_string() == 'pengaduan') ? 'active' : ''; ?>">
                                     <i class="nav-icon fa fa-tasks"></i>
@@ -103,6 +113,19 @@
                                     </p>
                                 </a>
                             </li>
+                            <?php endif ?>
+
+                            <!-- Cek apakah user memiliki role "operator" -->
+                            <?php if (in_array('operator', session()->get('level'))): ?>
+                            <li class="nav-item <?= (uri_string() == 'pengaduan') ? 'active' : ''; ?>">
+                                <a href="/pengaduan" class="nav-link <?= (uri_string() == 'pengaduan') ? 'active' : ''; ?>">
+                                    <i class="nav-icon fa fa-tasks"></i>
+                                    <p>
+                                        Semua Pengaduan
+                                    </p>
+                                </a>
+                            </li>
+                            <?php endif ?>
                         </ul>
                     </nav>
                     <!-- /.sidebar-menu -->
