@@ -29,9 +29,18 @@
             <div class="card-body login-card-body">
                 <p class="login-box-msg">LOGIN</p>
 
+                <!-- Tampilkan error jika ada -->
+                <?php if (session()->getFlashdata('error')): ?>
+                    <div class="alert alert-danger">
+                        <?= session()->getFlashdata('error'); ?>
+                    </div>
+                <?php endif; ?>
+
                 <!-- Login Form -->
                 <?= form_open('login/auth'); ?>
                 <?= csrf_field(); ?>
+
+                    <!-- NIP Field -->
                     <div class="input-group mb-3">
                         <input type="text" name="nip" class="form-control <?= session()->getFlashdata('errNip') ? 'is-invalid' : '' ?>" placeholder="NIP" value="<?= old('nip'); ?>" autofocus>
                         <div class="input-group-append">
@@ -46,6 +55,7 @@
                         <?php endif; ?>
                     </div>
 
+                    <!-- Password Field -->
                     <div class="input-group mb-3">
                         <input type="password" name="password" class="form-control <?= session()->getFlashdata('errPassword') ? 'is-invalid' : '' ?>" placeholder="Password">
                         <div class="input-group-append">
@@ -60,6 +70,7 @@
                         <?php endif; ?>
                     </div>
 
+                    <!-- Submit Button -->
                     <div>
                         <button type="submit" class="btn btn-primary btn-block">Masuk</button>
                     </div>

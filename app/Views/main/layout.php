@@ -32,27 +32,6 @@
 
                 <!-- Right navbar links -->
                 <ul class="navbar-nav ml-auto">
-                    <?php
-                        $userRoleIds = session()->get('user_roles'); 
-                        $roleModel = new \App\Models\RoleModel(); 
-                        $userCurrentRole = session()->get('current_role');
-                    ?>
-                    <li class="nav-item dropdown">
-                        <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" class="nav-link dropdown-toggle">
-                        <i class="nav-icon fa fa-user" style="padding-right: 7px;"></i> <?= $roleModel->find($userCurrentRole)['nama']; ?></a>
-                            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow" style="left: 0px; right: inherit;">
-                                <?php foreach ($userRoleIds as $roleId):
-                                    // Fetch the role name from the database based on the roleId
-                                    $role = $roleModel->find($roleId);
-                                    $roleName = $role['nama'];
-                                    
-                                    // Generate the link for changing the role
-                                    $changeRoleLink = site_url('auth/changerole/' . $roleId);
-                                ?>
-                                <li><a href="<?= $changeRoleLink ?>" class="dropdown-item"><?= $roleName ?></a></li>
-                                <?php endforeach; ?>
-                            </ul>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                             <i class="fas fa-expand-arrows-alt"></i>
@@ -73,17 +52,12 @@
                 <!-- Sidebar -->
                 <div class="sidebar">
                     <!-- Sidebar user (optional) -->
-                    <?php
-                        $userRoleIds = session()->get('user_roles'); 
-                        $roleModel = new \App\Models\RoleModel(); 
-                        $userCurrentRole = session()->get('current_role');
-                    ?>
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="image">
                         <img src="<?= base_url() ?>dist/img/anonymous.png" class="img-circle elevation-2" alt="User Image">
                         </div>
                         <div class="info">
-                        <a href="#" class="d-block"><?= $roleModel->find($userCurrentRole)['nama']; ?></a>
+                        <a href="#" class="d-block">Pelapor</a>
                         </div>
                     </div>
                     <!-- Sidebar Menu -->

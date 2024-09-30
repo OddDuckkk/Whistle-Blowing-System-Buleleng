@@ -17,6 +17,7 @@ $routes->get('/pengaduan/delete/(:num)', 'PengaduanController::delete/$1');
 $routes->get('/pengaduan/user/(:num)', 'PengaduanController::getByUserId/$1');
 $routes->get('/login/index', 'AuthController::index');
 $routes->post('/login/auth', 'AuthController::login');
+$routes->get('/logout', 'AuthController::logout');
 $routes->get('/auth/changerole/(:num)', 'AuthController::changeRole/$1');
 
 
