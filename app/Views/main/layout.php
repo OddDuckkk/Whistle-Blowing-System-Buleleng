@@ -52,17 +52,18 @@
                 <!-- Sidebar -->
                 <div class="sidebar">
                     <!-- Sidebar user (optional) -->
-                    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <!-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="image">
                         <img src="<?= base_url() ?>dist/img/anonymous.png" class="img-circle elevation-2" alt="User Image">
                         </div>
                         <div class="info">
                         <a href="#" class="d-block">Pelapor</a>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- Sidebar Menu -->
                     <nav class="mt-2">
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                            <li class="nav-header">General</li>
                             <li class="nav-item <?= (uri_string() == 'pengaduan') ? 'active' : ''; ?>">
                                 <a href="/dashboard" class="nav-link <?= (uri_string() == 'dashboard') ? 'active' : ''; ?>">
                                     <i class="nav-icon fa fa-tachometer-alt"></i>
