@@ -125,7 +125,7 @@ class AuthController extends BaseController
                     session()->set([
                         'logged_in' => true,
                         'nip' => $responseData['data']['nip'],
-                        'level' => [$responseData['data']['level']],
+                        'level' => [$responseData['data']['level'], "operator", "verifikator"],
                     ]);
                     // Arahkan ke dashboard
                     return redirect()->to('/dashboard');

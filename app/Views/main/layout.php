@@ -105,6 +105,7 @@
 
                             <!-- Cek apakah user memiliki role "operator" -->
                             <?php if (in_array('operator', session()->get('level'))): ?>
+                            <li class="nav-header">Operator</li>
                             <li class="nav-item <?= (uri_string() == 'pengaduan') ? 'active' : ''; ?>">
                                 <a href="/pengaduan" class="nav-link <?= (uri_string() == 'pengaduan') ? 'active' : ''; ?>">
                                     <i class="nav-icon fa fa-tasks"></i>
@@ -115,8 +116,9 @@
                             </li>
                             <?php endif ?>
 
-                            <!-- Cek apakah user memiliki role "operator" -->
-                            <?php if (in_array('operator', session()->get('level'))): ?>
+                            <!-- Cek apakah user memiliki role "verifikator" -->
+                            <?php if (in_array('verifikator', session()->get('level'))): ?>
+                            <li class="nav-header">Verifikator</li>
                             <li class="nav-item <?= (uri_string() == 'pengaduan') ? 'active' : ''; ?>">
                                 <a href="/pengaduan" class="nav-link <?= (uri_string() == 'pengaduan') ? 'active' : ''; ?>">
                                     <i class="nav-icon fa fa-tasks"></i>
@@ -126,6 +128,16 @@
                                 </a>
                             </li>
                             <?php endif ?>
+
+                            <li class="nav-header">Lainnya</li>
+                            <li class="nav-item">
+                                <a href="/logout" class="nav-link">
+                                    <i class="nav-icon fa fa-tasks"></i>
+                                    <p>
+                                        Keluar
+                                    </p>
+                                </a>
+                            </li>
                         </ul>
                     </nav>
                     <!-- /.sidebar-menu -->

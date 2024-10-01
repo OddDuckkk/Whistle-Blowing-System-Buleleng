@@ -11,9 +11,6 @@ use App\Models\PihakTerlibatModel;
 /** PENGADUAN CONTROLLER
  * Menangani berbagai fungsi terkait pengaduan 
 
-    * FUNGSI CONSTRUCT
-    * Mendeklarasikan konstruksi model pengaduan 
-
     * FUNGSI GET ALL
     * Mencari dan mengembalikan semua pengaduan yang ada
     * Menuju View Index Pengaduan 
