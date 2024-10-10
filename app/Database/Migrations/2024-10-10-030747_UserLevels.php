@@ -33,12 +33,12 @@ class UserLevels extends Migration
         $this->forge->addKey(['user_id', 'level'], true);
 
         // Create the table
-        $this->forge->createTable('userLevels');
+        $this->forge->createTable('user_levels');
     }
 
     public function down()
     {
         // Drop the table if it exists
-        $this->forge->dropTable('userLevels');
+        $this->forge->dropTable('user_levels');
     }
 }

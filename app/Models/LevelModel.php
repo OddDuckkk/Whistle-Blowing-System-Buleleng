@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class LevelModel extends Model
 {
-    protected $table            = 'userlevels';
+    protected $table            = 'user_levels';
     protected $primaryKey       = '';
     protected $useAutoIncrement = false;
     protected $returnType       = 'array';
@@ -46,7 +46,7 @@ class LevelModel extends Model
 
     public function getUserLevels($userId)
     {
-        $levels = $this->db->table('userlevels')
+        $levels = $this->db->table('user_levels')
                         ->select('level') 
                         ->where('user_id', $userId)
                         ->get()
