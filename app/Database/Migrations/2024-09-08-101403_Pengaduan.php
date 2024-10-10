@@ -10,15 +10,13 @@ class Pengaduan extends Migration
     {
         $this->forge->addField([
             'id' => [
-                'type'           => 'INT',
-                'constraint'     => 11,
-                'unsigned'       => true,
-                'auto_increment' => true,
+                'type'       => 'CHAR',
+                'constraint' => 36, 
+                'null'       => false,
             ],
              'user_id' => [ 
-                'type'       => 'INT',
-                'constraint' => 11,
-                'unsigned'   => true,
+                'type'       => 'CHAR',
+                'constraint' => 36,
                 'null'       => false,
             ],
             'nomor_pengaduan' => [
@@ -67,9 +65,6 @@ class Pengaduan extends Migration
 
         // Primary key
         $this->forge->addKey('id', true);
-
-        // Foreign key 
-        $this->forge->addForeignKey('user_id', 'users', 'id', 'CASCADE', 'CASCADE');
 
         // Create table
         $this->forge->createTable('pengaduan');

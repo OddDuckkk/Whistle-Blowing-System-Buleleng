@@ -84,10 +84,10 @@ class PengaduanController extends BaseController {
     }
 
     public function store() {
-        /** ID User Statis UNTUK TESTING HAPUS NANTI */
-        $userId = 1; // Ganti sesuai dengan user ID yang digunakan
+        /* ID User diambil dari session */
+        $userId = $this->session->get('id_user'); 
 
-        /** Validasi data yang diinput dari form-CreatePengaduan */
+        /* Validasi data yang diinput dari form-CreatePengaduan */
         $validated = $this->validate([
             'judul' => 'required',
             'tanggal' => 'required|valid_date',
@@ -103,10 +103,10 @@ class PengaduanController extends BaseController {
             'unit_kerja' => 'required',
         ]);
 
-        /** Generate nomor pengaduan */
+        /* Generate nomor pengaduan */
         $newNumber = $this->generateNomorPengaduan();
 
-        /** Proses simpan data pengaduan */
+        /* Proses simpan data pengaduan */
         $data = [
             'judul' => $this->request->getPost('judul'),
             'tanggal' => $this->request->getPost('tanggal'),
@@ -123,10 +123,10 @@ class PengaduanController extends BaseController {
         // Simpan data pengaduan ke model
         $pengaduanId = $this->pengaduanModel->insert($data);
 
-        /** Proses simpan data pihak terlibat */
+        /* Proses simpan data pihak terlibat */
         $this->savePihakTerlibat($pengaduanId);
 
-        /** Proses simpan data lampiran */
+        /* Proses simpan data lampiran */
         $this->saveLampiran($pengaduanId);
 
         return redirect()->to('/pengaduan')->with('message', 'Pengaduan berhasil ditambahkan!');

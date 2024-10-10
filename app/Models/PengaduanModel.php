@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use Ramsey\Uuid\Uuid;
 
 class PengaduanModel extends Model
 {
     protected $table            = 'pengaduan';
     protected $primaryKey       = 'id';
-    protected $useAutoIncrement = true;
+    protected $useAutoIncrement = false;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
@@ -35,7 +36,7 @@ class PengaduanModel extends Model
 
     // Callbacks
     protected $allowCallbacks = true;
-    protected $beforeInsert   = [];
+    protected $beforeInsert   = ['generateUUID'];
     protected $afterInsert    = [];
     protected $beforeUpdate   = [];
     protected $afterUpdate    = [];
@@ -43,6 +44,12 @@ class PengaduanModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    protected function generateUUID(array $data)
+    {
+        $data['data']['id'] = Uuid::uuid4()->toString(); // Menghasilkan UUID versi 4
+        return $data;
+    }
 
     public function findByUserId($userId)
     {

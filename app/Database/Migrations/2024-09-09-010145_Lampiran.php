@@ -10,15 +10,14 @@ class Lampiran extends Migration
     {
         $this->forge->addField([
             'id' => [
-                'type'           => 'INT',
-                'constraint'     => 11,
-                'unsigned'       => true,
-                'auto_increment' => true,
+                'type'           => 'CHAR',
+                'constraint'     => 36,
+                'null'       => false,
             ],
             'pengaduan_id' => [
-                'type'       => 'INT',
-                'constraint' => 11,
-                'unsigned'   => true,
+                'type'       => 'CHAR',
+                'constraint' => 36,
+                'null'       => false,
             ],
             'file_lampiran' => [
                 'type'       => 'VARCHAR',

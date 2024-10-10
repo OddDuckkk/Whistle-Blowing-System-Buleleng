@@ -10,15 +10,12 @@ class PihakTerlibat extends Migration
     {
         $this->forge->addField([
             'id' => [
-                'type'           => 'INT',
-                'constraint'     => 11,
-                'unsigned'       => true,
-                'auto_increment' => true,
+                'type'           => 'CHAR',
+                'constraint'     => 36,
             ],
             'pengaduan_id' => [
-                'type'       => 'INT',
-                'constraint' => 11,
-                'unsigned'   => true,
+                'type'       => 'CHAR',
+                'constraint' => 36,
             ],
             'nama_terlapor' => [
                 'type'       => 'VARCHAR',

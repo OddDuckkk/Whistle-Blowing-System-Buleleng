@@ -126,6 +126,7 @@ class AuthController extends BaseController
                         'logged_in' => true,
                         'nip' => $responseData['data']['nip'],
                         'level' => [$responseData['data']['level'], "operator", "verifikator"],
+                        "id_user" => $responseData['data']['id_user'],
                     ]);
                     // Arahkan ke dashboard
                     return redirect()->to('/dashboard');
