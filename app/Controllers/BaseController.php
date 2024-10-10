@@ -11,6 +11,7 @@ use Psr\Log\LoggerInterface;
 use App\Models\PengaduanModel;
 use App\Models\LampiranModel;
 use App\Models\PihakTerlibatModel;
+use App\Models\LevelModel;
 
 /**
  * Class BaseController
@@ -54,6 +55,7 @@ abstract class BaseController extends Controller
     protected $pengaduanModel;
     protected $pihakTerlibatModel;
     protected $lampiranModel;
+    protected $levelModel;
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
@@ -65,6 +67,7 @@ abstract class BaseController extends Controller
         $this->pengaduanModel = new PengaduanModel();
         $this->pihakTerlibatModel = new PihakTerlibatModel();
         $this->lampiranModel = new LampiranModel();
+        $this->levelModel = new LevelModel();
         
     }
     // daftarkan semua model disini

@@ -115,6 +115,7 @@ class AuthController extends BaseController
             // Handle login jika berhasil
             else {
                 $responseData = json_decode($response, true);
+                $userId = $responseData['data']['id_user'];
 
                 if (isset($responseData['data']['nip'], $responseData['data']['level'])) {
                     // Reset jumlah percobaan login setelah berhasil
@@ -122,11 +123,13 @@ class AuthController extends BaseController
                     session()->remove('lockout_time');
                     
                     // Simpan data dari response ke session
+                    $userLevel = [$responseData['data']['level']];
+                    $additionalLevel = $this->levelModel->getUserLevels($userId);
                     session()->set([
                         'logged_in' => true,
                         'nip' => $responseData['data']['nip'],
-                        'level' => [$responseData['data']['level'], "operator", "verifikator"],
-                        "id_user" => $responseData['data']['id_user'],
+                        'level' => array_merge($userLevel, $additionalLevel),
+                        "id_user" => $userId,
                     ]);
                     // Arahkan ke dashboard
                     return redirect()->to('/dashboard');
