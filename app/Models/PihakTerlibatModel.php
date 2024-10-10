@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use Ramsey\Uuid\Uuid;
 
 class PihakTerlibatModel extends Model
 {
@@ -35,7 +36,7 @@ class PihakTerlibatModel extends Model
 
     // Callbacks
     protected $allowCallbacks = true;
-    protected $beforeInsert   = [];
+    protected $beforeInsert   = ['generateUUID'];
     protected $afterInsert    = [];
     protected $beforeUpdate   = [];
     protected $afterUpdate    = [];
@@ -43,6 +44,12 @@ class PihakTerlibatModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    protected function generateUUID(array $data)
+    {
+        $data['data']['id'] = Uuid::uuid4()->toString(); // Menghasilkan UUID versi 4
+        return $data;
+    }
 
     public function findByPengaduanId($pengaduanId) {
         return $this->where('pengaduan_id', $pengaduanId)->findAll();
