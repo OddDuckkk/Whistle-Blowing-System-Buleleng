@@ -82,6 +82,7 @@ class AuthController extends BaseController
         $apiPass = getenv('API_PASS');
         $apiEndpoint = getenv('API_ENDPOINT');
 
+        // Lakukan pemanggilan API 
         try {
             // Membuat header Authorization Basic Auth
             $headers = [
@@ -107,34 +108,43 @@ class AuthController extends BaseController
             // Jalankan request
             $response = curl_exec($ch);
 
-            // Handle error API
+            // Handle error Internal API / API mengembalikan response 500
             if (curl_errno($ch)) {
                 session()->setFlashdata('error', 'Error: ' . curl_error($ch));
                 return redirect()->to(site_url('login/index'));
             } 
-            // Handle login jika berhasil
+            // Handle jika API berhasil dihubungi dan mengirimkan response data
             else {
+                // Simpan response 
                 $responseData = json_decode($response, true);
-                $userId = $responseData['data']['id_user'];
+                $isError = $responseData['error'];
 
-                if (isset($responseData['data']['nip'], $responseData['data']['level'])) {
+                // Jika login berhasil / nip dan password benar
+                if ($isError == false) {
                     // Reset jumlah percobaan login setelah berhasil
                     session()->remove('login_attempt');
                     session()->remove('lockout_time');
                     
-                    // Simpan data dari response ke session
+                    // Ambil data nip, id user, level, dan additional level
+                    $userId = $responseData['data']['id_user'];
+                    $userNip = $responseData['data']['nip'];
                     $userLevel = [$responseData['data']['level']];
-                    $additionalLevel = $this->levelModel->getUserLevels($userId);
+                    $additionalLevel = $this->levelModel->getUserLevels($userNip);
+
+                    // Simpan data dari response ke session
                     session()->set([
                         'logged_in' => true,
-                        'nip' => $responseData['data']['nip'],
+                        'nip' => $userNip,
                         'level' => array_merge($userLevel, $additionalLevel),
                         "id_user" => $userId,
                     ]);
                     // Arahkan ke dashboard
                     return redirect()->to('/dashboard');
-                } else {
-                    // Jika login gagal, tambah percobaan
+                } 
+
+                // Jika login gagal // nip & password salah
+                else {
+                    // Tambah percobaan
                     $attempt++;
                     session()->set('login_attempt', $attempt);
 
@@ -142,7 +152,9 @@ class AuthController extends BaseController
                     if ($attempt >= 3) {
                         session()->set('lockout_time', time() + 60 * 5);  // Kunci selama 5 menit
                         session()->setFlashdata('error', 'Anda terkunci. Coba lagi dalam 5 menit.');
-                    } else {
+                    } 
+                    // Jika kurang dari 3 percobaan tampilkan pesan sisa percobaan
+                    else {
                         session()->setFlashdata('error', 'NIP atau password salah. Percobaan ke-' . $attempt . ' dari 3.');
                     }
 
@@ -150,8 +162,10 @@ class AuthController extends BaseController
                 }
             }
             curl_close($ch);
-            // Handle jika tidak dapat terhubung ke API
-        } catch (\Exception $e) {
+            
+        } 
+        // Handle error eksternal API // jika tidak dapat terhubung ke API
+        catch (\Exception $e) {
             session()->setFlashdata('error', 'Gagal menghubungi server API: ' . $e->getMessage());
             return redirect()->to(site_url('login/index'));
         }
@@ -162,5 +176,46 @@ class AuthController extends BaseController
         session()->destroy();
         // Redirect ke halaman login
         return redirect()->to(site_url('login/index'));
+    }
+
+    public function validateNip(){
+        // Ambil NIP dari input
+        $nipuser = $this->request->getPost('nip');
+
+        // Validasi field NIP
+        $validation = \Config\Services::validation();
+        $valid = $this->validate([
+            'nip' => [
+                'label' => 'NIP',
+                'rules' => 'required|numeric',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                    'numeric' => '{field} hanya boleh berisi angka'
+                ]
+                ],
+            'level' => [
+                'label' => 'Level',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ]
+            ]
+        ]);
+
+        if (!$valid) {
+            $sessError = [
+                'errNip' => $validation->getError('nip'),
+                'errLevel' => $validation->getError('level'),
+            ];
+            session()->setFlashdata($sessError);
+            return redirect()->to(site_url('/userlevel/assign'))->withInput();
+        }
+        
+        // Jika valid maka tampilkan modal konfirmasi
+        session()->setFlashdata([
+            'nipConfirm' => $this->request->getPost('nip'),
+            'levelConfirm' => $this->request->getPost('level')
+        ]);
+        return redirect()->to(site_url('/userlevel/assign'))->with('show_modal', true);
     }
 }

@@ -12,10 +12,12 @@ class PihakTerlibat extends Migration
             'id' => [
                 'type'           => 'CHAR',
                 'constraint'     => 36,
+                'null'       => false,
             ],
             'pengaduan_id' => [
                 'type'       => 'CHAR',
                 'constraint' => 36,
+                'null'       => false,
             ],
             'nama_terlapor' => [
                 'type'       => 'VARCHAR',

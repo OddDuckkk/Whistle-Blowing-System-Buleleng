@@ -7,12 +7,12 @@ use CodeIgniter\Model;
 class LevelModel extends Model
 {
     protected $table            = 'user_levels';
-    protected $primaryKey       = '';
+    protected $primaryKey       = 'nip';
     protected $useAutoIncrement = false;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['user_id', 'level', 'created_at', 'updated_at'];
+    protected $allowedFields    = ['nip', 'level', 'created_at', 'updated_at'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -21,7 +21,7 @@ class LevelModel extends Model
     protected array $castHandlers = [];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
@@ -44,11 +44,11 @@ class LevelModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function getUserLevels($userId)
+    public function getUserLevels($userNip)
     {
         $levels = $this->db->table('user_levels')
                         ->select('level') 
-                        ->where('user_id', $userId)
+                        ->where('nip', $userNip)
                         ->get()
                         ->getResultArray();
 
@@ -60,5 +60,18 @@ class LevelModel extends Model
         }
         return $result; 
     }
+
+    public function getUsersWithRoles()
+    {
+        
+        $query= $this->db->table('user_levels')
+                        ->select('nip, GROUP_CONCAT(level) as levels') // Use GROUP_CONCAT to combine levels
+                        ->groupBy('nip')
+                        ->get()
+                        ->getResultArray();
+             
+    return $query;
+    }
+
 
 }

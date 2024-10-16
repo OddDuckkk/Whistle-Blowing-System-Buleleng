@@ -7,7 +7,7 @@ Buat Pengaduan
 <?= $this->endSection('subjudul') ?>
 <?= $this->section('isi') ?>
 
-<form action="<?= base_url('pengaduan/store'); ?>" method="post" enctype="multipart/form-data">
+<form action="<?= base_url('pengaduan/store'); ?>" method="post" enctype="multipart/form-data" autocomplete="off">
     <div class="card-body">
         <div class="box-body">
             <div><h5 class="text-primary"><strong>DETAIL LAPORAN</strong></h5></div>

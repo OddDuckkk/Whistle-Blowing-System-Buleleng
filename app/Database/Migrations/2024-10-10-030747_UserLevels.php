@@ -9,9 +9,9 @@ class UserLevels extends Migration
     public function up()
     {
         $this->forge->addField([
-            'user_id' => [
+            'nip' => [
                 'type'       => 'CHAR',
-                'constraint' => 36,
+                'constraint' => 18, 
                 'null'       => false,
             ],
             'level' => [
@@ -29,8 +29,8 @@ class UserLevels extends Migration
             ],
         ]);
 
-        // Define a composite key (user_id + level) to ensure unique user and role combinations
-        $this->forge->addKey(['user_id', 'level'], true);
+        // 
+        $this->forge->addKey('nip', true);
 
         // Create the table
         $this->forge->createTable('user_levels');

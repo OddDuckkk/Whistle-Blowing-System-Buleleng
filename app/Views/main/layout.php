@@ -76,9 +76,10 @@
 
                             <!-- Cek apakah user memiliki role "pelapor" -->
                             <?php if (in_array('user', session()->get('level'))): ?>
+                            <?php $userId = session()->get('id_user') ?>
                             <li class="nav-header">Pelapor</li>
                             <li class="nav-item <?= (preg_match('/^pengaduan\/user\/\d+$/', uri_string()) || uri_string() == 'pengaduan/create') ? 'active' : ''; ?>">
-                                <a href="/pengaduan/user/1" class="nav-link <?= (preg_match('/^pengaduan\/user\/\d+$/', uri_string()) || uri_string() == 'pengaduan/create') ? 'active' : ''; ?>">
+                                <a href="/pengaduan/user/<?= $userId ?>" class="nav-link <?= (preg_match('/^pengaduan\/user\/\d+$/', uri_string()) || uri_string() == 'pengaduan/create') ? 'active' : ''; ?>">
                                     <i class="nav-icon fa fa-tachometer-alt"></i>
                                     <p>
                                         Pengaduan
@@ -129,6 +130,17 @@
                             </li>
                             <?php endif ?>
 
+                            <?php if (in_array('superadmin', session()->get('level'))): ?>
+                                <li class="nav-header">Super Admin</li>
+                            <li class="nav-item <?= (uri_string() == 'level') ? 'active' : ''; ?>">
+                                <a href="/userlevel" class="nav-link <?= (uri_string() == 'level') ? 'active' : ''; ?>">
+                                    <i class="nav-icon fa fa-tasks"></i>
+                                    <p>
+                                        Manajemen Level
+                                    </p>
+                                </a>
+                            </li>
+                            <?php endif ?>
                             <li class="nav-header">Lainnya</li>
                             <li class="nav-item">
                                 <a href="/logout" class="nav-link">
