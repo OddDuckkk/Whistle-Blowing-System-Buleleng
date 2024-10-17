@@ -41,6 +41,20 @@ use App\Models\PihakTerlibatModel;
 
     * FUNGSI DELETE
     * Menghapus data pengaduan berdasarkan id pengaduan 
+
+    * FUNGSI GENERATE NOMOR PENGADUAN
+    * Membuat nomor pengaduan baru menggunakan format WBS00000
+
+    * FUNGSI SAVE PIHAK TERLIBAT
+    * Menyimpan data pihak terlibat yang diunggah oleh user kedalam database
+
+    * FUNGSI SAVE LAMPIRAN
+    * Menyimpan data lampiran yang diunggah oleh user kedalam database
+
+    * FUNGSI VALIDASI PENGADUAN
+    * Memvalidasi data pengaduan+ pihak terlibat + lampiran yang dikirimkan melalui form
+    * Validasi menggunakan Code igniter validation dan custom validation
+    * Mengembalikan pesan error ke view apabila validasi gagal
 */
 
 class PengaduanController extends BaseController {
@@ -84,89 +98,12 @@ class PengaduanController extends BaseController {
     }
 
     public function store() {
-        /* ID User diambil dari session */
+        // ID User diambil dari session 
         $userId = $this->session->get('id_user'); 
 
-        /* Validasi data yang diinput dari form-CreatePengaduan */
-        $valid = $this->validate([
-            'judul' => [
-            'label' => 'Judul',
-            'rules' => 'required',
-            'errors' => [
-                'required' => '{field} tidak boleh kosong'
-                ]
-            ],
-            'tanggal' => [
-                'label' => 'Tanggal',
-                'rules' => 'required|valid_date|custom_valid_date',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong',
-                    'valid_date' => '{field} harus berupa tanggal yang valid',
-                    'custom_valid_date' => '{field} tidak boleh terlalu jauh di masa lalu atau masa depan'
-                ]
-            ],
-            'nominal' => [
-                'label' => 'Nominal',
-                'rules' => 'permit_empty|numeric|greater_than[1000]',
-                'errors' => [
-                    'numeric' => '{field} hanya boleh berisi angka',
-                    'greater_than' => '{field} setidaknya harus lebih dari Rp.1000,-'
-                ]
-            ],
-            'tempat' => [
-                'label' => 'Tempat',
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong'
-                ]
-            ],
-            'deskripsi' => [
-                'label' => 'Deskripsi',
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong'
-                ]
-            ],
-            'nama_terlapor[]' => [
-                'label' => 'Nama Terlapor',
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong'
-                ]
-            ],
-            'jabatan_terlapor[]' => [
-                'label' => 'Jabatan Terlapor',
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong'
-                ]
-            ],
-            'unit_kerja[]' => [
-                'label' => 'Unit Kerja',
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong'
-                ]
-            ],
-            'file_lampiran[]' => [
-                'label' => 'File Lampiran',
-                'rules' => 'uploaded[file_lampiran]|mime_in[file_lampiran,image/jpg,image/jpeg,image/png,application/pdf]|max_size[file_lampiran,10240]',
-                'errors' => [
-                    'uploaded' => '{field} harus diunggah',
-                    'mime_in' => '{field} harus berupa file dengan format jpg, jpeg, png, atau pdf',
-                    'max_size' => '{field} tidak boleh lebih dari 10MB'
-                ]
-                ],
-                'deskripsi_lampiran[]' => [
-                    'label' => 'Deskripsi Lampiran',
-                    'rules' => 'required',
-                    'errors' => [
-                       'required' => '{field} tidak boleh kosong'
-                    ]
-                ],
-        ]);
-
-        if (!$valid) {
+        // Validasi data yang diinput dari form-CreatePengaduan 
+        // Menggunakan fungsi validatePengaduan
+        if (!$this->validatePengaduan()) {
             $sessError = [
                 'errJudul' => $this->validation->getError('judul'),
                 'errTanggal' => $this->validation->getError('tanggal'),
@@ -183,10 +120,10 @@ class PengaduanController extends BaseController {
             return redirect()->to(site_url("/pengaduan/create"))->withInput();
         }
 
-        /* Generate nomor pengaduan */
+        // Generate nomor pengaduan 
         $newNumber = $this->generateNomorPengaduan();
 
-        /* Proses simpan data pengaduan */
+        // Proses simpan data pengaduan 
         $data = [
             'judul' => $this->request->getPost('judul'),
             'tanggal' => $this->request->getPost('tanggal'),
@@ -203,55 +140,13 @@ class PengaduanController extends BaseController {
         // Simpan data pengaduan ke model
         $pengaduanId = $this->pengaduanModel->insert($data);
 
-        /* Proses simpan data pihak terlibat */
+        // Proses simpan data pihak terlibat 
         $this->savePihakTerlibat($pengaduanId);
 
-        /* Proses simpan data lampiran */
+        // Proses simpan data lampiran
         $this->saveLampiran($pengaduanId);
 
         return redirect()->to('/pengaduan')->with('message', 'Pengaduan berhasil ditambahkan!');
-    }
-
-    protected function generateNomorPengaduan()
-    {
-        $lastPengaduan = $this->pengaduanModel->orderBy('id', 'DESC')->first();
-        $lastId = $lastPengaduan ? intval(substr($lastPengaduan['nomor_pengaduan'], 3)) : 0;
-        return 'WBS' . str_pad($lastId + 1, 5, '0', STR_PAD_LEFT);
-    }
-
-    protected function savePihakTerlibat($pengaduanId)
-    {
-        $nama_terlapor = $this->request->getPost('nama_terlapor');
-        $jabatan_terlapor = $this->request->getPost('jabatan_terlapor');
-        $unit_kerja = $this->request->getPost('unit_kerja');
-
-        for ($i = 0; $i < count($nama_terlapor); $i++) {
-            $this->pihakTerlibatModel->insert([
-                'pengaduan_id' => $pengaduanId,
-                'nama_terlapor' => $nama_terlapor[$i],
-                'jabatan_terlapor' => $jabatan_terlapor[$i],
-                'unit_kerja' => $unit_kerja[$i],
-            ]);
-        }
-    }
-
-    protected function saveLampiran($pengaduanId)
-    {
-        $fileLampiran = $this->request->getFileMultiple('file_lampiran');
-        $deskripsiLampiran = $this->request->getPost('deskripsi_lampiran');
-
-        for ($i = 0; $i < count($fileLampiran); $i++) {
-            if ($fileLampiran[$i]->isValid() && !$fileLampiran[$i]->hasMoved()) {
-                $fileName = $fileLampiran[$i]->getRandomName();
-                $fileLampiran[$i]->move('uploads', $fileName);
-
-                $this->lampiranModel->insert([
-                    'pengaduan_id' => $pengaduanId,
-                    'file_lampiran' => 'uploads/' . $fileName,
-                    'deskripsi' => $deskripsiLampiran[$i],
-                ]);
-            }
-        }
     }
 
     public function viewEdit($id) {
@@ -331,4 +226,127 @@ class PengaduanController extends BaseController {
             return redirect()->to('/pengaduan')->with('error', 'Pengaduan tidak ditemukan!');
         }
     }
+
+    protected function generateNomorPengaduan()
+    {
+        $lastPengaduan = $this->pengaduanModel->orderBy('id', 'DESC')->first();
+        $lastId = $lastPengaduan ? intval(substr($lastPengaduan['nomor_pengaduan'], 3)) : 0;
+        return 'WBS' . str_pad($lastId + 1, 5, '0', STR_PAD_LEFT);
+    }
+
+    protected function savePihakTerlibat($pengaduanId)
+    {
+        $nama_terlapor = $this->request->getPost('nama_terlapor');
+        $jabatan_terlapor = $this->request->getPost('jabatan_terlapor');
+        $unit_kerja = $this->request->getPost('unit_kerja');
+
+        for ($i = 0; $i < count($nama_terlapor); $i++) {
+            $this->pihakTerlibatModel->insert([
+                'pengaduan_id' => $pengaduanId,
+                'nama_terlapor' => $nama_terlapor[$i],
+                'jabatan_terlapor' => $jabatan_terlapor[$i],
+                'unit_kerja' => $unit_kerja[$i],
+            ]);
+        }
+    }
+
+    protected function saveLampiran($pengaduanId)
+    {
+        $fileLampiran = $this->request->getFileMultiple('file_lampiran');
+        $deskripsiLampiran = $this->request->getPost('deskripsi_lampiran');
+
+        for ($i = 0; $i < count($fileLampiran); $i++) {
+            if ($fileLampiran[$i]->isValid() && !$fileLampiran[$i]->hasMoved()) {
+                $fileName = $fileLampiran[$i]->getRandomName();
+                $fileLampiran[$i]->move('uploads', $fileName);
+
+                $this->lampiranModel->insert([
+                    'pengaduan_id' => $pengaduanId,
+                    'file_lampiran' => 'uploads/' . $fileName,
+                    'deskripsi' => $deskripsiLampiran[$i],
+                ]);
+            }
+        }
+    }
+
+    private function validatePengaduan() {
+        return $this->validate([
+            'judul' => [
+                'label' => 'Judul',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong'
+                ]
+            ],
+            'tanggal' => [
+                'label' => 'Tanggal',
+                'rules' => 'required|valid_date|custom_valid_date',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                    'valid_date' => '{field} harus berupa tanggal yang valid',
+                    'custom_valid_date' => '{field} tidak boleh terlalu jauh di masa lalu atau masa depan'
+                ]
+            ],
+            'nominal' => [
+                'label' => 'Nominal',
+                'rules' => 'permit_empty|numeric|greater_than[1000]',
+                'errors' => [
+                    'numeric' => '{field} hanya boleh berisi angka',
+                    'greater_than' => '{field} setidaknya harus lebih dari Rp.1000,-'
+                ]
+            ],
+            'tempat' => [
+                'label' => 'Tempat',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong'
+                ]
+            ],
+            'deskripsi' => [
+                'label' => 'Deskripsi',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong'
+                ]
+            ],
+            'nama_terlapor[]' => [
+                'label' => 'Nama Terlapor',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong'
+                ]
+            ],
+            'jabatan_terlapor[]' => [
+                'label' => 'Jabatan Terlapor',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong'
+                ]
+            ],
+            'unit_kerja[]' => [
+                'label' => 'Unit Kerja',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong'
+                ]
+            ],
+            'file_lampiran[]' => [
+                'label' => 'File Lampiran',
+                'rules' => 'uploaded[file_lampiran]|mime_in[file_lampiran,image/jpg,image/jpeg,image/png,application/pdf]|max_size[file_lampiran,10240]',
+                'errors' => [
+                    'uploaded' => '{field} harus diunggah',
+                    'mime_in' => '{field} harus berupa file dengan format jpg, jpeg, png, atau pdf',
+                    'max_size' => '{field} tidak boleh lebih dari 10MB'
+                ]
+            ],
+            'deskripsi_lampiran[]' => [
+                'label' => 'Deskripsi Lampiran',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong'
+                ]
+            ],
+        ]);
+    }
+
 }
