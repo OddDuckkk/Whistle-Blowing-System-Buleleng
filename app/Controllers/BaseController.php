@@ -52,6 +52,8 @@ abstract class BaseController extends Controller
      */
 
     protected $session;
+    protected $validation;
+
     protected $pengaduanModel;
     protected $pihakTerlibatModel;
     protected $lampiranModel;
@@ -64,11 +66,12 @@ abstract class BaseController extends Controller
 
         // Preload any models, libraries, etc, here.
         $this->session = \Config\Services::session();
+        $this->validation = \Config\Services::validation();
         $this->pengaduanModel = new PengaduanModel();
         $this->pihakTerlibatModel = new PihakTerlibatModel();
         $this->lampiranModel = new LampiranModel();
         $this->levelModel = new LevelModel();
         
     }
-    // daftarkan semua model disini
+    
 }

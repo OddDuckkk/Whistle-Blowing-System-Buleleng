@@ -183,7 +183,6 @@ class AuthController extends BaseController
         $nipuser = $this->request->getPost('nip');
 
         // Validasi field NIP
-        $validation = \Config\Services::validation();
         $valid = $this->validate([
             'nip' => [
                 'label' => 'NIP',
@@ -204,8 +203,8 @@ class AuthController extends BaseController
 
         if (!$valid) {
             $sessError = [
-                'errNip' => $validation->getError('nip'),
-                'errLevel' => $validation->getError('level'),
+                'errNip' => $this->validation->getError('nip'),
+                'errLevel' => $this->validation->getError('level'),
             ];
             session()->setFlashdata($sessError);
             return redirect()->to(site_url('/userlevel/assign'))->withInput();

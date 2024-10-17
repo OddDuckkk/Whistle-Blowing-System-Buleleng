@@ -46,9 +46,9 @@ use App\Models\PihakTerlibatModel;
 class PengaduanController extends BaseController {
 
     public function getAll() {
-        /** Mengambil semua data pengaduan */
+        // Mengambil semua data pengaduan 
         $data['pengaduan'] = $this->pengaduanModel->findAll();
-        /** Kirim data ke view index pengaduan */
+        // Kirim data ke view index pengaduan
         return view('menu/pengaduan/IndexPengaduan', $data);
     }
 
@@ -60,9 +60,9 @@ class PengaduanController extends BaseController {
     }
 
     public function getById($id) {
-        /** Mengambil semua data pengaduan berdasarkan id pengaduan */
+        //Mengambil semua data pengaduan berdasarkan id pengaduan 
         $data['pengaduan'] = $this->pengaduanModel->find($id);
-        /** Tampilkan data pengaduan */
+        // Tampilkan data pengaduan 
         return $data;
     }
 
@@ -88,20 +88,100 @@ class PengaduanController extends BaseController {
         $userId = $this->session->get('id_user'); 
 
         /* Validasi data yang diinput dari form-CreatePengaduan */
-        $validated = $this->validate([
-            'judul' => 'required',
-            'tanggal' => 'required|valid_date',
-            'tempat' => 'required',
-            'deskripsi' => 'required',
-            'file_lampiran' => [
-                'uploaded[file_lampiran]',
-                'mime_in[file_lampiran,image/jpg,image/jpeg,image/png,application/pdf]',
-                'max_size[file_lampiran,10240]', // Maksimal 10MB
+        $valid = $this->validate([
+            'judul' => [
+            'label' => 'Judul',
+            'rules' => 'required',
+            'errors' => [
+                'required' => '{field} tidak boleh kosong'
+                ]
             ],
-            'nama_terlapor' => 'required',
-            'jabatan_terlapor' => 'required',
-            'unit_kerja' => 'required',
+            'tanggal' => [
+                'label' => 'Tanggal',
+                'rules' => 'required|valid_date|custom_valid_date',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                    'valid_date' => '{field} harus berupa tanggal yang valid',
+                    'custom_valid_date' => '{field} tidak boleh terlalu jauh di masa lalu atau masa depan'
+                ]
+            ],
+            'nominal' => [
+                'label' => 'Nominal',
+                'rules' => 'permit_empty|numeric|greater_than[1000]',
+                'errors' => [
+                    'numeric' => '{field} hanya boleh berisi angka',
+                    'greater_than' => '{field} setidaknya harus lebih dari Rp.1000,-'
+                ]
+            ],
+            'tempat' => [
+                'label' => 'Tempat',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong'
+                ]
+            ],
+            'deskripsi' => [
+                'label' => 'Deskripsi',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong'
+                ]
+            ],
+            'nama_terlapor[]' => [
+                'label' => 'Nama Terlapor',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong'
+                ]
+            ],
+            'jabatan_terlapor[]' => [
+                'label' => 'Jabatan Terlapor',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong'
+                ]
+            ],
+            'unit_kerja[]' => [
+                'label' => 'Unit Kerja',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong'
+                ]
+            ],
+            'file_lampiran[]' => [
+                'label' => 'File Lampiran',
+                'rules' => 'uploaded[file_lampiran]|mime_in[file_lampiran,image/jpg,image/jpeg,image/png,application/pdf]|max_size[file_lampiran,10240]',
+                'errors' => [
+                    'uploaded' => '{field} harus diunggah',
+                    'mime_in' => '{field} harus berupa file dengan format jpg, jpeg, png, atau pdf',
+                    'max_size' => '{field} tidak boleh lebih dari 10MB'
+                ]
+                ],
+                'deskripsi_lampiran[]' => [
+                    'label' => 'Deskripsi Lampiran',
+                    'rules' => 'required',
+                    'errors' => [
+                       'required' => '{field} tidak boleh kosong'
+                    ]
+                ],
         ]);
+
+        if (!$valid) {
+            $sessError = [
+                'errJudul' => $this->validation->getError('judul'),
+                'errTanggal' => $this->validation->getError('tanggal'),
+                'errNominal' => $this->validation->getError('nominal'),
+                'errTempat' => $this->validation->getError('tempat'),
+                'errDeskripsi' => $this->validation->getError('deskripsi'),
+                'errNamaTerlapor' => $this->validation->getError('nama_terlapor[]'),
+                'errJabatanTerlapor' => $this->validation->getError('jabatan_terlapor[]'),
+                'errUnitKerja' => $this->validation->getError('unit_kerja[]'),
+                'errFileLampiran' => $this->validation->getError('file_lampiran[]'),
+                'errDeskripsiLampiran' => $this->validation->getError('deskripsi_lampiran[]')
+            ];
+            session()->setFlashdata($sessError);
+            return redirect()->to(site_url("/pengaduan/create"))->withInput();
+        }
 
         /* Generate nomor pengaduan */
         $newNumber = $this->generateNomorPengaduan();

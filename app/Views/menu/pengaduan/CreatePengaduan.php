@@ -3,7 +3,8 @@
 Buat Pengaduan
 <?= $this->endSection('judul') ?>
 <?= $this->section('subjudul') ?>
-<a href="<?= base_url('pengaduan/user/1'); ?>" class="btn btn-primary"><i class="fa fa-arrow-left"></i>     Kembali</a>
+<?php $userId = session()->get('id_user') ?>
+<a href="<?= base_url("pengaduan/user/$userId"); ?>" class="btn btn-primary"><i class="fa fa-arrow-left"></i>     Kembali</a>
 <?= $this->endSection('subjudul') ?>
 <?= $this->section('isi') ?>
 
@@ -16,15 +17,30 @@ Buat Pengaduan
                     <!-- Input Judul -->
                     <div class="form-group">
                         <label for="judul">Judul Pengaduan <label class="text-danger">*</label></label>
-                        <input type="text" class="form-control" id="judul" name="judul" placeholder="Masukkan judul pengaduan" required>
+                        <input type="text" class="form-control <?= session()->getFlashdata('errJudul') ? 'is-invalid' : '' ?>" id="judul" name="judul" placeholder="Masukkan judul pengaduan" value="<?= old('judul') ?>">
+                        <?php if (session()->getFlashdata('errJudul')): ?>
+                            <div class="invalid-feedback">
+                                <?= session()->getFlashdata('errJudul'); ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <!-- Input Tanggal -->
                     <div class="form-group">
-                    <label for="tanggal">Tanggal Kejadian <label class="text-danger">*</label></label>
+                        <label for="tanggal">Tanggal Kejadian <label class="text-danger">*</label></label>
                         <div class="input-group date">
-                            <input type="date" class="form-control" id="tanggal" name="tanggal" min="1990-01-01" max="2100-01-01" required>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                            </div>
+                            <input type="date" class="form-control <?= session()->getFlashdata('errTanggal') ? 'is-invalid' : '' ?>" id="tanggal" name="tanggal" value="<?= old('tanggal') ?>">
+                            <?php if (session()->getFlashdata('errTanggal')): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->getFlashdata('errTanggal'); ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -32,7 +48,12 @@ Buat Pengaduan
                     <!-- Input Tempat -->
                     <div class="form-group">
                         <label for="tempat">Tempat Kejadian <label class="text-danger">*</label></label>
-                        <input type="text" class="form-control" id="tempat" name="tempat" placeholder="Masukkan tempat kejadian" required>
+                        <input type="text" class="form-control <?= session()->getFlashdata('errTempat') ? 'is-invalid' : '' ?>" id="tempat" name="tempat" placeholder="Masukkan tempat kejadian" value="<?= old('tempat') ?>">
+                        <?php if (session()->getFlashdata('errTempat')): ?>
+                            <div class="invalid-feedback">
+                                <?= session()->getFlashdata('errTempat'); ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -43,10 +64,15 @@ Buat Pengaduan
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Rp</span> 
                             </div>
-                            <input type="number" class="form-control" id="nominal" name="nominal" placeholder="Masukkan nominal uang" min="0" step="100000">
+                            <input type="number" class="form-control <?= session()->getFlashdata('errNominal') ? 'is-invalid' : '' ?>" id="nominal" name="nominal" placeholder="Masukkan nominal uang" value="<?= old('nominal') ?>">
                             <div class="input-group-append">
                                 <span class="input-group-text">,00</span> 
                             </div>
+                            <?php if (session()->getFlashdata('errNominal')): ?>
+                            <div class="invalid-feedback">
+                                <?= session()->getFlashdata('errNominal'); ?>
+                            </div>
+                        <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -54,7 +80,12 @@ Buat Pengaduan
                     <!-- Input Deskripsi -->
                     <div class="form-group">
                         <label for="deskripsi">Deskripsi Pengaduan <label class="text-danger">*</label> (jelaskan pengaduan secara terperinci)</label>
-                        <textarea class="form-control" id="deskripsi" name="deskripsi" rows="4" placeholder="Masukkan deskripsi pengaduan" required></textarea>
+                        <textarea class="form-control <?= session()->getFlashdata('errDeskripsi') ? 'is-invalid' : '' ?>" id="deskripsi" name="deskripsi" rows="4" placeholder="Masukkan deskripsi pengaduan"><?= old('deskripsi') ?></textarea>
+                        <?php if (session()->getFlashdata('errDeskripsi')): ?>
+                            <div class="invalid-feedback">
+                                <?= session()->getFlashdata('errDeskripsi'); ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -73,9 +104,30 @@ Buat Pengaduan
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type="text" name="nama_terlapor[]" class="form-control" placeholder="Nama Terlapor" required></td>
-                        <td><input type="text" name="jabatan_terlapor[]" class="form-control" placeholder="Jabatan Terlapor" required></td>
-                        <td><input type="text" name="unit_kerja[]" class="form-control" placeholder="Unit Kerja Terlapor" required></td>
+                        <td>
+                            <input type="text" name="nama_terlapor[]" class="form-control <?= session()->getFlashdata('errNamaTerlapor') ? 'is-invalid' : '' ?>" placeholder="Nama Terlapor" value="<?= old('nama_terlapor[]') ?>">
+                            <?php if (session()->getFlashdata('errNamaTerlapor')): ?>
+                            <div class="invalid-feedback">
+                                <?= session()->getFlashdata('errNamaTerlapor'); ?>
+                            </div>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <input type="text" name="jabatan_terlapor[]" class="form-control <?= session()->getFlashdata('errJabatanTerlapor') ? 'is-invalid' : '' ?>" placeholder="Jabatan Terlapor">
+                            <?php if (session()->getFlashdata('errJabatanTerlapor')): ?>
+                            <div class="invalid-feedback">
+                                <?= session()->getFlashdata('errJabatanTerlapor'); ?>
+                            </div>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <input type="text" name="unit_kerja[]" class="form-control <?= session()->getFlashdata('errUnitKerja') ? 'is-invalid' : '' ?>" placeholder="Unit Kerja Terlapor">
+                            <?php if (session()->getFlashdata('errUnitKerja')): ?>
+                            <div class="invalid-feedback">
+                                <?= session()->getFlashdata('errUnitKerja'); ?>
+                            </div>
+                            <?php endif; ?>
+                        </td>
                         <td><button type="button" class="btn btn-success add-row">+</button></td>
                     </tr>
                 </tbody>
@@ -94,8 +146,22 @@ Buat Pengaduan
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type="file" name="file_lampiran[]" class="form-control"></td>
-                        <td><textarea name="deskripsi_lampiran[]" class="form-control" rows="2" placeholder="Deskripsi Lampiran"></textarea></td>
+                        <td>
+                            <input type="file" name="file_lampiran[]" class="form-control <?= session()->getFlashdata('errFileLampiran') ? 'is-invalid' : '' ?>">
+                            <?php if (session()->getFlashdata('errFileLampiran')): ?>
+                            <div class="invalid-feedback">
+                                <?= session()->getFlashdata('errFileLampiran'); ?>
+                            </div>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <textarea name="deskripsi_lampiran[]" class="form-control <?= session()->getFlashdata('errDeskripsiLampiran') ? 'is-invalid' : '' ?>" rows="2" placeholder="Deskripsi Lampiran"></textarea>
+                            <?php if (session()->getFlashdata('errDeskripsiLampiran')): ?>
+                            <div class="invalid-feedback">
+                                <?= session()->getFlashdata('errDeskripsiLampiran'); ?>
+                            </div>
+                            <?php endif; ?>
+                        </td>
                         <td><button type="button" class="btn btn-success add-row">+</button></td>
                     </tr>
                 </tbody>
@@ -109,12 +175,17 @@ Buat Pengaduan
 <!-- jQuery for adding/removing rows -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    document.querySelector('.input-group-text').addEventListener('click', function() {
+        document.querySelector('#tanggal').focus();
+    });
+</script>
+<script>
     // Add row for Pihak Terlibat
     $('#pihakTerlibatTable').on('click', '.add-row', function() {
         var newRow = `<tr>
-                        <td><input type="text" name="nama_terlapor[]" class="form-control" placeholder="Nama Terlapor" required></td>
-                        <td><input type="text" name="jabatan_terlapor[]" class="form-control" placeholder="Jabatan Terlapor" required></td>
-                        <td><input type="text" name="unit_kerja[]" class="form-control" placeholder="Unit Kerja Terlapor" required></td>
+                        <td><input type="text" name="nama_terlapor[]" class="form-control" placeholder="Nama Terlapor"</td>
+                        <td><input type="text" name="jabatan_terlapor[]" class="form-control" placeholder="Jabatan Terlapor"></td>
+                        <td><input type="text" name="unit_kerja[]" class="form-control" placeholder="Unit Kerja Terlapor"></td>
                         <td><button type="button" class="btn btn-danger remove-row">-</button></td>
                     </tr>`;
         $('#pihakTerlibatTable tbody').append(newRow);
