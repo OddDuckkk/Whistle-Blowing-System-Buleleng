@@ -59,7 +59,7 @@ Buat Pengaduan
                 <div class="col-md-6">
                     <!-- Input Nominal Uang -->
                     <div class="form-group">
-                        <label for="nominal">Nominal Uang (jika ada)</label>
+                        <label for="nominal">Nominal Uang <label>(jika ada)</label></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Rp</span> 
@@ -90,11 +90,13 @@ Buat Pengaduan
                 </div>
             </div>
         </div>
+        <!-- Input pihak terlapor -->
         <div class="box-body">
             <div><h5 class="text-primary"><strong>PIHAK TERLIBAT</strong></h5></div>
             <!-- Pihak Terlibat -->
             <table class="table table-borderless" id="pihakTerlibatTable">
                 <thead>
+                    <!-- Header tabel -->
                     <tr>
                         <th>Nama Terlapor <label class="text-danger">*</label></th>
                         <th>Jabatan Terlapor <label class="text-danger">*</label></th>
@@ -102,37 +104,78 @@ Buat Pengaduan
                         <th>Aksi</th>
                     </tr>
                 </thead>
+                <!-- form input -->
                 <tbody>
-                    <tr>
-                        <td>
-                            <input type="text" name="nama_terlapor[]" class="form-control <?= session()->getFlashdata('errNamaTerlapor') ? 'is-invalid' : '' ?>" placeholder="Nama Terlapor" value="<?= old('nama_terlapor[]') ?>">
-                            <?php if (session()->getFlashdata('errNamaTerlapor')): ?>
-                            <div class="invalid-feedback">
-                                <?= session()->getFlashdata('errNamaTerlapor'); ?>
-                            </div>
+                    <?php if (old('nama_terlapor')): ?>
+                        <?php foreach (old('nama_terlapor') as $index => $namaTerlapor): ?>
+                        <tr>
+                            <td>
+                                <input type="text" name="nama_terlapor[]" class="form-control <?= session()->getFlashdata('errNamaTerlapor') ? 'is-invalid' : '' ?>" placeholder="Nama Terlapor" value="<?= old('nama_terlapor.' . $index) ?>">
+                                <?php if (session()->getFlashdata('errNamaTerlapor')): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->getFlashdata('errNamaTerlapor'); ?>
+                                </div>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <input type="text" name="jabatan_terlapor[]" class="form-control <?= session()->getFlashdata('errJabatanTerlapor') ? 'is-invalid' : '' ?>" placeholder="Jabatan Terlapor" value="<?= old('jabatan_terlapor.' . $index) ?>">
+                                <?php if (session()->getFlashdata('errJabatanTerlapor')): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->getFlashdata('errJabatanTerlapor'); ?>
+                                </div>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <input type="text" name="unit_kerja[]" class="form-control <?= session()->getFlashdata('errUnitKerja') ? 'is-invalid' : '' ?>" placeholder="Unit Kerja Terlapor" value="<?= old('unit_kerja.' . $index) ?>">
+                                <?php if (session()->getFlashdata('errUnitKerja')): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->getFlashdata('errUnitKerja'); ?>
+                                </div>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                            <?php if ($index == 0): ?>
+                                <button type="button" class="btn btn-success add-row">+</button>
+                            <?php else: ?>
+                                <button type="button" class="btn btn-danger remove-row">-</button>
                             <?php endif; ?>
-                        </td>
-                        <td>
-                            <input type="text" name="jabatan_terlapor[]" class="form-control <?= session()->getFlashdata('errJabatanTerlapor') ? 'is-invalid' : '' ?>" placeholder="Jabatan Terlapor">
-                            <?php if (session()->getFlashdata('errJabatanTerlapor')): ?>
-                            <div class="invalid-feedback">
-                                <?= session()->getFlashdata('errJabatanTerlapor'); ?>
-                            </div>
-                            <?php endif; ?>
-                        </td>
-                        <td>
-                            <input type="text" name="unit_kerja[]" class="form-control <?= session()->getFlashdata('errUnitKerja') ? 'is-invalid' : '' ?>" placeholder="Unit Kerja Terlapor">
-                            <?php if (session()->getFlashdata('errUnitKerja')): ?>
-                            <div class="invalid-feedback">
-                                <?= session()->getFlashdata('errUnitKerja'); ?>
-                            </div>
-                            <?php endif; ?>
-                        </td>
-                        <td><button type="button" class="btn btn-success add-row">+</button></td>
-                    </tr>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td>
+                                <input type="text" name="nama_terlapor[]" class="form-control <?= session()->getFlashdata('errNamaTerlapor') ? 'is-invalid' : '' ?>" placeholder="Nama Terlapor">
+                                <?php if (session()->getFlashdata('errNamaTerlapor')): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->getFlashdata('errNamaTerlapor'); ?>
+                                </div>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <input type="text" name="jabatan_terlapor[]" class="form-control <?= session()->getFlashdata('errJabatanTerlapor') ? 'is-invalid' : '' ?>" placeholder="Jabatan Terlapor">
+                                <?php if (session()->getFlashdata('errJabatanTerlapor')): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->getFlashdata('errJabatanTerlapor'); ?>
+                                </div>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <input type="text" name="unit_kerja[]" class="form-control <?= session()->getFlashdata('errUnitKerja') ? 'is-invalid' : '' ?>" placeholder="Unit Kerja Terlapor">
+                                <?php if (session()->getFlashdata('errUnitKerja')): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->getFlashdata('errUnitKerja'); ?>
+                                </div>
+                                <?php endif; ?>
+                            </td>
+                            <td><button type="button" class="btn btn-success add-row">+</button></td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
+
+        <!-- Input lampiran -->
         <div class="box-body">
             <div><h5 class="text-primary"><strong>LAMPIRAN</strong></h5></div>
             <!-- Lampiran -->
@@ -145,25 +188,55 @@ Buat Pengaduan
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>
-                            <input type="file" name="file_lampiran[]" class="form-control <?= session()->getFlashdata('errFileLampiran') ? 'is-invalid' : '' ?>">
-                            <?php if (session()->getFlashdata('errFileLampiran')): ?>
-                            <div class="invalid-feedback">
-                                <?= session()->getFlashdata('errFileLampiran'); ?>
-                            </div>
-                            <?php endif; ?>
-                        </td>
-                        <td>
-                            <textarea name="deskripsi_lampiran[]" class="form-control <?= session()->getFlashdata('errDeskripsiLampiran') ? 'is-invalid' : '' ?>" rows="2" placeholder="Deskripsi Lampiran"></textarea>
-                            <?php if (session()->getFlashdata('errDeskripsiLampiran')): ?>
-                            <div class="invalid-feedback">
-                                <?= session()->getFlashdata('errDeskripsiLampiran'); ?>
-                            </div>
-                            <?php endif; ?>
-                        </td>
-                        <td><button type="button" class="btn btn-success add-row">+</button></td>
-                    </tr>
+                    <?php if (old('deskripsi_lampiran')): ?>
+                        <?php foreach (old('deskripsi_lampiran') as $index => $deskripsiLampiran): ?>
+                        <tr>
+                            <td>
+                                <input type="file" name="file_lampiran[]" class="form-control <?= session()->getFlashdata('errFileLampiran') ? 'is-invalid' : '' ?>">
+                                <?php if (session()->getFlashdata('errFileLampiran')): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->getFlashdata('errFileLampiran'); ?>
+                                </div>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <textarea name="deskripsi_lampiran[]" class="form-control <?= session()->getFlashdata('errDeskripsiLampiran') ? 'is-invalid' : '' ?>" rows="2" placeholder="Deskripsi Lampiran"><?= old('deskripsi_lampiran.' . $index) ?></textarea>
+                                <?php if (session()->getFlashdata('errDeskripsiLampiran')): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->getFlashdata('errDeskripsiLampiran'); ?>
+                                </div>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php if ($index == 0): ?>
+                                    <button type="button" class="btn btn-success add-row">+</button>
+                                <?php else: ?>
+                                    <button type="button" class="btn btn-danger remove-row">-</button>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td>
+                                <input type="file" name="file_lampiran[]" class="form-control <?= session()->getFlashdata('errFileLampiran') ? 'is-invalid' : '' ?>">
+                                <?php if (session()->getFlashdata('errFileLampiran')): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->getFlashdata('errFileLampiran'); ?>
+                                </div>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <textarea name="deskripsi_lampiran[]" class="form-control <?= session()->getFlashdata('errDeskripsiLampiran') ? 'is-invalid' : '' ?>" rows="2" placeholder="Deskripsi Lampiran"></textarea>
+                                <?php if (session()->getFlashdata('errDeskripsiLampiran')): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->getFlashdata('errDeskripsiLampiran'); ?>
+                                </div>
+                                <?php endif; ?>
+                            </td>
+                            <td><button type="button" class="btn btn-success add-row">+</button></td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
