@@ -19,6 +19,11 @@ class PihakTerlibat extends Migration
                 'constraint' => 36,
                 'null'       => false,
             ],
+            'nip_terlapor' => [
+                'type'       => 'CHAR',
+                'constraint' => 18,
+                'null'       => false,
+            ],
             'nama_terlapor' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,

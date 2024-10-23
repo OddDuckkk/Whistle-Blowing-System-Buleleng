@@ -21,6 +21,7 @@ $routes->get('/login/index', 'AuthController::index');
 $routes->post('/login/auth', 'AuthController::login');
 $routes->get('/logout', 'AuthController::logout');
 $routes->post('/validate-nip', 'AuthController::validateNip');
+$routes->post('/auth/search-nip', 'AuthController::searchNip');
 
 
 $routes->get('/userlevel', 'LevelController::getAllUserLevels');

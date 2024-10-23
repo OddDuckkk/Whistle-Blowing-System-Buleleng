@@ -13,7 +13,7 @@ class PihakTerlibatModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['pengaduan_id', 'nama_terlapor', 'jabatan_terlapor', 'unit_kerja'];
+    protected $allowedFields    = ['pengaduan_id','nip_terlapor', 'nama_terlapor', 'jabatan_terlapor', 'unit_kerja'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

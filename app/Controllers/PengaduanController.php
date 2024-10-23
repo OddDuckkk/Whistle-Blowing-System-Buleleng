@@ -160,23 +160,22 @@ class PengaduanController extends BaseController {
 
     public function update($id)
     {
-        // Validasi input
-        $validated = $this->validate([
-            'judul' => 'required',
-            'tanggal' => 'required|valid_date',
-            'tempat' => 'required',
-            'deskripsi' => 'required',
-            'file_lampiran' => [
-                'mime_in[file_lampiran,image/jpg,image/jpeg,image/png,application/pdf]',
-                'max_size[file_lampiran,10240]', // Maksimal 10MB
-            ],
-            'nama_terlapor' => 'required',
-            'jabatan_terlapor' => 'required',
-            'unit_kerja' => 'required',
-        ]);
 
-        if (!$validated) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        if (!$this->validatePengaduan()) {
+            $sessError = [
+                'errJudul' => $this->validation->getError('judul'),
+                'errTanggal' => $this->validation->getError('tanggal'),
+                'errNominal' => $this->validation->getError('nominal'),
+                'errTempat' => $this->validation->getError('tempat'),
+                'errDeskripsi' => $this->validation->getError('deskripsi'),
+                'errNamaTerlapor' => $this->validation->getError('nama_terlapor[]'),
+                'errJabatanTerlapor' => $this->validation->getError('jabatan_terlapor[]'),
+                'errUnitKerja' => $this->validation->getError('unit_kerja[]'),
+                'errFileLampiran' => $this->validation->getError('file_lampiran[]'),
+                'errDeskripsiLampiran' => $this->validation->getError('deskripsi_lampiran[]')
+            ];
+            session()->setFlashdata($sessError);
+            return redirect()->to(site_url("/pengaduan/edit/$id"))->withInput();
         }
 
         // Proses update data pengaduan
@@ -229,23 +228,31 @@ class PengaduanController extends BaseController {
 
     protected function generateNomorPengaduan()
     {
+        // Mengambil nomor pengaduan terakhir
         $lastPengaduan = $this->pengaduanModel->orderBy('id', 'DESC')->first();
+        // Mengambil digit akhir 
         $lastId = $lastPengaduan ? intval(substr($lastPengaduan['nomor_pengaduan'], 3)) : 0;
+        // Mengembalikan nomor pengaduan baru
         return 'WBS' . str_pad($lastId + 1, 5, '0', STR_PAD_LEFT);
     }
 
     protected function savePihakTerlibat($pengaduanId)
     {
-        $nama_terlapor = $this->request->getPost('nama_terlapor');
-        $jabatan_terlapor = $this->request->getPost('jabatan_terlapor');
-        $unit_kerja = $this->request->getPost('unit_kerja');
+        // Ambil data dari post (array)
+        $nipTerlapor = $this->request->getPost('nip_terlapor[]');
+        $namaTerlapor = $this->request->getPost('nama_terlapor[]');
+        $jabatanTerlapor = $this->request->getPost('jabatan_terlapor[]');
+        $unitKerja = $this->request->getPost('unit_kerja[]');
 
-        for ($i = 0; $i < count($nama_terlapor); $i++) {
+        // Loop untuk setiap inputan pihak terlibat
+        for ($i = 0; $i < count($nipTerlapor); $i++) {
+            // Proses menyimpan data
             $this->pihakTerlibatModel->insert([
                 'pengaduan_id' => $pengaduanId,
-                'nama_terlapor' => $nama_terlapor[$i],
-                'jabatan_terlapor' => $jabatan_terlapor[$i],
-                'unit_kerja' => $unit_kerja[$i],
+                'nip_terlapor' => $nipTerlapor[$i],
+                'nama_terlapor' => $namaTerlapor[$i],
+                'jabatan_terlapor' => $jabatanTerlapor[$i],
+                'unit_kerja' => $unitKerja[$i],
             ]);
         }
     }
@@ -270,6 +277,10 @@ class PengaduanController extends BaseController {
     }
 
     private function validatePengaduan() {
+        // $nama_terlapor = $this->request->getPost('nama_terlapor');
+        // $jabatan_terlapor = $this->request->getPost('jabatan_terlapor');
+        // $unit_kerja = $this->request->getPost('unit_kerja');
+        
         return $this->validate([
             'judul' => [
                 'label' => 'Judul',
@@ -309,43 +320,47 @@ class PengaduanController extends BaseController {
                     'required' => '{field} tidak boleh kosong'
                 ]
             ],
-            'nama_terlapor[]' => [
-                'label' => 'Nama Terlapor',
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong'
-                ]
-            ],
-            'jabatan_terlapor[]' => [
-                'label' => 'Jabatan Terlapor',
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong'
-                ]
-            ],
-            'unit_kerja[]' => [
-                'label' => 'Unit Kerja',
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong'
-                ]
-            ],
-            'file_lampiran[]' => [
-                'label' => 'File Lampiran',
-                'rules' => 'uploaded[file_lampiran]|mime_in[file_lampiran,image/jpg,image/jpeg,image/png,application/pdf]|max_size[file_lampiran,10240]',
-                'errors' => [
-                    'uploaded' => '{field} harus diunggah',
-                    'mime_in' => '{field} harus berupa file dengan format jpg, jpeg, png, atau pdf',
-                    'max_size' => '{field} tidak boleh lebih dari 10MB'
-                ]
-            ],
-            'deskripsi_lampiran[]' => [
-                'label' => 'Deskripsi Lampiran',
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong'
-                ]
-            ],
+            // 'nama_terlapor[]' => [
+            // 'label' => 'Nama Terlapor',
+            // 'rules' => 'required|callback_validate_nama_terlapor',
+            // 'errors' => [
+            //     'required' => '{field} tidak boleh kosong',
+            //     'callback_validate_nama_terlapor' => '{field} tidak valid'
+            //     ]
+            // ],
+            // 'jabatan_terlapor[]' => [
+            //     'label' => 'Jabatan Terlapor',
+            //     'rules' => 'required|callback_validate_jabatan_terlapor',
+            //     'errors' => [
+            //         'required' => '{field} tidak boleh kosong',
+            //         'callback_validate_jabatan_terlapor' => '{field} tidak valid'
+            //     ]
+            // ],
+            // 'unit_kerja[]' => [
+            //     'label' => 'Unit Kerja',
+            //     'rules' => 'required|callback_validate_unit_kerja',
+            //     'errors' => [
+            //         'required' => '{field} tidak boleh kosong',
+            //         'callback_validate_unit_kerja' => '{field} tidak valid'
+            //     ]
+            // ],
+            // 'file_lampiran[]' => [
+            //     'label' => 'File Lampiran',
+            //     'rules' => 'uploaded[file_lampiran]|mime_in[file_lampiran,image/jpg,image/jpeg,image/png,application/pdf]|max_size[file_lampiran,10240]',
+            //     'errors' => [
+            //         'uploaded' => '{field} harus diunggah',
+            //         'mime_in' => '{field} harus berupa file dengan format jpg, jpeg, png, atau pdf',
+            //         'max_size' => '{field} tidak boleh lebih dari 10MB'
+            //     ]
+            // ],
+            // 'deskripsi_lampiran[]' => [
+            //     'label' => 'Deskripsi Lampiran',
+            //     'rules' => 'required|callback_validate_deskripsi_lampiran',
+            //     'errors' => [
+            //         'required' => '{field} tidak boleh kosong',
+            //         'callback_validate_deskripsi_lampiran' => '{field} tidak valid'
+            //     ]
+            // ],
         ]);
     }
 

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
+use Exception;
 
 
 /** PENGADUAN CONTROLLER
@@ -26,7 +27,6 @@ use CodeIgniter\HTTP\ResponseInterface;
 
 class AuthController extends BaseController
 {
-
     public function index() {
         // Mengembalikan view login index
         return view('login/LoginIndex');
@@ -80,7 +80,7 @@ class AuthController extends BaseController
         // Inisialisasi API credentials
         $apiUser = getenv('API_USER');
         $apiPass = getenv('API_PASS');
-        $apiEndpoint = getenv('API_ENDPOINT');
+        $apiEndpoint = getenv('LOGIN_API_ENDPOINT');
 
         // Lakukan pemanggilan API 
         try {
@@ -165,17 +165,92 @@ class AuthController extends BaseController
             
         } 
         // Handle error eksternal API // jika tidak dapat terhubung ke API
-        catch (\Exception $e) {
+        catch (Exception $e) {
             session()->setFlashdata('error', 'Gagal menghubungi server API: ' . $e->getMessage());
             return redirect()->to(site_url('login/index'));
         }
     }
 
-    public function logout() {
+    public function logout(){
         // Hapus semua data session
         session()->destroy();
         // Redirect ke halaman login
         return redirect()->to(site_url('login/index'));
+    }
+
+    public function searchNip(){
+        $nip = $this->request->getPost('nip');
+        session()->set('halo100', `tes $nip`);
+
+        // Inisialisasi API credentials
+        $apiUser = getenv('API_USER');
+        $apiPass = getenv('API_PASS');
+        $apiEndpoint = getenv('PEGAWAI_API_ENDPOINT');
+
+
+        $fullUrl = rtrim($apiEndpoint, '/') . '/' . $nip;
+        session()->set('endpointssss', $fullUrl);
+
+        // Lakukan pemanggilan API 
+        try {
+            // Membuat header Authorization Basic Auth
+            $headers = [
+                'Authorization: Basic ' . base64_encode($apiUser . ':' . $apiPass)
+            ];
+
+            // Initialisasi cURL
+            $ch = curl_init();
+
+            // Setting opsi cURL
+            curl_setopt($ch, CURLOPT_URL, $fullUrl); // Use the full URL with parameters
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); // Set headers
+
+            // Jalankan request
+            $response = curl_exec($ch);
+
+            // Cek apakah request berhasil
+            // Handle error Internal API / API mengembalikan response 500
+            if (curl_errno($ch)) {
+                session()->setFlashdata('error', 'Error: ' . curl_error($ch));
+                session()->set('halo1', true);
+                // return redirect()->to(site_url('#'));
+            } 
+            // Handle jika API berhasil dihubungi dan mengirimkan response data
+            else {
+                // Simpan response 
+                $responseData = json_decode($response, true);
+                $isError = $responseData['error'];
+
+                // Jika api mengembalikan data karyawan
+                if ($isError == false) {
+                    $namaPegawai = $responseData['data']['nama_lengkap'];
+                    $jabatanPegawai = $responseData['data']['ket_status'];
+                    $unitKerja = $responseData['data']['ket_uorg'];
+
+
+                    return $this->response->setJSON([
+                        'is_error' => $isError,
+                        'nama_terlapor' => $namaPegawai,
+                        'jabatan_terlapor' => $jabatanPegawai,
+                        'unit_kerja' => $unitKerja
+                    ]);
+                }
+                else {
+                    return $this->response->setJSON([
+                        'is_error' => $isError,
+                    ]);
+                }
+            }
+            curl_close($ch);
+
+
+            // Do something with $responseData
+        } catch (Exception $e) {
+            session()->set('halo50', true);
+            session()->setFlashdata('error', 'Gagal menghubungi server API: ' . $e->getMessage());
+            // return redirect()->to(site_url('login/index'));
+        }
     }
 
     public function validateNip(){

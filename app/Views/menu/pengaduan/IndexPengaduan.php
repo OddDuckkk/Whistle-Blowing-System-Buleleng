@@ -21,8 +21,7 @@ Data Pengaduan
                 <th>Nomor Pengaduan</th>
                 <th>Judul</th>
                 <th>Tanggal</th>
-                <th>Status Pengajuan</th>
-                <th>Status Verifikasi</th>
+                <th>Status</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -34,30 +33,17 @@ Data Pengaduan
                     <td><?= $p['tanggal']; ?></td>
                     <td>
                         <span class="rounded-0 badge 
+                        <?php if ($p['status'] == 'baru') echo 'badge-primary'; ?>
                         <?php if ($p['status'] == 'diproses operator') echo 'badge-warning'; ?>
-                        <?php if ($p['status'] == 'diproses verifikator') echo 'badge-success'; ?>
-                        <?php if ($p['status'] == 'selesai') echo 'badge-success'; ?>
-                        <?php if ($p['status'] == 'ditolak operator') echo 'badge-danger'; ?>
-                        <?php if ($p['status'] == 'ditolak verifikator') echo 'badge-success'; ?>">
-                        <?php if ($p['status'] == 'diproses operator') echo 'diproses operator'; ?>
-                        <?php if ($p['status'] == 'diproses verifikator') echo 'diterima operator'; ?>
-                        <?php if ($p['status'] == 'selesai') echo 'diterima operator'; ?>
-                        <?php if ($p['status'] == 'ditolak operator') echo 'ditolak operator'; ?>
-                        <?php if ($p['status'] == 'ditolak verifikator') echo 'diterima operator'; ?>
-                        </span>
-                    </td>
-                    <td>
-                        <span class="rounded-0 badge
-                        <?php if ($p['status'] == 'diproses operator') echo 'badge-secondary'; ?>
                         <?php if ($p['status'] == 'diproses verifikator') echo 'badge-warning'; ?>
-                        <?php if ($p['status'] == 'selesai') echo 'badge-sucess'; ?>
-                        <?php if ($p['status'] == 'ditolak operator') echo 'badge-warning'; ?>
-                        <?php if ($p['status'] == 'ditolak verifikator') echo 'badge-danger'; ?>">
-                        <?php if ($p['status'] == 'diproses operator') echo 'diproses verifikator'; ?>
-                        <?php if ($p['status'] == 'diproses verifikator') echo 'diproses verifikator'; ?>
-                        <?php if ($p['status'] == 'selesai') echo 'diterima verifikator'; ?>
-                        <?php if ($p['status'] == 'ditolak operator') echo 'ditolak operator'; ?>
-                        <?php if ($p['status'] == 'ditolak verifikator') echo 'ditolak verifikator'; ?>
+                        <?php if ($p['status'] == 'selesai') echo 'badge-success'; ?>
+                        <?php if ($p['status'] == 'ditolak') echo 'badge-danger'; ?>">
+
+                        <?php if ($p['status'] == 'baru') echo 'baru'; ?>
+                        <?php if ($p['status'] == 'diproses operator') echo 'diproses operator'; ?>
+                        <?php if ($p['status'] == 'diproses verifikator') echo 'diproses operator'; ?>
+                        <?php if ($p['status'] == 'selesai') echo 'selesai'; ?>
+                        <?php if ($p['status'] == 'ditolak') echo 'ditolak'; ?>
                         </span>
                     </td>
                     <td>
