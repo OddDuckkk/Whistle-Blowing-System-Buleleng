@@ -63,14 +63,14 @@ class PengaduanController extends BaseController {
         // Mengambil semua data pengaduan 
         $data['pengaduan'] = $this->pengaduanModel->findAll();
         // Kirim data ke view index pengaduan
-        return view('menu/pengaduan/IndexPengaduan', $data);
+        return view('menu/pengaduan/index_pengaduan', $data);
     }
 
     public function getByUserId($userId) {
         // Mengambil semua data pengaduan berdasarkan user_id
         $data['pengaduan'] = $this->pengaduanModel->findByUserId($userId);
         // Tampilkan data pengaduan
-        return view('menu/pengaduan/IndexPengaduan', $data);
+        return view('menu/pengaduan/index_pengaduan', $data);
     }
 
     public function getById($id) {
@@ -90,11 +90,11 @@ class PengaduanController extends BaseController {
             // TO DO: HANDLE JIKA DATA DETAIL TIDAK DITEMUKAN
         }
         // Kirim data ke view details pengaduan
-        return view('menu/pengaduan/DetailsPengaduan', $data);
+        return view('menu/pengaduan/details_pengaduan', $data);
     }
 
     public function viewCreate() {
-        return view('menu/pengaduan/CreatePengaduan');
+        return view('menu/pengaduan/create_pengaduan');
     }
 
     public function store() {
@@ -155,7 +155,7 @@ class PengaduanController extends BaseController {
         $data['pihak_terlibat'] = $this->pihakTerlibatModel->findByPengaduanId($id);
         $data['lampiran'] = $this->lampiranModel->findByPengaduanId($id);
         // Mengembalikan data ke view edit 
-        return view('menu/pengaduan/EditPengaduan', $data);
+        return view('menu/pengaduan/edit_pengaduan', $data);
     }
 
     public function update($id)
@@ -257,8 +257,7 @@ class PengaduanController extends BaseController {
         }
     }
 
-    protected function saveLampiran($pengaduanId)
-    {
+    protected function saveLampiran($pengaduanId) {
         $fileLampiran = $this->request->getFileMultiple('file_lampiran');
         $deskripsiLampiran = $this->request->getPost('deskripsi_lampiran');
 
@@ -300,10 +299,9 @@ class PengaduanController extends BaseController {
             ],
             'nominal' => [
                 'label' => 'Nominal',
-                'rules' => 'permit_empty|numeric|greater_than[1000]',
+                'rules' => 'permit_empty|numeric',
                 'errors' => [
                     'numeric' => '{field} hanya boleh berisi angka',
-                    'greater_than' => '{field} setidaknya harus lebih dari Rp.1000,-'
                 ]
             ],
             'tempat' => [

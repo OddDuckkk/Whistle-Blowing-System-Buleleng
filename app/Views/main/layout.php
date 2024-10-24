@@ -221,8 +221,6 @@
         <!-- =========================================================================================== -->
         <!-- jQuery -->
         <script src="<?= base_url() ?>plugins/jquery/jquery.min.js"></script>
-        <!-- jQuery for adding/removing rows -->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <!-- Bootstrap 4 -->
         <script src="<?= base_url() ?>plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
         <!-- AdminLTE App -->
@@ -246,22 +244,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/js/tempusdominus-bootstrap-4.min.js" integrity="sha512-k6/Bkb8Fxf/c1Tkyl39yJwcOZ1P4cRrJu77p83zJjN2Z55prbFHxPs9vN7q3l3+tSMGPDdoH51AEU8Vgo1cgAA==" crossorigin="anonymous"></script>
         <!-- Sweet alert -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <!-- DataTables Initialization -->
-        <script>
-            $(function () {
-                $('#pengaduanTable').DataTable({
-                    "lengthMenu": [5, 10, 25, 50, 100],
-                    "pageLength": 5,
-                    "responsive": true,
-                    "lengthChange": true,
-                    "autoWidth": false,
-                    "language": {
-                        "url": "<?= base_url() ?>/plugins/datatables/i18n/Indonesian.json"
-                    },
-                    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-                }).buttons().container().appendTo('#pengaduanTable_wrapper .col-md-6:eq(0)');
-            });
-        </script>
         <!-- =========================================================================================== -->
         
         <!-- INDIVIDUAL PAGE SCRIPTS -->

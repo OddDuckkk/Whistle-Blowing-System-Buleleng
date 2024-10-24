@@ -1,14 +1,20 @@
-<?= $this->extend('main/layout') ?>
+<!-- ======= Layout Init ======= -->
+<?= $this->extend('layout/layout') ?>
+
+<!-- ======= Section Judul ======= -->
 <?= $this->section('judul') ?>
 Edit Aduan
 <?= $this->endSection('judul') ?>
-<?= $this->section('subjudul') ?>
-Formulir Edit Aduan
-<?= $this->endSection('subjudul') ?>
+
+<!-- ======= Section Card Header ======= -->
+<?= $this->section('card-header') ?>
+<a href="<?= base_url('pengaduan'); ?>" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Kembali</a>
+<?= $this->endSection('card-header') ?>
+
+<!-- ======= Section Isi ======= -->
 <?= $this->section('isi') ?>
 
 <form action="<?= base_url('pengaduan/update/' . $pengaduan['id']); ?>" method="post" enctype="multipart/form-data">
-    <div class="card-body">
         <div class="box-body">
             <div><h5 class="text-primary"><strong>DETAIL LAPORAN</strong></h5></div>
             <div class="row">

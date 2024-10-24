@@ -180,16 +180,14 @@ class AuthController extends BaseController
 
     public function searchNip(){
         $nip = $this->request->getPost('nip');
-        session()->set('halo100', `tes $nip`);
+        session()->set('niPPP', `tes`);
 
         // Inisialisasi API credentials
         $apiUser = getenv('API_USER');
         $apiPass = getenv('API_PASS');
         $apiEndpoint = getenv('PEGAWAI_API_ENDPOINT');
 
-
         $fullUrl = rtrim($apiEndpoint, '/') . '/' . $nip;
-        session()->set('endpointssss', $fullUrl);
 
         // Lakukan pemanggilan API 
         try {
@@ -213,7 +211,6 @@ class AuthController extends BaseController
             // Handle error Internal API / API mengembalikan response 500
             if (curl_errno($ch)) {
                 session()->setFlashdata('error', 'Error: ' . curl_error($ch));
-                session()->set('halo1', true);
                 // return redirect()->to(site_url('#'));
             } 
             // Handle jika API berhasil dihubungi dan mengirimkan response data
@@ -244,12 +241,9 @@ class AuthController extends BaseController
             }
             curl_close($ch);
 
-
             // Do something with $responseData
         } catch (Exception $e) {
-            session()->set('halo50', true);
             session()->setFlashdata('error', 'Gagal menghubungi server API: ' . $e->getMessage());
-            // return redirect()->to(site_url('login/index'));
         }
     }
 
