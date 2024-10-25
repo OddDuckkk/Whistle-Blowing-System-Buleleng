@@ -162,7 +162,10 @@ Buat Pengaduan
                                 placeholder="NIP Terlapor" 
                                 value="<?= old('nip_terlapor.' . $index) ?>">
                                 <div class="input-group-append">
-                                    <button type="button" class="btn btn-primary search-nip"><i class="fa fa-search"></i></button>
+                                    <button type="button" class="btn btn-primary search-nip">
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                                        <i class="fa fa-search"></i>
+                                    </button>
                                 </div>
                             </div>
                             <?php if (session()->getFlashdata('errNipTerlapor.' . $index)): ?>
@@ -213,7 +216,10 @@ Buat Pengaduan
                                 class="form-control <?= session()->getFlashdata('errNipTerlapor') ? 'is-invalid' : '' ?>" 
                                 placeholder="NIP Terlapor">
                                 <div class="input-group-append">
-                                    <button type="button" class="btn btn-primary search-nip"><i class="fa fa-search"></i></button>
+                                    <button type="button" class="btn btn-primary search-nip">
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                                        <i class="fa fa-search"></i>
+                                    </button>
                                 </div>
                             </div>
                         </td>
