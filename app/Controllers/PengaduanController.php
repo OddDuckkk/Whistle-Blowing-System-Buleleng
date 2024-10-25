@@ -94,6 +94,7 @@ class PengaduanController extends BaseController {
     }
 
     public function viewCreate() {
+        // Tampilkan data create pengaduan
         return view('menu/pengaduan/create_pengaduan');
     }
 
@@ -158,8 +159,7 @@ class PengaduanController extends BaseController {
         return view('menu/pengaduan/edit_pengaduan', $data);
     }
 
-    public function update($id)
-    {
+    public function update($id) {
 
         if (!$this->validatePengaduan()) {
             $sessError = [
@@ -226,8 +226,7 @@ class PengaduanController extends BaseController {
         }
     }
 
-    protected function generateNomorPengaduan()
-    {
+    protected function generateNomorPengaduan() {
         // Mengambil nomor pengaduan terakhir
         $lastPengaduan = $this->pengaduanModel->orderBy('id', 'DESC')->first();
         // Mengambil digit akhir 
@@ -236,8 +235,7 @@ class PengaduanController extends BaseController {
         return 'WBS' . str_pad($lastId + 1, 5, '0', STR_PAD_LEFT);
     }
 
-    protected function savePihakTerlibat($pengaduanId)
-    {
+    protected function savePihakTerlibat($pengaduanId) {
         // Ambil data dari post (array)
         $nipTerlapor = $this->request->getPost('nip_terlapor[]');
         $namaTerlapor = $this->request->getPost('nama_terlapor[]');
@@ -258,9 +256,14 @@ class PengaduanController extends BaseController {
     }
 
     protected function saveLampiran($pengaduanId) {
-        $fileLampiran = $this->request->getFileMultiple('file_lampiran');
+        $files = $this->request->getFiles();
+
+        $fileLampiran = $files['file_lampiran'];
+        session()->set("files", $fileLampiran);
+        // $fileLampiran = $this->request->getFileMultiple('file_lampiran');
         $deskripsiLampiran = $this->request->getPost('deskripsi_lampiran');
 
+        
         for ($i = 0; $i < count($fileLampiran); $i++) {
             if ($fileLampiran[$i]->isValid() && !$fileLampiran[$i]->hasMoved()) {
                 $fileName = $fileLampiran[$i]->getRandomName();

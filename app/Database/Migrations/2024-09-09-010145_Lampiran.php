@@ -26,7 +26,7 @@ class Lampiran extends Migration
             ],
             'deskripsi' => [
                 'type' => 'TEXT',
-                'null' => true,
+                'null' => false,
             ],
         ]);
 

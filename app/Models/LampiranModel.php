@@ -9,7 +9,7 @@ class LampiranModel extends Model
 {
     protected $table            = 'lampiran';
     protected $primaryKey       = 'id';
-    protected $useAutoIncrement = true;
+    protected $useAutoIncrement = false;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;

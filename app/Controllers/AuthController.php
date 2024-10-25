@@ -180,7 +180,6 @@ class AuthController extends BaseController
 
     public function searchNip(){
         $nip = $this->request->getPost('nip');
-        session()->set('niPPP', `tes`);
 
         // Inisialisasi API credentials
         $apiUser = getenv('API_USER');

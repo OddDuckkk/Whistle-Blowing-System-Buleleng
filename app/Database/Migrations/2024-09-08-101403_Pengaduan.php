@@ -23,7 +23,7 @@ class Pengaduan extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => 10, 
                 'null'       => false,
-                'unique'     => true, // Nomor laporan harus unik
+                'unique'     => true,
             ],
             'judul' => [
                 'type'       => 'VARCHAR',

@@ -9,7 +9,7 @@ class PihakTerlibatModel extends Model
 {
     protected $table            = 'pihak_terlibat';
     protected $primaryKey       = 'id';
-    protected $useAutoIncrement = true;
+    protected $useAutoIncrement = false;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;

@@ -20,14 +20,19 @@
     <tbody>
         <tr>
             <td class="w-25"><strong>Status</strong></td>
-            <td class="w-75"><strong>: </strong><span class="badge 
-        <?= $pengaduan['status'] == 'diproses operator' ? 'badge-warning' : ''; ?>
-        <?= $pengaduan['status'] == 'diproses verifikator' ? 'badge-warning' : ''; ?>
-        <?= $pengaduan['status'] == 'selesai' ? 'badge-success' : ''; ?>
-        <?= $pengaduan['status'] == 'ditolak operator' ? 'badge-danger' : ''; ?>
-        <?= $pengaduan['status'] == 'ditolak verifikator' ? 'badge-danger' : ''; ?>">
-                    <?= $pengaduan['status']; ?>
-                </span></td>
+            <td class="w-75"><strong>: </strong><span class="rounded-0 badge 
+                    <?php if ($pengaduan['status'] == 'baru') echo 'badge-primary'; ?>
+                    <?php if ($pengaduan['status'] == 'diproses operator') echo 'badge-warning'; ?>
+                    <?php if ($pengaduan['status'] == 'diproses verifikator') echo 'badge-warning'; ?>
+                    <?php if ($pengaduan['status'] == 'selesai') echo 'badge-success'; ?>
+                    <?php if ($pengaduan['status'] == 'ditolak') echo 'badge-danger'; ?>">
+
+                    <?php if ($pengaduan['status'] == 'baru') echo 'baru'; ?>
+                    <?php if ($pengaduan['status'] == 'diproses operator') echo 'diproses operator'; ?>
+                    <?php if ($pengaduan['status'] == 'diproses verifikator') echo 'diproses operator'; ?>
+                    <?php if ($pengaduan['status'] == 'selesai') echo 'selesai'; ?>
+                    <?php if ($pengaduan['status'] == 'ditolak') echo 'ditolak'; ?>
+                    </span></td>
         </tr>
         <tr>
             <td><strong>Nomor Pengaduan</strong></td>
