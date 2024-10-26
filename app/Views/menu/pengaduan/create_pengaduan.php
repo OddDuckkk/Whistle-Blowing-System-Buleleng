@@ -151,14 +151,16 @@ Buat Pengaduan
 
             <!-- Input Field -->
             <tbody>
+                <!-- Tampilan input pihak terlibat jika terdapat error -->
                 <?php if (old('nip_terlapor')): ?>
                     <?php foreach (old('nip_terlapor') as $index => $nipTerlapor): ?>
                     <tr>
+                        <!-- Input nip -->
                         <td>
                             <div class="input-group">
                                 <input type="text" 
                                 name="nip_terlapor[]" 
-                                class="form-control <?= session()->getFlashdata('errNipTerlapor.' . $index) ? 'is-invalid' : '' ?>" 
+                                class="form-control <?= isset(session()->getFlashdata('errNipTerlapor')[$index]) ? 'is-invalid' : '' ?>" 
                                 placeholder="NIP Terlapor" 
                                 value="<?= old('nip_terlapor.' . $index) ?>">
                                 <div class="input-group-append">
@@ -168,35 +170,57 @@ Buat Pengaduan
                                     </button>
                                 </div>
                             </div>
-                            <?php if (session()->getFlashdata('errNipTerlapor.' . $index)): ?>
-                                <div class="invalid-feedback">
-                                    <?= session()->getFlashdata('errNipTerlapor.' . $index); ?>
+                            <!-- Error Handling -->
+                            <?php if (isset(session()->getFlashdata('errNipTerlapor')[$index])): ?>
+                                <div class="invalid-feedback" style="display: block;">
+                                    <?= session()->getFlashdata('errNipTerlapor')[$index]; ?>
                                 </div>
                             <?php endif; ?>
                         </td>
+                        <!-- Input Nama -->
                         <td>
                             <input type="text" 
                             name="nama_terlapor[]" 
-                            class="form-control" 
+                            class="form-control <?= isset(session()->getFlashdata('errNamaTerlapor')[$index]) ? 'is-invalid' : '' ?>" 
                             placeholder="Nama Terlapor" 
                             value="<?= old('nama_terlapor.' . $index) ?>" 
                             readonly>
+                            <!-- Error Handling -->
+                            <?php if (isset(session()->getFlashdata('errNamaTerlapor')[$index])): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->getFlashdata('errNamaTerlapor')[$index]; ?>
+                                </div>
+                            <?php endif; ?>
                         </td>
+                        <!-- Input Jabatan -->
                         <td>
                             <input type="text" 
                             name="jabatan_terlapor[]" 
-                            class="form-control" 
+                            class="form-control <?= isset(session()->getFlashdata('errJabatanTerlapor')[$index]) ? 'is-invalid' : '' ?>" 
                             placeholder="Jabatan Terlapor" 
                             value="<?= old('jabatan_terlapor.' . $index) ?>" 
                             readonly>
+                            <!-- Error Handling -->
+                            <?php if (isset(session()->getFlashdata('errJabatanTerlapor')[$index])): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->getFlashdata('errJabatanTerlapor')[$index]; ?>
+                                </div>
+                            <?php endif; ?>
                         </td>
+                        <!-- Input Unit Kerja -->
                         <td>
                             <input type="text" 
                             name="unit_kerja[]" 
-                            class="form-control" 
+                            class="form-control <?= isset(session()->getFlashdata('errUnitKerja')[$index]) ? 'is-invalid' : '' ?>" 
                             placeholder="Unit Kerja Terlapor" 
                             value="<?= old('unit_kerja.' . $index) ?>" 
                             readonly>
+                            <!-- Error Handling -->
+                            <?php if (isset(session()->getFlashdata('errUnitKerja')[$index])): ?>
+                                <div class="invalid-feedback">
+                                    <?= session()->getFlashdata('errUnitKerja')[$index]; ?>
+                                </div>
+                            <?php endif; ?>
                         </td>
                         <td>
                             <?php if ($index == 0): ?>
@@ -207,13 +231,14 @@ Buat Pengaduan
                         </td>
                     </tr>
                     <?php endforeach; ?>
+                    <!-- Tampilan Input terlapor dalam keadaan normal -->
                 <?php else: ?>
                     <tr>
                         <td>
                             <div class="input-group">
                                 <input type="text" 
                                 name="nip_terlapor[]" 
-                                class="form-control <?= session()->getFlashdata('errNipTerlapor') ? 'is-invalid' : '' ?>" 
+                                class="form-control" 
                                 placeholder="NIP Terlapor">
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-primary search-nip">
@@ -226,21 +251,21 @@ Buat Pengaduan
                         <td>
                             <input type="text" 
                             name="nama_terlapor[]" 
-                            class="form-control <?= session()->getFlashdata('errNamaTerlapor') ? 'is-invalid' : '' ?>" 
+                            class="form-control" 
                             placeholder="Nama Terlapor" 
                             readonly>
                         </td>
                         <td>
                             <input type="text" 
                             name="jabatan_terlapor[]" 
-                            class="form-control <?= session()->getFlashdata('errJabatanTerlapor') ? 'is-invalid' : '' ?>" 
+                            class="form-control" 
                             placeholder="Jabatan Terlapor" 
                             readonly>
                         </td>
                         <td>
                             <input type="text" 
                             name="unit_kerja[]" 
-                            class="form-control <?= session()->getFlashdata('errUnitKerja') ? 'is-invalid' : '' ?>" 
+                            class="form-control" 
                             placeholder="Unit Kerja Terlapor" 
                             readonly>
                         </td>

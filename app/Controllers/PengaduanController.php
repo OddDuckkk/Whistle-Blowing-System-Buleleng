@@ -111,11 +111,13 @@ class PengaduanController extends BaseController {
                 'errNominal' => $this->validation->getError('nominal'),
                 'errTempat' => $this->validation->getError('tempat'),
                 'errDeskripsi' => $this->validation->getError('deskripsi'),
-                'errNamaTerlapor' => $this->validation->getError('nama_terlapor[]'),
-                'errJabatanTerlapor' => $this->validation->getError('jabatan_terlapor[]'),
-                'errUnitKerja' => $this->validation->getError('unit_kerja[]'),
-                'errFileLampiran' => $this->validation->getError('file_lampiran[]'),
-                'errDeskripsiLampiran' => $this->validation->getError('deskripsi_lampiran[]')
+                'errNipTerlapor' => $this->extractArrayErrors($this->validation->getErrors(), 'nip_terlapor'),
+                'errNamaTerlapor' => $this->extractArrayErrors($this->validation->getErrors(), 'nama_terlapor'),
+                'errJabatanTerlapor' => $this->extractArrayErrors($this->validation->getErrors(), 'jabatan_terlapor'),
+                'errUnitKerja' => $this->extractArrayErrors($this->validation->getErrors(), 'unit_kerja'),
+                'errFileLampiran' => $this->extractArrayErrors($this->validation->getErrors(), 'file_lampiran'),
+                'errDeskripsiLampiran' => $this->extractArrayErrors($this->validation->getErrors(), 'deskripsi_lampiran'),
+                
             ];
             session()->setFlashdata($sessError);
             return redirect()->to(site_url("/pengaduan/create"))->withInput();
@@ -278,6 +280,21 @@ class PengaduanController extends BaseController {
         }
     }
 
+    protected function extractArrayErrors(array $errors, string $fieldName) {
+    $fieldErrors = [];
+    
+    // Check if the errors contain any for the specified array field name
+    foreach ($errors as $key => $error) {
+        // Matches the field name and captures the specific index if present
+        if (preg_match('/' . preg_quote($fieldName) . '\.(\d+)/', $key, $matches)) {
+            $index = $matches[1];
+            $fieldErrors[$index] = $error; // Store the error message by index
+        }
+    }
+
+    return $fieldErrors;
+    }
+
     private function validatePengaduan() {
         // $nama_terlapor = $this->request->getPost('nama_terlapor');
         // $jabatan_terlapor = $this->request->getPost('jabatan_terlapor');
@@ -321,47 +338,50 @@ class PengaduanController extends BaseController {
                     'required' => '{field} tidak boleh kosong'
                 ]
             ],
-            // 'nama_terlapor[]' => [
-            // 'label' => 'Nama Terlapor',
-            // 'rules' => 'required|callback_validate_nama_terlapor',
-            // 'errors' => [
-            //     'required' => '{field} tidak boleh kosong',
-            //     'callback_validate_nama_terlapor' => '{field} tidak valid'
-            //     ]
-            // ],
-            // 'jabatan_terlapor[]' => [
-            //     'label' => 'Jabatan Terlapor',
-            //     'rules' => 'required|callback_validate_jabatan_terlapor',
-            //     'errors' => [
-            //         'required' => '{field} tidak boleh kosong',
-            //         'callback_validate_jabatan_terlapor' => '{field} tidak valid'
-            //     ]
-            // ],
-            // 'unit_kerja[]' => [
-            //     'label' => 'Unit Kerja',
-            //     'rules' => 'required|callback_validate_unit_kerja',
-            //     'errors' => [
-            //         'required' => '{field} tidak boleh kosong',
-            //         'callback_validate_unit_kerja' => '{field} tidak valid'
-            //     ]
-            // ],
-            // 'file_lampiran[]' => [
-            //     'label' => 'File Lampiran',
-            //     'rules' => 'uploaded[file_lampiran]|mime_in[file_lampiran,image/jpg,image/jpeg,image/png,application/pdf]|max_size[file_lampiran,10240]',
-            //     'errors' => [
-            //         'uploaded' => '{field} harus diunggah',
-            //         'mime_in' => '{field} harus berupa file dengan format jpg, jpeg, png, atau pdf',
-            //         'max_size' => '{field} tidak boleh lebih dari 10MB'
-            //     ]
-            // ],
-            // 'deskripsi_lampiran[]' => [
-            //     'label' => 'Deskripsi Lampiran',
-            //     'rules' => 'required|callback_validate_deskripsi_lampiran',
-            //     'errors' => [
-            //         'required' => '{field} tidak boleh kosong',
-            //         'callback_validate_deskripsi_lampiran' => '{field} tidak valid'
-            //     ]
-            // ],
+            'nip_terlapor.*' => [
+                'label' => 'Nip terlapor',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong'
+                ]
+            ],
+            'nama_terlapor.*' => [
+                'label' => 'Nama terlapor',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong'
+                ]
+            ],
+            'jabatan_terlapor.*' => [
+                'label' => 'Jabatan terlapor',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong'
+                ]
+            ],
+            'unit_kerja.*' => [
+                'label' => 'Unit kerja',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong'
+                ]
+            ],
+            'file_lampiran.*' => [
+                'label' => 'File lampiran',
+                'rules' => 'uploaded[file_lampiran]|mime_in[file_lampiran,image/jpg,image/jpeg,image/png,application/pdf]|max_size[file_lampiran,10240]',
+                'errors' => [
+                    'uploaded' => '{field} harus diunggah',
+                    'mime_in' => '{field} harus berupa file dengan format jpg, jpeg, png, atau pdf',
+                    'max_size' => '{field} tidak boleh lebih dari 10MB'
+                ]
+            ],
+            'deskripsi_lampiran.*' => [
+                'label' => 'Deskripsi lampiran',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ]
+            ],
         ]);
     }
 

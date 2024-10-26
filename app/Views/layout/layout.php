@@ -5,7 +5,7 @@
 <?= $this->include('partials/head') ?>
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-navbar-fixed layout-fixed">
     <div class="wrapper">
         <!-- ======= Topbar ======= -->
         <?= $this->include('partials/topbar') ?>
