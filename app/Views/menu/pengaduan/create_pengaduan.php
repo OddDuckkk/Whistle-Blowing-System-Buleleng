@@ -15,7 +15,7 @@ Buat Pengaduan
 <!-- ======= Section Isi ======= -->
 <?= $this->section('isi') ?>
 <!-- Form Tambah Pengaduan -->
-<form action="<?= base_url('pengaduan/store'); ?>" method="post" enctype="multipart/form-data" autocomplete="off">
+<form id="pengaduan_form" action="<?= base_url('pengaduan/store'); ?>" method="post" enctype="multipart/form-data" autocomplete="off">
     <!-- Inputs Detail Laporan -->
     <div class="box-body">
         <div><h5 class="text-primary"><strong>DETAIL LAPORAN</strong></h5></div>
