@@ -115,9 +115,7 @@ class PengaduanController extends BaseController {
                 'errNamaTerlapor' => $this->extractArrayErrors($this->validation->getErrors(), 'nama_terlapor'),
                 'errJabatanTerlapor' => $this->extractArrayErrors($this->validation->getErrors(), 'jabatan_terlapor'),
                 'errUnitKerja' => $this->extractArrayErrors($this->validation->getErrors(), 'unit_kerja'),
-                'errFileLampiran' => $this->extractArrayErrors($this->validation->getErrors(), 'file_lampiran'),
                 'errDeskripsiLampiran' => $this->extractArrayErrors($this->validation->getErrors(), 'deskripsi_lampiran'),
-                
             ];
             session()->setFlashdata($sessError);
             return redirect()->to(site_url("/pengaduan/create"))->withInput();
@@ -257,26 +255,69 @@ class PengaduanController extends BaseController {
         }
     }
 
-    protected function saveLampiran($pengaduanId) {
-        $files = $this->request->getFiles();
-
-        $fileLampiran = $files['file_lampiran'];
-        session()->set("files", $fileLampiran);
-        // $fileLampiran = $this->request->getFileMultiple('file_lampiran');
-        $deskripsiLampiran = $this->request->getPost('deskripsi_lampiran');
-
+    public function uploadFile() {
+            if ($_FILES['file']['error'] === UPLOAD_ERR_OK) {
+                $file = $_FILES['file'];
+                $randomName = bin2hex(random_bytes(8)) . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
+                $uploadDirectory = $_SERVER['DOCUMENT_ROOT'] . '/uploads/';
+                $uploadPath = $uploadDirectory . $randomName;
+                $urlPath = '/uploads/' . $randomName;
         
-        for ($i = 0; $i < count($fileLampiran); $i++) {
-            if ($fileLampiran[$i]->isValid() && !$fileLampiran[$i]->hasMoved()) {
-                $fileName = $fileLampiran[$i]->getRandomName();
-                $fileLampiran[$i]->move('uploads', $fileName);
-
-                $this->lampiranModel->insert([
-                    'pengaduan_id' => $pengaduanId,
-                    'file_lampiran' => 'uploads/' . $fileName,
-                    'deskripsi' => $deskripsiLampiran[$i],
-                ]);
+                if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
+                    $response = ['filePath' => $urlPath];
+                    echo json_encode($response);
+                } else {
+                    http_response_code(500);
+                    echo json_encode(['error' => 'Failed to move uploaded file.']);
+                }
+            } else {
+                http_response_code(400);
+                echo json_encode(['error' => 'Upload error']);
             }
+    }
+    public function deleteFile() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = json_decode(file_get_contents('php://input'), true);
+            
+            if (isset($data['filePath'])) {
+                // Ensure the path is correct; it should match the upload path
+                $filePath = $_SERVER['DOCUMENT_ROOT'] . $data['filePath'];
+    
+                // Ensure the path is correct, and then delete the file
+                if (file_exists($filePath)) {
+                    if (unlink($filePath)) {
+                        echo json_encode(['success' => true, 'message' => 'File deleted successfully.']);
+                    } else {
+                        http_response_code(500);
+                        echo json_encode(['success' => false, 'error' => 'Failed to delete the file.']);
+                    }
+                } else {
+                    http_response_code(404);
+                    echo json_encode(['success' => false, 'error' => 'File not found.']);
+                }
+            } else {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Invalid file path.']);
+            }
+        }
+    }
+    
+    
+    protected function saveLampiran($pengaduanId) {
+        // ambil data lampiran
+        $filePaths = $this->request->getPost('file_lampiran[]');
+        $deskripsiLampiran = $this->request->getPost('deskripsi_lampiran[]');
+
+        // loop each file
+        for ($i = 0; $i < count($filePaths); $i++) {
+            $filePath = $filePaths[$i];
+            $description = isset($deskripsiLampiran[$i]) ? $deskripsiLampiran[$i] : '';
+            // Simpan ke database
+            $this->lampiranModel->insert([
+                'pengaduan_id' => $pengaduanId,
+                'file_lampiran' => $filePath,
+                'deskripsi' => $description,
+            ]);
         }
     }
 
@@ -296,9 +337,6 @@ class PengaduanController extends BaseController {
     }
 
     private function validatePengaduan() {
-        // $nama_terlapor = $this->request->getPost('nama_terlapor');
-        // $jabatan_terlapor = $this->request->getPost('jabatan_terlapor');
-        // $unit_kerja = $this->request->getPost('unit_kerja');
         
         return $this->validate([
             'judul' => [
@@ -366,15 +404,16 @@ class PengaduanController extends BaseController {
                     'required' => '{field} tidak boleh kosong'
                 ]
             ],
-            'file_lampiran.*' => [
-                'label' => 'File lampiran',
-                'rules' => 'uploaded[file_lampiran]|mime_in[file_lampiran,image/jpg,image/jpeg,image/png,application/pdf]|max_size[file_lampiran,10240]',
-                'errors' => [
-                    'uploaded' => '{field} harus diunggah',
-                    'mime_in' => '{field} harus berupa file dengan format jpg, jpeg, png, atau pdf',
-                    'max_size' => '{field} tidak boleh lebih dari 10MB'
-                ]
-            ],
+            // 'file_lampiran.*' => [
+            //     'label' => 'File lampiran',
+            //     'rules' => 'uploaded[file_lampiran]|mime_in[file_lampiran,image/jpg,image/jpeg,image/png,application/pdf]|max_size[file_lampiran,10240]',
+            //     'errors' => [
+            //         'uploaded' => '{field} harus diunggah',
+            //         'mime_in' => '{field} harus berupa file dengan format jpg, jpeg, png, atau pdf',
+            //         'max_size' => '{field} tidak boleh lebih dari 10MB'
+            //     ]
+            // ], 
+            // Validasi file lampiran dilakukan di frontend (create_pengaduan.js)
             'deskripsi_lampiran.*' => [
                 'label' => 'Deskripsi lampiran',
                 'rules' => 'required',

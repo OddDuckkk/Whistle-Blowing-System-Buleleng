@@ -278,74 +278,38 @@ Buat Pengaduan
 
     <!-- Inputs lampiran -->
     <div class="box-body">
-        <div><h5 class="text-primary"><strong>LAMPIRAN</strong></h5></div>
-        <!-- Lampiran -->
-        <table class="table table-borderless" id="lampiranTable">
+        <!-- Dropzone File -->
+        <table class="table table-borderless">
             <thead>
                 <tr>
                     <th>File Lampiran <label class="text-danger">*</label></th>
-                    <th>Deskripsi Lampiran <label class="text-danger">*</label></th>
-                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                <?php if (old('deskripsi_lampiran')): ?>
-                    <?php foreach (old('deskripsi_lampiran') as $index => $deskripsiLampiran): ?>
-                    <tr>
-                        <td>
-                            <input type="file" 
-                            name="file_lampiran[]" 
-                            class="form-control <?= session()->getFlashdata('errFileLampiran.' . $index) ? 'is-invalid' : '' ?>">
-                            <?php if (session()->getFlashdata('errFileLampiran.' . $index)): ?>
-                            <div class="invalid-feedback">
-                                <?= session()->getFlashdata('errFileLampiran.' . $index); ?>
-                            </div>
-                            <?php endif; ?>
-                        </td>
-                        <td>
-                            <textarea name="deskripsi_lampiran[]" 
-                            class="form-control <?= session()->getFlashdata('errDeskripsiLampiran.' . $index) ? 'is-invalid' : '' ?>" rows="2" placeholder="Deskripsi Lampiran"><?= old('deskripsi_lampiran.' . $index) ?></textarea>
-                            <?php if (session()->getFlashdata('errDeskripsiLampiran.' . $index)): ?>
-                            <div class="invalid-feedback">
-                                <?= session()->getFlashdata('errDeskripsiLampiran.' . $index); ?>
-                            </div>
-                            <?php endif; ?>
-                        </td>
-                        <td>
-                            <?php if ($index == 0): ?>
-                                <button type="button" class="btn btn-success add-row">+</button>
-                            <?php else: ?>
-                                <button type="button" class="btn btn-danger remove-row">-</button>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td>
-                            <input type="file" 
-                            name="file_lampiran[]" 
-                            class="form-control <?= session()->getFlashdata('errFileLampiran') ? 'is-invalid' : '' ?>">
-                            <?php if (session()->getFlashdata('errFileLampiran')): ?>
-                            <div class="invalid-feedback">
-                                <?= session()->getFlashdata('errFileLampiran'); ?>
-                            </div>
-                            <?php endif; ?>
-                        </td>
-                        <td>
-                            <textarea name="deskripsi_lampiran[]" 
-                            class="form-control <?= session()->getFlashdata('errDeskripsiLampiran') ? 'is-invalid' : '' ?>" 
-                            rows="2" 
-                            placeholder="Deskripsi Lampiran"></textarea>
-                            <?php if (session()->getFlashdata('errDeskripsiLampiran')): ?>
-                            <div class="invalid-feedback">
-                                <?= session()->getFlashdata('errDeskripsiLampiran'); ?>
-                            </div>
-                            <?php endif; ?>
-                        </td>
-                        <td><button type="button" class="btn btn-success add-row">+</button></td>
-                    </tr>
-                <?php endif; ?>
+                <tr>
+                    <td>
+                        <!-- Dropzone Element -->
+                        <div id="dropzone-lampiran" class="dropzone mb-3">
+                            <div class="dz-message">Klik Box atau Tarik File untuk Mengupload</div>
+                        </div>
+                        <div id="fileInputs">
+                            <!-- Hidden input path file ditambah secara dinamis (create_pengaduan.js) -->
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Input Deskripsi Lampiran -->
+        <table class="table table-borderless" id="lampiranDetailsTable" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Nama Lampiran</th>
+                    <th>Deskripsi Lampiran <label class="text-danger">*</label></th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Row deskripsi secara dinamis (create_pengaduan.js) -->
             </tbody>
         </table>
     </div>
