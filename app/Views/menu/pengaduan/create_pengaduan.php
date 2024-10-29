@@ -289,8 +289,14 @@ Buat Pengaduan
                 <tr>
                     <td>
                         <!-- Dropzone Element -->
-                        <div id="dropzone-lampiran" class="dropzone mb-3">
-                            <div class="dz-message">Klik Box atau Tarik File untuk Mengupload</div>
+                        <div class="dropzone-container">
+                            <div id="dropzone-lampiran" class="dropzone mb-3">
+                                <div class="dz-message text-center">
+                                    <i class="fas fa-cloud-upload-alt fa-3x mb-2 text-primary"></i> <!-- Customize icon color and size here -->
+                                    <p class="font-weight-bold mb-1">Klik Box atau Tarik File untuk Mengupload</p>
+                                    <p class="text-muted font-weight-bold" style="font-size: 0.9rem;">PNG, JPG, JPEG, PDF maksimal 10Mb</p>
+                                </div>
+                            </div>
                         </div>
                         <div id="fileInputs">
                             <!-- Hidden input path file ditambah secara dinamis (create_pengaduan.js) -->
