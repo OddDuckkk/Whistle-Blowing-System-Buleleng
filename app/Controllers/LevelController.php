@@ -25,12 +25,12 @@ class LevelController extends BaseController
     $usersWithLevels = $this->levelModel->getUsersWithRoles();
         
     // Mengirimkan data kembali ke view IndexUserLevel
-    return view('menu/userlevel/IndexUserLevel', ['users' => $usersWithLevels]);
+    return view('menu/userlevel/index_user_level', ['users' => $usersWithLevels]);
     }
 
     public function viewAssignUserLevel() {
         // Menampilkan view untuk mengatur level user
-        return view('menu/userlevel/AssignUserLevel');
+        return view('menu/userlevel/assign_user_level');
     }
 
     public function store() {

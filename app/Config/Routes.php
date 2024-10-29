@@ -26,7 +26,7 @@ $routes->post('/validate-nip', 'AuthController::validateNip');
 $routes->post('/auth/search-nip', 'AuthController::searchNip');
 
 
-$routes->get('/userlevel', 'LevelController::getAllUserLevels');
-$routes->get('/userlevel/assign', 'LevelController::viewAssignUserLevel');
-$routes->post('/userlevel/store', 'LevelController::store');
+$routes->get('/user-level', 'LevelController::getAllUserLevels');
+$routes->get('/user-level/assign', 'LevelController::viewAssignUserLevel');
+$routes->post('/user-level/store', 'LevelController::store');
 

@@ -1,10 +1,17 @@
-<?= $this->extend('main/layout') ?>
+<!-- ======= Layout Init ======= -->
+<?= $this->extend('layout/layout') ?>
+
+<!-- ======= Section Judul ======= -->
 <?= $this->section('judul') ?>
 Selamat Datang di WBS Buleleng
 <?= $this->endSection('judul') ?>
-<?= $this->section('subjudul') ?>
+
+<!-- ======= Section Card Header ======= -->
+<?= $this->section('card-header') ?>
 Dashboard
-<?= $this->endSection('subjudul') ?>
+<?= $this->endSection('card-header') ?>
+
+<!-- ======= Section Isi ======= -->
 <?= $this->section('isi') ?>
 
 <p>

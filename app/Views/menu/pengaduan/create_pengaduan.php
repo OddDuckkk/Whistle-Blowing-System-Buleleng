@@ -135,7 +135,12 @@ Buat Pengaduan
 
     <!-- Inputs Pihak Terlibat -->
     <div class="box-body">
-        <div><h5 class="text-primary"><strong>PIHAK TERLIBAT</strong></h5></div>
+        <div class="d-flex align-items-center">
+            <h5 class="text-primary mb-0"><strong>PIHAK TERLIBAT</strong></h5>
+            <a href="#" class="text-muted ml-2 small d-inline-flex align-items-center" id="non-asn-info">
+                <i class="fas fa-question-circle px-1"></i>Pegawai non-ASN
+            </a>
+        </div>
         <!-- Tabel Input Pihak Terlibat -->
         <table class="table table-borderless" id="pihakTerlibatTable">
             <!-- Judul Field -->
@@ -162,7 +167,8 @@ Buat Pengaduan
                                 name="nip_terlapor[]" 
                                 class="form-control <?= isset(session()->getFlashdata('errNipTerlapor')[$index]) ? 'is-invalid' : '' ?>" 
                                 placeholder="NIP Terlapor" 
-                                value="<?= old('nip_terlapor.' . $index) ?>">
+                                value="<?= old('nip_terlapor.' . $index) ?>"
+                                <?= old('nip_terlapor.' . $index) === 'Non-ASN' ? 'readonly' : '' ?>>
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-primary search-nip">
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
@@ -184,7 +190,7 @@ Buat Pengaduan
                             class="form-control <?= isset(session()->getFlashdata('errNamaTerlapor')[$index]) ? 'is-invalid' : '' ?>" 
                             placeholder="Nama Terlapor" 
                             value="<?= old('nama_terlapor.' . $index) ?>" 
-                            readonly>
+                            <?= old('nip_terlapor.' . $index) === 'Non-ASN' ? '' : 'readonly' ?>>
                             <!-- Error Handling -->
                             <?php if (isset(session()->getFlashdata('errNamaTerlapor')[$index])): ?>
                                 <div class="invalid-feedback">
@@ -199,7 +205,7 @@ Buat Pengaduan
                             class="form-control <?= isset(session()->getFlashdata('errJabatanTerlapor')[$index]) ? 'is-invalid' : '' ?>" 
                             placeholder="Jabatan Terlapor" 
                             value="<?= old('jabatan_terlapor.' . $index) ?>" 
-                            readonly>
+                            <?= old('nip_terlapor.' . $index) === 'Non-ASN' ? '' : 'readonly' ?>>
                             <!-- Error Handling -->
                             <?php if (isset(session()->getFlashdata('errJabatanTerlapor')[$index])): ?>
                                 <div class="invalid-feedback">
@@ -214,7 +220,7 @@ Buat Pengaduan
                             class="form-control <?= isset(session()->getFlashdata('errUnitKerja')[$index]) ? 'is-invalid' : '' ?>" 
                             placeholder="Unit Kerja Terlapor" 
                             value="<?= old('unit_kerja.' . $index) ?>" 
-                            readonly>
+                            <?= old('nip_terlapor.' . $index) === 'Non-ASN' ? '' : 'readonly' ?>>
                             <!-- Error Handling -->
                             <?php if (isset(session()->getFlashdata('errUnitKerja')[$index])): ?>
                                 <div class="invalid-feedback">
@@ -224,9 +230,23 @@ Buat Pengaduan
                         </td>
                         <td>
                             <?php if ($index == 0): ?>
-                                <button type="button" class="btn btn-success add-row">+</button>
+                                <button type="button" 
+                                class="btn btn-success add-row"
+                                data-toggle="tooltip" 
+                                title="Tambah Baris"><span class="fa fa-plus"></span></button>
+                                <button type="button" 
+                                class="btn btn-info change-non-asn" 
+                                data-toggle="tooltip" 
+                                title="Ganti menjadi non-ASN"><span class="fas fa-sync-alt"></span></button>
                             <?php else: ?>
-                                <button type="button" class="btn btn-danger remove-row">-</button>
+                                <button type="button" 
+                                class="btn btn-danger remove-row"
+                                data-toggle="tooltip" 
+                                title="Hapus Baris"><span class="fa fa-minus"></span></button>
+                                <button type="button" 
+                                class="btn btn-info change-non-asn" 
+                                data-toggle="tooltip" 
+                                title="Ganti menjadi non-ASN"><span class="fas fa-sync-alt"></span></button>
                             <?php endif; ?>
                         </td>
                     </tr>
@@ -269,7 +289,16 @@ Buat Pengaduan
                             placeholder="Unit Kerja Terlapor" 
                             readonly>
                         </td>
-                        <td><button type="button" class="btn btn-success add-row">+</button></td>
+                        <td>
+                            <button type="button" 
+                            class="btn btn-success add-row"
+                            data-toggle="tooltip" 
+                            title="Tambah Baris"><span class="fa fa-plus"></span></button>
+                            <button type="button" 
+                            class="btn btn-info change-non-asn" 
+                            data-toggle="tooltip" 
+                            title="Ganti menjadi non-ASN"><span class="fas fa-sync-alt"></span></button>
+                        </td>
                     </tr>
                 <?php endif; ?>
             </tbody>
@@ -289,8 +318,14 @@ Buat Pengaduan
                 <tr>
                     <td>
                         <!-- Dropzone Element -->
-                        <div id="dropzone-lampiran" class="dropzone mb-3">
-                            <div class="dz-message">Klik Box atau Tarik File untuk Mengupload</div>
+                        <div class="dropzone-container">
+                            <div id="dropzone-lampiran" class="dropzone mb-3">
+                                <div class="dz-message text-center">
+                                    <i class="fas fa-cloud-upload-alt fa-3x mb-2 text-primary"></i> <!-- Customize icon color and size here -->
+                                    <p class="font-weight-bold mb-1">Klik Box atau Tarik File untuk Mengupload</p>
+                                    <p class="text-muted font-weight-bold" style="font-size: 0.9rem;">PNG, JPG, JPEG, PDF maksimal 10Mb</p>
+                                </div>
+                            </div>
                         </div>
                         <div id="fileInputs">
                             <!-- Hidden input path file ditambah secara dinamis (create_pengaduan.js) -->

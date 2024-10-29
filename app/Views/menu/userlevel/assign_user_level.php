@@ -1,12 +1,18 @@
-<?= $this->extend('main/layout') ?>
+<!-- ======= Layout Init ======= -->
+<?= $this->extend('layout/layout') ?>
+
+<!-- ======= Section Judul ======= -->
 <?= $this->section('judul') ?>
 Tambah Level ke Pengguna
 <?= $this->endSection('judul') ?>
-<?= $this->section('subjudul') ?>
-<a href="<?= base_url('/userlevel'); ?>" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Kembali</a>
-<?= $this->endSection('subjudul') ?>
-<?= $this->section('isi') ?>
 
+<!-- ======= Section Sub judul ======= -->
+<?= $this->section('card-header') ?>
+<a href="<?= base_url('/user-level'); ?>" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Kembali</a>
+<?= $this->endSection('card-header') ?>
+
+<!-- ======= Section Isi ======= -->
+<?= $this->section('isi') ?>
 <form action="<?= base_url('/validate-nip'); ?>" method="post" enctype="multipart/form-data">
     <div class="card-body rounded">
         <div class="box-body">
@@ -67,7 +73,7 @@ Tambah Level ke Pengguna
                     <!-- Dismiss button (Tutup) -->
                     <button type="button" class="btn btn-default" id="dismissModal">Tutup</button>
                     <!-- Action (Simpan) -->
-                    <form action="<?= base_url('/userlevel/store'); ?>" method="post">
+                    <form action="<?= base_url('/user-level/store'); ?>" method="post">
                         <input type="hidden" name="nip" id="hiddenNip">
                         <input type="hidden" name="level" id="hiddenLevel">
 
