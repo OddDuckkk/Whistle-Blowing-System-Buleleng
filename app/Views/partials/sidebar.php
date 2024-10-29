@@ -3,7 +3,7 @@
     <!-- Identitas Aplikasi -->
     <a href="<?= base_url() ?>/index3.html" class="brand-link bg-primary">
         <img src="<?= base_url() ?>/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">WBS Buleleng</span>
+        <span class="brand-text font-weight-light"><?= env('APP_NAME') ?></span>
     </a>
 
     <!-- Sidebar Menu -->
@@ -93,7 +93,7 @@
                 <?php if (in_array('superadmin', session()->get('level'))): ?>
                     <li class="nav-header">Super Admin</li>
                 <li class="nav-item <?= (uri_string() == 'level') ? 'active' : ''; ?>">
-                    <a href="/userlevel" class="nav-link <?= (uri_string() == 'level') ? 'active' : ''; ?>">
+                    <a href="/user-level" class="nav-link <?= (uri_string() == 'level') ? 'active' : ''; ?>">
                         <i class="nav-icon fa fa-tasks"></i>
                         <p>
                             Manajemen Level

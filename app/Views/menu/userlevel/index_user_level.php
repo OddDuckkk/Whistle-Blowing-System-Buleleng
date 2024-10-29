@@ -1,12 +1,18 @@
-<?= $this->extend('main/layout') ?>
+<!-- ======= Layout Init ======= -->
+<?= $this->extend('layout/layout') ?>
+
+<!-- ======= Section Judul ======= -->
 <?= $this->section('judul') ?>
 Daftar Level Pengguna
 <?= $this->endSection('judul') ?>
-<?= $this->section('subjudul') ?>
-<a href="<?= base_url('/userlevel/assign'); ?>" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Level</a>
-<?= $this->endSection('subjudul') ?>
-<?= $this->section('isi') ?>
 
+<!-- ======= Section Card Header ======= -->
+<?= $this->section('card-header') ?>
+<a href="<?= base_url('/user-level/assign'); ?>" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Level</a>
+<?= $this->endSection('card-header') ?>
+
+<!-- ======= Section Isi ======= -->
+<?= $this->section('isi') ?>
 <div class="card-body">
     <table class="table table-bordered table-striped">
         <thead>
