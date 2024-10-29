@@ -35,9 +35,16 @@ Data Pengaduan
             <tr>
                 <td><?= $p['nomor_pengaduan']; ?></td>
                 <td><?= $p['judul']; ?></td>
-                <td><?= date('d-m-Y', strtotime($p['tanggal'])); ?></td>
                 <td>
-                    <span class="rounded-0 badge 
+                <?php
+                    $locale = 'id_ID';
+                    $date = new DateTime($p['tanggal']);
+                    $formatter = new IntlDateFormatter($locale, IntlDateFormatter::LONG, IntlDateFormatter::NONE);
+                    echo $formatter->format($date);
+                ?>
+                </td>
+                <td>
+                    <span class="badge custom-badge 
                     <?php if ($p['status'] == 'baru') echo 'badge-primary'; ?>
                     <?php if ($p['status'] == 'diproses operator') echo 'badge-warning'; ?>
                     <?php if ($p['status'] == 'diproses verifikator') echo 'badge-warning'; ?>

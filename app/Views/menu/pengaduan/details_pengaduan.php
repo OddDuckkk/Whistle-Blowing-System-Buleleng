@@ -20,7 +20,7 @@
     <tbody>
         <tr>
             <td class="w-25"><strong>Status</strong></td>
-            <td class="w-75"><strong>: </strong><span class="rounded-0 badge 
+            <td class="w-75"><strong>: </strong><span class="badge custom-badge
                     <?php if ($pengaduan['status'] == 'baru') echo 'badge-primary'; ?>
                     <?php if ($pengaduan['status'] == 'diproses operator') echo 'badge-warning'; ?>
                     <?php if ($pengaduan['status'] == 'diproses verifikator') echo 'badge-warning'; ?>
@@ -44,7 +44,13 @@
         </tr>
         <tr>
             <td><strong>Tanggal</strong></td>
-            <td><strong>: </strong><?= $pengaduan['tanggal']; ?></td>
+            <td><strong>: </strong><?php
+                    $locale = 'id_ID';
+                    $date = new DateTime($pengaduan['tanggal']);
+                    $formatter = new IntlDateFormatter($locale, IntlDateFormatter::LONG, IntlDateFormatter::NONE);
+                    echo $formatter->format($date);
+                ?>
+            </td>
         </tr>
         <tr>
             <td><strong>Tempat</strong></td>
