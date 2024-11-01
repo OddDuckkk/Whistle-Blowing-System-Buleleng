@@ -1,4 +1,4 @@
-// Script search nip
+// Event listener mencari data nip
 $(document).on('click', '.search-user', function() {
     // Mengambil row dan nip
     let row = $(this).closest('tr');
@@ -39,7 +39,7 @@ $(document).on('click', '.search-user', function() {
     });
 });
 
-// Confirm modal sweet alert
+// Memanggil modal konfirmasi simpan
 document.getElementById('assign-user-level-form').addEventListener('submit', function (event) {
     event.preventDefault(); 
 

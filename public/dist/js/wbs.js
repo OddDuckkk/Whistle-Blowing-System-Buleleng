@@ -54,7 +54,16 @@ function showConfirmationModal({title, text, icon, confirmButtonText, cancelButt
     });
 }
 
-// modal dengan button confirm merah
+// Function menampilkan modal penghapusan data
+// Contoh penggunaan:
+/* showDeletionModal({
+    title: 'Judul Modal',
+    text: 'Pesan modal',
+    icon: '(warning/danger)',
+    confirmButtonText: 'Teks button confirm',
+    cancelButtonText: 'Teks button cancel',
+    onConfirm: () => this.submit() // hal yang dilakukan jika user klik confirm
+}); */
 function showDeletionModal({title, text, icon, confirmButtonText, cancelButtonText, onConfirm}) {
     Swal.fire({
         title: title,
@@ -64,6 +73,20 @@ function showDeletionModal({title, text, icon, confirmButtonText, cancelButtonTe
         confirmButtonColor: '#d33',
         confirmButtonText: confirmButtonText,
         cancelButtonText: cancelButtonText
+    }).then((result) => {
+        if (result.isConfirmed) {
+            onConfirm();
+        }
+    });
+}
+
+function showSuccessionModal({title, text, icon, confirmButtonText, onConfirm}) {
+    Swal.fire({
+        title: title,
+        text: text,
+        icon: icon,
+        confirmButtonColor: '#27a844',
+        confirmButtonText: confirmButtonText
     }).then((result) => {
         if (result.isConfirmed) {
             onConfirm();

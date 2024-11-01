@@ -74,3 +74,9 @@ Data Pengaduan
     </tbody>
 </table>
 <?= $this->endSection('isi') ?>
+
+<!-- ======= Section Scripts ======= -->
+<?= $this->section('scripts') ?>
+<!-- Script Halaman Index Pengaduan -->
+<script src="<?= base_url() ?>/dist/js/pages/index_pengaduan.js"></script>
+<?= $this->endSection('scripts') ?>

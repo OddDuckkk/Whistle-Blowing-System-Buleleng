@@ -1,4 +1,4 @@
-// Script date time picker
+// Config date time picker
 $(function () {
     $('#tanggalkejadian').datetimepicker({
         format: 'YYYY-MM-DD', 
@@ -20,7 +20,7 @@ $(function () {
     });
 });
 
-// Tambahkan row pihak terlibat
+// Event listener menambahkan row pihak terlibat
 $('#pihakTerlibatTable').on('click', '.add-row', function() {
     var newRow = `<tr>
                     <td>
@@ -72,12 +72,12 @@ $('#pihakTerlibatTable').on('click', '.add-row', function() {
     $('#pihakTerlibatTable tbody').append(newRow);
 });
 
-// Hapus row pihak terlibat
+// Event listener menghapus row pihak terlibat
 $('#pihakTerlibatTable').on('click', '.remove-row', function() {
     $(this).closest('tr').remove();
 });
 
-// Ganti mode row menjadi non-asn
+// Event listener mengganti mode row pihak terlibat menjadi non-asn
 $('#pihakTerlibatTable').on('click', '.change-non-asn', function() {
     const $row = $(this).closest('tr');
     const isNonAsn = $(this).data('non-asn') || false; //cek state dari row
@@ -104,6 +104,7 @@ $('#pihakTerlibatTable').on('click', '.change-non-asn', function() {
     
 });
 
+// Event listener menampilkan tooltip info non-asn
 $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
 
@@ -122,7 +123,7 @@ $(document).ready(function () {
     });
 });
 
-// Script search nip
+// Event listener mencari data nip
 $(document).on('click', '.search-nip', function() {
     // Mengambil row dan nip
     let row = $(this).closest('tr');
@@ -162,26 +163,21 @@ $(document).on('click', '.search-nip', function() {
     });
 });
 
-// script sweet alert modal confirmation
+// Memanggil modal konfirmasi simpan
 document.getElementById('pengaduan_form').addEventListener('submit', function (event) {
     event.preventDefault(); 
-
-    Swal.fire({
+    
+    showConfirmationModal({
         title: 'Konfirmasi',
-        text: "Apakah Anda yakin ingin menyimpan pengaduan ini?",
+        text: 'Apakah Anda yakin ingin menyimpan pengaduan ini?',
         icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#007bff',
         confirmButtonText: 'Simpan',
-        cancelButtonText: 'Periksa Lagi'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            this.submit(); 
-        }
+        cancelButtonText: 'Periksa Lagi',
+        onConfirm: () => this.submit() 
     });
 });
 
-// Script dropzone
+// Config dropzone
 Dropzone.autoDiscover = false;
 
 const dropzone = new Dropzone("#dropzone-lampiran", {
@@ -285,9 +281,9 @@ const dropzone = new Dropzone("#dropzone-lampiran", {
             });
         });
         
-        const form = document.getElementById("pengaduan_form"); // Replace with your actual form ID
+        const form = document.getElementById("pengaduan_form"); 
         form.addEventListener("submit", function() {
-            isFormSubmitted = true; // Set the flag before submitting
+            isFormSubmitted = true;
         });
         
     },

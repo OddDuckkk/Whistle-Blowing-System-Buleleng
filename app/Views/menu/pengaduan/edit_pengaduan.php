@@ -276,3 +276,8 @@ Edit Aduan
         </script>
 
 <?= $this->endSection('isi') ?>
+
+<!-- ======= Section Scripts ======= -->
+<?= $this->section('scripts') ?>
+
+<?= $this->endSection('scripts') ?>

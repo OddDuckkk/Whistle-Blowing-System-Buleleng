@@ -64,6 +64,9 @@
     <!-- ======= Scripts ======= -->
     <?= $this->include('partials/scripts') ?>
      
+    <!-- ======= Scripts Tambahan ======= -->
+    <!-- Scripts khusus suatu halaman, di inisialisasikan di kode halaman itu sendiri -->
+    <?= $this->renderSection('scripts') ?>
 </body>
 
 </html>
