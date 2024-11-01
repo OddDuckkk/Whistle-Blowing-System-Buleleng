@@ -307,6 +307,7 @@ Buat Pengaduan
 
     <!-- Inputs lampiran -->
     <div class="box-body">
+        <div><h5 class="text-primary"><strong>LAMPIRAN PENGADUAN</strong></h5></div>
         <!-- Dropzone File -->
         <table class="table table-borderless">
             <thead>

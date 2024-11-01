@@ -12,7 +12,7 @@ class LevelModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['nip', 'level', 'created_at', 'updated_at'];
+    protected $allowedFields    = ['nip', 'nama_pegawai', 'jabatan_pegawai', 'unit_kerja', 'level', 'created_at', 'updated_at'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -63,15 +63,14 @@ class LevelModel extends Model
 
     public function getUsersWithRoles()
     {
+        return $this->findAll();
         
-        $query= $this->db->table('user_levels')
-                        ->select('nip, GROUP_CONCAT(level) as levels') // Use GROUP_CONCAT to combine levels
-                        ->groupBy('nip')
-                        ->get()
-                        ->getResultArray();
+        // $query= $this->db->table('user_levels')
+        //                 ->select('nip, GROUP_CONCAT(level) as levels') // Use GROUP_CONCAT to combine levels
+        //                 ->groupBy('nip')
+        //                 ->get()
+        //                 ->getResultArray();
              
-    return $query;
     }
-
 
 }

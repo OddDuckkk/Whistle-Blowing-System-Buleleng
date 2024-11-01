@@ -227,8 +227,8 @@ class AuthController extends BaseController
 
                     return $this->response->setJSON([
                         'is_error' => $isError,
-                        'nama_terlapor' => $namaPegawai,
-                        'jabatan_terlapor' => $jabatanPegawai,
+                        'nama_pegawai' => $namaPegawai,
+                        'jabatan_pegawai' => $jabatanPegawai,
                         'unit_kerja' => $unitKerja
                     ]);
                 }
@@ -244,45 +244,5 @@ class AuthController extends BaseController
         } catch (Exception $e) {
             session()->setFlashdata('error', 'Gagal menghubungi server API: ' . $e->getMessage());
         }
-    }
-
-    public function validateNip(){
-        // Ambil NIP dari input
-        $nipuser = $this->request->getPost('nip');
-
-        // Validasi field NIP
-        $valid = $this->validate([
-            'nip' => [
-                'label' => 'NIP',
-                'rules' => 'required|numeric',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong',
-                    'numeric' => '{field} hanya boleh berisi angka'
-                ]
-                ],
-            'level' => [
-                'label' => 'Level',
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong',
-                ]
-            ]
-        ]);
-
-        if (!$valid) {
-            $sessError = [
-                'errNip' => $this->validation->getError('nip'),
-                'errLevel' => $this->validation->getError('level'),
-            ];
-            session()->setFlashdata($sessError);
-            return redirect()->to(site_url('/userlevel/assign'))->withInput();
-        }
-        
-        // Jika valid maka tampilkan modal konfirmasi
-        session()->setFlashdata([
-            'nipConfirm' => $this->request->getPost('nip'),
-            'levelConfirm' => $this->request->getPost('level')
-        ]);
-        return redirect()->to(site_url('/userlevel/assign'))->with('show_modal', true);
     }
 }
