@@ -13,7 +13,7 @@ Tambah Level ke Pengguna
 
 <!-- ======= Section Isi ======= -->
 <?= $this->section('isi') ?>
-<form action="<?= base_url('/user-level/store'); ?>" method="post" enctype="multipart/form-data" autocomplete="off">
+<form id="assign-user-level-form" action="<?= base_url('/user-level/store'); ?>" method="post" enctype="multipart/form-data" autocomplete="off">
     <!-- Inputs User -->
     <div class="box-body">
         <div><h5 class="text-primary"><strong>DATA PEGAWAI</strong></h5></div>

@@ -40,3 +40,5 @@
 <script src="<?= base_url() ?>/dist/js/pages/index_user_level.js"></script>
 <!-- Script Halaman Assign User Level -->
 <script src="<?= base_url() ?>/dist/js/pages/assign_user_level.js"></script>
+<!-- Script Halaman Edit User Level -->
+<script src="<?= base_url() ?>/dist/js/pages/edit_user_level.js"></script>

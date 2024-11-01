@@ -13,7 +13,7 @@ Edit Level Pengguna
 
 <!-- ======= Section Isi ======= -->
 <?= $this->section('isi') ?>
-<form action="<?= base_url('/user-level/update/' . $userLevel['nip']); ?>" method="post" enctype="multipart/form-UserLevel" autocomplete="off">
+<form id="edit-user-level-form" action="<?= base_url('/user-level/update/' . $userLevel['nip']); ?>" method="post" enctype="multipart/form-UserLevel" autocomplete="off">
     <!-- Inputs User -->
     <div class="box-body">
         <div><h5 class="text-primary"><strong>UserLevel PEGAWAI</strong></h5></div>
