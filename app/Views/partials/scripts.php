@@ -1,5 +1,7 @@
 <!-- ======= Scripts ======= -->
 <body base-url="<?= base_url() ?>">
+<i id="success-message" data-flashdata="<?= session()->getFlashdata('success_message') ?>">
+<i id="failure-message" data-flashdata="<?= session()->getFlashdata('failure_message') ?>">
 <!-- jQuery -->
 <script src="<?= base_url() ?>plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->

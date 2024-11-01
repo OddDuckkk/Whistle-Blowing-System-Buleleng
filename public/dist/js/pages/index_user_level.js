@@ -25,3 +25,29 @@ function confirmDelete(nip) {
         onConfirm: () => window.location.href = baseUrl + "/user-level/delete/" + nip
     });
 }
+
+// Pemanggilan modal sukses, jika terdapat sucess-message
+document.addEventListener("DOMContentLoaded", function() {
+    const flashData = document.getElementById("success-message").getAttribute("data-flashdata");
+
+    if (flashData) {
+        showSuccessionModal({
+            title: 'Sukses',
+            text: flashData,
+            confirmButtonText: 'Selesai',
+        });
+    }
+});
+
+// Memanggil modal failure jika terdapat failure-message
+document.addEventListener("DOMContentLoaded", function() {
+    const flashData = document.getElementById("failure-message").getAttribute("data-flashdata");
+
+    if (flashData) {
+        showFailureModal({
+            title: 'Gagal',
+            text: flashData,
+            confirmButtonText: 'Kembali'
+        });
+    }
+});

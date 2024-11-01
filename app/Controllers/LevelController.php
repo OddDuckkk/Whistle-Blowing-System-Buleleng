@@ -60,7 +60,8 @@ class LevelController extends BaseController
 
         // cek apakah nip tersebut sudah memiliki level khusus atau tidak
         if ($existingUser) {
-            return redirect()->back()->with('error', 'NIP already has a level assigned. Please update the existing record.')->withInput();
+            session()->setFlashdata('failure_message', 'Satu user hanya boleh memiliki satu level khusus! Silahkan update data yang sudah ada.');
+            return redirect()->back()->withInput();
         } else {
             // simpan data baru
             $data = [
@@ -75,7 +76,8 @@ class LevelController extends BaseController
 
             $this->levelModel->save($data);
 
-            return redirect()->to('/user-level')->with('success', 'Level successfully assigned to the user.');
+            session()->setFlashdata('success_message', 'User level berhasil ditambahkan!');
+            return redirect()->to('/user-level');
         }
     }
 
@@ -112,7 +114,8 @@ class LevelController extends BaseController
         $existingUser = $this->levelModel->find($id);
 
         if (!$existingUser) {
-            return redirect()->to('/user-level')->with('error', 'User not found.');
+            session()->setFlashdata('failure_message', 'Pegawai tidak ditemukan!');
+            return redirect()->to('/user-level');
         }
 
         // Update data
@@ -128,7 +131,8 @@ class LevelController extends BaseController
         $this->levelModel->update($id, $data);
 
         // Redirect 
-        return redirect()->to('/user-level')->with('success', 'User level successfully updated.');
+        session()->setFlashdata('success_message', 'User level berhasil diperbaharui!');
+        return redirect()->to('/user-level');
     }
 
 
@@ -138,9 +142,11 @@ class LevelController extends BaseController
         if ($userLevel) {
             // Hapus data user level
             $this->levelModel->delete($nip);
-            return redirect()->to('/user-level')->with('message', 'User level berhasil dihapus!');
+            session()->setFlashdata('success_message', 'User level berhasil dihapus!');
+            return redirect()->to('/user-level');
         } else {
-            return redirect()->to('/user-level')->with('error', 'User level tidak ditemukan!');
+            session()->setFlashdata('failure_message', 'User level tidak ditemukan!');
+            return redirect()->to('/user-level');
         }
     }
 
