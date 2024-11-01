@@ -1,0 +1,13 @@
+.custom-badge {
+    padding: 0.4em 0.6em; /* Adjusts vertical and horizontal padding */
+    font-size: 0.9rem; /* Slightly increases the font size */
+}
+
+.dropzone {
+    background: white;
+    border-radius: 5px;
+    border: 2px dashed rgb(0, 135, 247) !important;
+    border-image: none;
+    margin-left: auto;
+    margin-right: auto;
+}
