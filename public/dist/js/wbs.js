@@ -33,7 +33,7 @@ $(document).ready(function() {
 /* showConfirmationModal({
     title: 'Judul Modal',
     text: 'Pesan modal',
-    icon: '(success/warning/danger)',
+    icon: '(warning/info)',
     confirmButtonText: 'Teks button confirm',
     cancelButtonText: 'Teks button cancel',
     onConfirm: () => this.submit() // hal yang dilakukan jika user klik confirm
@@ -59,7 +59,7 @@ function showConfirmationModal({title, text, icon, confirmButtonText, cancelButt
 /* showDeletionModal({
     title: 'Judul Modal',
     text: 'Pesan modal',
-    icon: '(warning/danger)',
+    icon: '(warning/error)',
     confirmButtonText: 'Teks button confirm',
     cancelButtonText: 'Teks button cancel',
     onConfirm: () => this.submit() // hal yang dilakukan jika user klik confirm
@@ -80,16 +80,36 @@ function showDeletionModal({title, text, icon, confirmButtonText, cancelButtonTe
     });
 }
 
-function showSuccessionModal({title, text, icon, confirmButtonText, onConfirm}) {
+// Function menampilkan modal success
+// Contoh penggunaan:
+/* showSuccessionModal({
+    title: 'Judul Modal',
+    text: 'Pesan modal',
+    confirmButtonText: 'Teks button confirm',
+}); */
+function showSuccessionModal({title, text, confirmButtonText}) {
     Swal.fire({
         title: title,
         text: text,
-        icon: icon,
+        icon: 'success',
         confirmButtonColor: '#27a844',
         confirmButtonText: confirmButtonText
-    }).then((result) => {
-        if (result.isConfirmed) {
-            onConfirm();
-        }
-    });
+    })
+}
+
+// Function menampilkan modal kegagalan
+// Contoh penggunaan:
+/* showFailureModal({
+    title: 'Judul Modal',
+    text: 'Pesan modal',
+    confirmButtonText: 'Teks button confirm'
+}); */
+function showFailureModal({title, text, confirmButtonText}) {
+    Swal.fire({
+        title: title,
+        text: text,
+        icon: 'error',
+        confirmButtonColor: '#007bff',
+        confirmButtonText: confirmButtonText,
+    })
 }
