@@ -1,3 +1,4 @@
+// Config data table user-level 
 $(document).ready(function() {
     $('#userLevelTable').DataTable({
         "lengthMenu": [5, 10, 25, 50, 100],
@@ -13,6 +14,7 @@ $(document).ready(function() {
     }).buttons().container().appendTo('#userLevelTable_wrapper .col-md-6:eq(0)');
 });
 
+// Function memanggil modal deletion
 function confirmDelete(nip) {
     showDeletionModal({
         title: 'Apakah Anda yakin?',

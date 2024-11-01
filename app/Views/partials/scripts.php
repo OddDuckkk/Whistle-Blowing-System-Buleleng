@@ -28,17 +28,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
 <!-- Select2 -->
 <script src="<?= base_url() ?>/public/plugins/select2/js/select2.min.js"></script>
-<!-- Script wbs buleleng -->
+
+
+<!-- CUSTOM APP SCRIPTS -->
 <script src="<?= base_url() ?>/dist/js/wbs.js"></script>
 
-<!-- ======= Page Specific Scripts ======= -->
-<!-- Script Halaman Index Pengaduan -->
-<script src="<?= base_url() ?>/dist/js/pages/index_pengaduan.js"></script>
-<!-- Script Halaman Create Pengaduan -->
-<script src="<?= base_url() ?>/dist/js/pages/create_pengaduan.js"></script>
-<!-- Script Halaman Index User Level -->
-<script src="<?= base_url() ?>/dist/js/pages/index_user_level.js"></script>
-<!-- Script Halaman Assign User Level -->
-<script src="<?= base_url() ?>/dist/js/pages/assign_user_level.js"></script>
-<!-- Script Halaman Edit User Level -->
-<script src="<?= base_url() ?>/dist/js/pages/edit_user_level.js"></script>
+

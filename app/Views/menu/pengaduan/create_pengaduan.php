@@ -356,3 +356,9 @@ Buat Pengaduan
 </form>
 <?= $this->endSection('isi') ?>
 
+<!-- ======= Section Scripts ======= -->
+<?= $this->section('scripts') ?>
+<!-- Script Halaman Create Pengaduan -->
+<script src="<?= base_url() ?>/dist/js/pages/create_pengaduan.js"></script>
+<?= $this->endSection('scripts') ?>
+

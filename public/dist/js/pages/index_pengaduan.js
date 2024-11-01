@@ -1,3 +1,4 @@
+// Config data table pengaduan
 $(document).ready(function() {
     $('#pengaduanTable').DataTable({
         "lengthMenu": [5, 10, 25, 50, 100],
@@ -13,11 +14,13 @@ $(document).ready(function() {
     }).buttons().container().appendTo('#pengaduanTable_wrapper .col-md-6:eq(0)');
 });
 
+
+
+
+// Not working ***
 document.addEventListener("DOMContentLoaded", function() {
-    // Check if there's a success message in the session
     const successMessage = document.getElementById('successMessage').value;
     if (successMessage) {
-        // Show SweetAlert toast
         showToast('Success', successMessage, 'success');
     }
 });

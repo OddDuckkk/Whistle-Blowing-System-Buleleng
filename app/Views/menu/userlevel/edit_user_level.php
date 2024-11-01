@@ -104,3 +104,9 @@ Edit Level Pengguna
 </form>
 
 <?= $this->endSection('isi') ?>
+
+<!-- ======= Section Scripts ======= -->
+<?= $this->section('scripts') ?>
+<!-- Script Halaman Edit User Level -->
+<script src="<?= base_url() ?>/dist/js/pages/edit_user_level.js"></script>
+<?= $this->endSection('scripts') ?>

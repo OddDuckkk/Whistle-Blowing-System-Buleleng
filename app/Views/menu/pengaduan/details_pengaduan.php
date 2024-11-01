@@ -109,3 +109,8 @@
 <?php endif; ?>
 </div>
 <?= $this->endSection('isi') ?>
+
+<!-- ======= Section Scripts ======= -->
+<?= $this->section('scripts') ?>
+
+<?= $this->endSection('scripts') ?>

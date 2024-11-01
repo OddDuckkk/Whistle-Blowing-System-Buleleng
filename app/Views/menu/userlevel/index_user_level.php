@@ -52,5 +52,10 @@ Daftar Level Pengguna
         </tbody>
     </table>
 </div>
-
 <?= $this->endSection('isi') ?>
+
+<!-- ======= Section Scripts ======= -->
+<?= $this->section('scripts') ?>
+<!-- Script Halaman Index User Level -->
+<script src="<?= base_url() ?>/dist/js/pages/index_user_level.js"></script>
+<?= $this->endSection('scripts') ?>

@@ -123,7 +123,10 @@ Tambah Level ke Pengguna
         <a href="<?= base_url('user-level'); ?>" class="btn btn-secondary">Batal</a>
     </div>
 </form>
-
-
-
 <?= $this->endSection('isi') ?>
+
+<!-- ======= Section Scripts ======= -->
+<?= $this->section('scripts') ?>
+<!-- Script Halaman Assign User Level -->
+<script src="<?= base_url() ?>/dist/js/pages/assign_user_level.js"></script>
+<?= $this->endSection('scripts') ?>
