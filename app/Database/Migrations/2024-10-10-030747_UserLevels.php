@@ -14,9 +14,24 @@ class UserLevels extends Migration
                 'constraint' => 18, 
                 'null'       => false,
             ],
+            'nama_pegawai' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 255,
+                'null'       => false,
+            ],
+            'jabatan_pegawai' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 255,
+                'null'       => false,
+            ],
+            'unit_kerja' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 255,
+                'null'       => false,
+            ],
             'level' => [
                 'type'       => 'ENUM',
-                'constraint' => ['operator', 'verifikator', 'superadmin'],
+                'constraint' => ['operator', 'verifikator', 'peninjau', 'superadmin'],
                 'null'       => false,
             ],
             'created_at' => [

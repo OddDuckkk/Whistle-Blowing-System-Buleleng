@@ -14,19 +14,34 @@ Daftar Level Pengguna
 <!-- ======= Section Isi ======= -->
 <?= $this->section('isi') ?>
 <div class="card-body">
-    <table class="table table-bordered table-striped">
+    <table id="userLevelTable" class="table datatable table-bordered">
         <thead>
             <tr>
                 <th>NIP</th>
+                <th>Nama Pegawai</th>
+                <th>Jabatan Pegawai</th>
+                <th>Unit Kerja</th>
                 <th>Level</th>
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
-            <?php if (!empty($users)): ?>
-                <?php foreach ($users as $user): ?>
+            <?php if (!empty($userLevels)): ?>
+                <?php foreach ($userLevels as $userLevel): ?>
                     <tr>
-                        <td><?= esc($user['nip']); ?></td>
-                        <td><?= esc($user['levels']); ?></td> 
+                        <td><?= esc($userLevel['nip']); ?></td>
+                        <td><?= esc($userLevel['nama_pegawai']); ?></td>
+                        <td><?= esc($userLevel['jabatan_pegawai']); ?></td>
+                        <td><?= esc($userLevel['unit_kerja']); ?></td>
+                        <td><?= esc($userLevel['level']); ?></td> 
+                        <td>
+                            <a href="<?= base_url('user-level/edit/' . $userLevel['nip']); ?>" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a id="delete-user-level" class="btn btn-danger btn-sm" onclick="confirmDelete('<?= $userLevel['nip']; ?>')">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>

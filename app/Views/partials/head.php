@@ -20,3 +20,6 @@
 <link rel="stylesheet" href="<?= base_url() ?>/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 <!-- Dropzone -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css">
+<!-- Select2 -->
+ <!-- Select2 CSS -->
+<link href="<?= base_url() ?>/public/plugins/select2/css/select2.min.css" rel="stylesheet" />

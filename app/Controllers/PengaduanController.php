@@ -72,6 +72,24 @@ class PengaduanController extends BaseController {
         // Tampilkan data pengaduan
         return view('menu/pengaduan/index_pengaduan', $data);
     }
+    public function getActivePengaduan($userId) {
+        $statuses = PengaduanModel::$activeStatuses;
+
+        $data['pengaduan'] = $this->pengaduanModel
+                                  ->filterByUserAndStatus($userId, $statuses)
+                                  ->findAll();
+
+        return view('menu/pengaduan/index_pengaduan', $data);
+    }
+
+    public function getInactivePengaduan($userId) {
+        $statuses = PengaduanModel::$inactiveStatuses;
+
+        $data['pengaduan'] = $this->pengaduanModel
+                                  ->filterByUserAndStatus($userId, $statuses)
+                                  ->findAll();
+        return view('menu/pengaduan/index_pengaduan', $data);
+    }
 
     public function getById($id) {
         //Mengambil semua data pengaduan berdasarkan id pengaduan 

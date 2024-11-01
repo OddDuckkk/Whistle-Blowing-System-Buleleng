@@ -13,109 +13,117 @@ Tambah Level ke Pengguna
 
 <!-- ======= Section Isi ======= -->
 <?= $this->section('isi') ?>
-<form action="<?= base_url('/validate-nip'); ?>" method="post" enctype="multipart/form-data">
-    <div class="card-body rounded">
-        <div class="box-body">
-            <div><h5 class="text-primary"><strong>ASSIGN LEVEL</strong></h5></div>
-            <div class="row">
-                <div class="col-md-6">
-                    <!-- Input NIP -->
-                    <div class="form-group">
-                        <label for="nip">NIP <label class="text-danger">*</label></label>
-                        <input type="text" id="nip" name="nip" class="form-control <?= session()->getFlashdata('errNip') ? 'is-invalid' : '' ?>" placeholder="NIP" value="<?= old('nip'); ?>" autofocus>
-                        <?php if (session()->getFlashdata('errNip')): ?>
-                            <div class="invalid-feedback">
-                                <?= session()->getFlashdata('errNip'); ?>
+<form id="assign-user-level-form" action="<?= base_url('/user-level/store'); ?>" method="post" enctype="multipart/form-data" autocomplete="off">
+    <!-- Inputs User -->
+    <div class="box-body">
+        <div><h5 class="text-primary"><strong>DATA PEGAWAI</strong></h5></div>
+
+        <!-- Tabel Input Pihak Terlibat -->
+        <table class="table table-borderless" id="pihakTerlibatTable">
+            <!-- Judul Field -->
+            <thead>
+                <tr>
+                    <th>NIP Pegawai <label class="text-danger">*</label></th>
+                    <th>Nama Pegawai <label class="text-danger">*</label></th>
+                    <th>Jabatan <label class="text-danger">*</label></th>
+                    <th>Unit Kerja <label class="text-danger">*</label></th>
+                </tr>
+            </thead>
+
+            <!-- Input Field -->
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="input-group">
+                            <input type="text" 
+                            name="nip_pegawai" 
+                            class="form-control <?= session()->getFlashdata('errNipPegawai') ? 'is-invalid' : '' ?>" 
+                            placeholder="NIP Pegawai">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-primary search-user">
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <?php if (session()->getFlashdata('errNipPegawai')): ?>
+                            <div class="invalid-feedback" style="display: block;">
+                                <?= session()->getFlashdata('errNipPegawai'); ?>
                             </div>
                         <?php endif; ?>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <!-- Dropdown Level -->
-                    <div class="form-group">
-                        <label for="level">Level <label class="text-danger">*</label></label>
-                        <select class="form-control <?= session()->getFlashdata('errLevel') ? 'is-invalid' : '' ?>" placeholder="NIP" value="<?= old('nip'); ?>" id="level" name="level">
-                            <option value="" disabled selected>Pilih Level</option>
-                            <option value="operator">Operator</option>
-                            <option value="verifikator">Verifikator</option>
-                            <option value="superadmin">Superadmin</option>
-                        </select>
-                        <?php if (session()->getFlashdata('errLevel')): ?>
+                    </td>
+                    <td>
+                    <input type="text" 
+                    name="nama_pegawai" 
+                    class="form-control <?= session()->getFlashdata('errNamaPegawai') ? 'is-invalid' : '' ?>" 
+                    placeholder="Nama Pegawai" 
+                    readonly>
+                    <?php if (session()->getFlashdata('errNamaPegawai')): ?>
                             <div class="invalid-feedback">
-                                <?= session()->getFlashdata('errLevel'); ?>
+                                <?= session()->getFlashdata('errNamaPegawai'); ?>
                             </div>
                         <?php endif; ?>
+                    </td>
+                    <td>
+                    <input type="text" 
+                    name="jabatan_pegawai" 
+                    class="form-control <?= session()->getFlashdata('errJabatanPegawai') ? 'is-invalid' : '' ?>" 
+                    placeholder="Jabatan Pegawai" 
+                    readonly>
+                    <?php if (session()->getFlashdata('errJabatanPegawai')): ?>
+                        <div class="invalid-feedback">
+                            <?= session()->getFlashdata('errJabatanPegawai'); ?>
+                        </div>
+                    <?php endif; ?>
+                    </td>
+                    <td>
+                    <input type="text" 
+                    name="unit_kerja" 
+                    class="form-control <?= session()->getFlashdata('errUnitKerja') ? 'is-invalid' : '' ?>" 
+                    placeholder="Unit Kerja Pegawai" 
+                    readonly>
+                    <?php if (session()->getFlashdata('errUnitKerja')): ?>
+                        <div class="invalid-feedback">
+                            <?= session()->getFlashdata('errUnitKerja'); ?>
+                        </div>
+                    <?php endif; ?>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Inputs Level -->
+    <div class="box-body">
+        <div><h5 class="text-primary"><strong>LEVEL</strong></h5></div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="judul">Level yang Ingin Diberikan <label class="text-danger">*</label></label>
+                    <select name="level_pegawai" class="form-control select2 <?= session()->getFlashdata('errLevelPegawai') ? 'is-invalid' : '' ?>">
+                                <option value="" disabled selected><i class="text-muted">Pilih Level</i></option>
+                                <option value="operator">Operator</option>
+                                <option value="verifikator">Verifikator</option>
+                                <option value="peninjau">Peninjau</option>
+                                <option value="superadmin">Superadmin</option>
+                    </select>
+                </div>
+                <?php if (session()->getFlashdata('errLevelPegawai')): ?>
+                    <div class="invalid-feedback" style="display: block;">
+                        <?= session()->getFlashdata('errLevelPegawai'); ?>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
+                <?php endif; ?>
             </div>
         </div>
+    </div>
+    
+    <div class="box-body pt-3">
+        <!-- Button Submit & Batal -->
+        <button type="submit" class="btn btn-primary">Simpan</button>
+        <a href="<?= base_url('user-level'); ?>" class="btn btn-secondary">Batal</a>
     </div>
 </form>
 
-<!-- Modal Konfirmasi -->
-<?php if (session()->get('show_modal')): ?>
-    <div class="modal fade show" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true" style="display: block;">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content rounded">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmationModalLabel">Konfirmasi Tambah Level</h5>
-                    <button type="button" class="close" aria-label="Close" id="closeModal"></button>
-                </div>
-                <div class="modal-body">
-                    Apakah Anda yakin ingin menambahkan level <strong><?= session()->getFlashdata('levelConfirm') ?></strong> kepada pengguna dengan NIP "<strong><?= session()->getFlashdata('nipConfirm') ?></strong>"?
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <!-- Dismiss button (Tutup) -->
-                    <button type="button" class="btn btn-default" id="dismissModal">Tutup</button>
-                    <!-- Action (Simpan) -->
-                    <form action="<?= base_url('/user-level/store'); ?>" method="post">
-                        <input type="hidden" name="nip" id="hiddenNip">
-                        <input type="hidden" name="level" id="hiddenLevel">
 
-                        <button type="submit" class="btn btn-primary" onclick="submitForm()">Simpan</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-        function submitForm() {
-        // Copy values from the visible form to the hidden form before submission
-        document.getElementById('hiddenNip').value = document.getElementById('nip').value;
-        document.getElementById('hiddenLevel').value = document.getElementById('level').value;
-
-        // Submit the hidden form
-        document.getElementById('saveForm').submit();
-        }
-        document.addEventListener('DOMContentLoaded', function() {
-            // Inisialisasi modal 
-            var myModal = new bootstrap.Modal(document.getElementById('confirmationModal'), {
-                keyboard: false
-            });
-
-            // tampilkan modal
-            myModal.show();
-
-            // Dismiss modal "tombol tutup"
-            document.getElementById('dismissModal').addEventListener('click', function() {
-                myModal.hide();
-                // reset modal
-                window.location.href = "<?= base_url('/userlevel/assign') ?>"; 
-            });
-
-            // Dismiss modal manually "tombol tutup"
-            document.getElementById('closeModal').addEventListener('click', function() {
-                myModal.hide();
-                // Reset modal
-                window.location.href = "<?= base_url('/userlevel/assign') ?>"; 
-            });
-        });
-    </script>
-<?php endif; ?>
 
 <?= $this->endSection('isi') ?>

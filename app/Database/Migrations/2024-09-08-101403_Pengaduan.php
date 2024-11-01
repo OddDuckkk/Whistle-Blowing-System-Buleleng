@@ -50,7 +50,7 @@ class Pengaduan extends Migration
             ],
             'status' => [
                 'type'       => 'ENUM',
-                'constraint' => ['baru', 'diproses operator', 'diproses verifikator', 'selesai', 'ditolak'],
+                'constraint' => ['baru', 'dikirim', 'diproses operator', 'diproses verifikator', 'selesai', 'ditolak', 'dikembalikan'],
                 'default'    => 'baru',
             ],
             'created_at' => [
