@@ -65,12 +65,6 @@ class LevelModel extends Model
     {
         return $this->findAll();
         
-        // $query= $this->db->table('user_levels')
-        //                 ->select('nip, GROUP_CONCAT(level) as levels') // Use GROUP_CONCAT to combine levels
-        //                 ->groupBy('nip')
-        //                 ->get()
-        //                 ->getResultArray();
-             
     }
 
 }
