@@ -9,9 +9,11 @@ Data Pengaduan
 <!-- ======= Section Card Header ======= -->
 <?= $this->section('card-header') ?>
 <div class="card-tools">
+    <?php if (preg_match('/^pengaduan\/user\/[a-zA-Z0-9-]+$/', uri_string())): ?>
         <a href="<?= base_url('pengaduan/create'); ?>" class="btn btn-primary">
             <i class="fas fa-plus"></i> Buat Pengaduan Baru
         </a>
+    <?php endif ?>
 </div>
 <?= $this->endSection('card-header') ?>
 

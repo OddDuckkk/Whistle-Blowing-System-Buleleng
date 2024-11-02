@@ -68,28 +68,68 @@ class PengaduanController extends BaseController {
 
     public function getByUserId($userId) {
         // Mengambil semua data pengaduan berdasarkan user_id
-        $data['pengaduan'] = $this->pengaduanModel->findByUserId($userId);
-        // Tampilkan data pengaduan
-        return view('menu/pengaduan/index_pengaduan', $data);
+        return $this->pengaduanModel->findByUserId($userId);
+
     }
-    public function getActivePengaduan($userId) {
-        $statuses = PengaduanModel::$activeStatuses;
+    public function getPelaporActivePengaduan($userId) {
+        $statuses = PengaduanModel::$pelaporActiveStatuses;
 
         $data['pengaduan'] = $this->pengaduanModel
-                                  ->filterByUserAndStatus($userId, $statuses)
+                                  ->findByUserId($userId)
+                                  ->filterByStatus($statuses)
                                   ->findAll();
 
         return view('menu/pengaduan/index_pengaduan', $data);
     }
 
-    public function getInactivePengaduan($userId) {
-        $statuses = PengaduanModel::$inactiveStatuses;
+    public function getPelaporInactivePengaduan($userId) {
+        $statuses = PengaduanModel::$pelaporInactiveStatuses;
 
         $data['pengaduan'] = $this->pengaduanModel
-                                  ->filterByUserAndStatus($userId, $statuses)
+                                  ->findByUserId($userId)
+                                  ->filterByStatus($statuses)
                                   ->findAll();
+
         return view('menu/pengaduan/index_pengaduan', $data);
     }
+    public function getOperatorActivePengaduan() {
+        $statuses = PengaduanModel::$operatorActiveStatuses;
+
+        $data['pengaduan'] = $this->pengaduanModel
+                                  ->filterByStatus($statuses)
+                                  ->findAll();
+
+        return view('menu/pengaduan/index_pengaduan', $data);
+    }
+    public function getOperatorInactivePengaduan() {
+        $statuses = PengaduanModel::$operatorInactiveStatuses;
+
+        $data['pengaduan'] = $this->pengaduanModel
+                                  ->filterByStatus($statuses)
+                                  ->findAll();
+
+        return view('menu/pengaduan/index_pengaduan', $data);
+    }
+
+    public function getVerifikatorActivePengaduan() {
+        $statuses = PengaduanModel::$verifikatorActiveStatuses;
+
+        $data['pengaduan'] = $this->pengaduanModel
+                                  ->filterByStatus($statuses)
+                                  ->findAll();
+
+        return view('menu/pengaduan/index_pengaduan', $data);
+    }
+    public function getVerifikatorInactivePengaduan() {
+        $statuses = PengaduanModel::$verifikatorInactiveStatuses;
+
+        $data['pengaduan'] = $this->pengaduanModel
+                                  ->filterByStatus($statuses)
+                                  ->findAll();
+
+        return view('menu/pengaduan/index_pengaduan', $data);
+    }
+
 
     public function getById($id) {
         //Mengambil semua data pengaduan berdasarkan id pengaduan 

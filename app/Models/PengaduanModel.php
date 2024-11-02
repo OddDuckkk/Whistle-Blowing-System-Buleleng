@@ -45,7 +45,6 @@ class PengaduanModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    // Define individual status constants
     const STATUS_BARU = 'baru';
     const STATUS_DIKIRIM = 'dikirim';
     const STATUS_DIPROSES_OPERATOR = 'diproses operator';
@@ -54,15 +53,30 @@ class PengaduanModel extends Model
     const STATUS_DITOLAK = 'ditolak';
     const STATUS_SELESAI = 'selesai';
 
-    // Alternatively, define an array of statuses for convenience
-    public static $activeStatuses = [
+    public static $pelaporActiveStatuses = [
         self::STATUS_BARU,
         self::STATUS_DIKIRIM,
         self::STATUS_DIPROSES_OPERATOR,
         self::STATUS_DIPROSES_VERIFIKATOR,
         self::STATUS_DIKEMBALIKAN,
     ];
-    public static $inactiveStatuses = [
+    public static $pelaporInactiveStatuses = [
+        self::STATUS_DITOLAK,
+        self::STATUS_SELESAI
+    ];
+    public static $operatorActiveStatuses = [
+        self::STATUS_DIKIRIM,
+        self::STATUS_DIPROSES_OPERATOR,
+        self::STATUS_DIKEMBALIKAN,
+    ];
+    public static $operatorInactiveStatuses = [
+        self::STATUS_DITOLAK,
+        self::STATUS_SELESAI
+    ];
+    public static $verifikatorActiveStatuses = [
+        self::STATUS_DIPROSES_VERIFIKATOR
+    ];
+    public static $verifikatorInactiveStatuses = [
         self::STATUS_DITOLAK,
         self::STATUS_SELESAI
     ];
@@ -76,12 +90,11 @@ class PengaduanModel extends Model
 
     public function findByUserId($userId)
     {
-        return $this->where('user_id', $userId)->findAll();
+        return $this->where('user_id', $userId);
     }
 
-    public function filterByUserAndStatus($userId, array $statuses)
+    public function filterByStatus($statuses)
     {
-        return $this->where('user_id', $userId)
-                    ->whereIn('status', $statuses);
+        return $this->whereIn('status', $statuses);
     }
 }

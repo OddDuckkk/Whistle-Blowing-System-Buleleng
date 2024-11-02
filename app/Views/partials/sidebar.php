@@ -35,12 +35,14 @@
                         <p>Pengaduan Saya</p>
                     </a>
                 </li>
+
                 <li class="nav-item <?= (preg_match('/^pengaduan\/user\/riwayat\/[a-zA-Z0-9-]+$/', uri_string())) ? 'active' : ''; ?>">
                     <a href="/pengaduan/user/riwayat/<?= $userId ?>" class="nav-link <?= (preg_match('/^pengaduan\/user\/riwayat\/[a-zA-Z0-9-]+$/', uri_string())) ? 'active' : ''; ?>">
                         <i class="nav-icon fas fa-history"></i>
                         <p>Riwayat Pengaduan</p>
                     </a>
                 </li>
+
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-bookmark"></i>
@@ -52,10 +54,17 @@
                 <!-- Menu Level Operator -->
                 <?php if (in_array('operator', session()->get('level'))): ?>
                 <li class="nav-header">Operator</li>
-                <li class="nav-item <?= (uri_string() == 'pengaduan') ? 'active' : ''; ?>">
-                    <a href="/pengaduan" class="nav-link <?= (uri_string() == 'pengaduan') ? 'active' : ''; ?>">
+                <li class="nav-item <?= (uri_string() == 'pengaduan/operator') ? 'active' : ''; ?>">
+                    <a href="/pengaduan/operator" class="nav-link <?= (uri_string() == 'pengaduan/operator') ? 'active' : ''; ?>">
                         <i class="nav-icon fas fa-tasks"></i>
-                        <p>Semua Pengaduan</p>
+                        <p>Pengaduan Masuk</p>
+                    </a>
+                </li>
+
+                <li class="nav-item <?= (uri_string() == 'pengaduan/operator') ? 'active' : ''; ?>">
+                    <a href="/pengaduan/operator/riwayat" class="nav-link <?= (uri_string() == 'pengaduan/operator') ? 'active' : ''; ?>">
+                        <i class="nav-icon fas fa-tasks"></i>
+                        <p>Riwayat Pengaduan</p>
                     </a>
                 </li>
                 <?php endif ?>
@@ -63,10 +72,18 @@
                 <!-- Menu Level Verifikator -->
                 <?php if (in_array('verifikator', session()->get('level'))): ?>
                 <li class="nav-header">Verifikator</li>
+
                 <li class="nav-item <?= (uri_string() == 'pengaduan') ? 'active' : ''; ?>">
-                    <a href="/pengaduan" class="nav-link <?= (uri_string() == 'pengaduan') ? 'active' : ''; ?>">
+                    <a href="/pengaduan/verifikator" class="nav-link <?= (uri_string() == 'pengaduan/verifikator') ? 'active' : ''; ?>">
                         <i class="nav-icon fas fa-check-circle"></i>
-                        <p>Semua Pengaduan</p>
+                        <p>Pengaduan Masuk</p>
+                    </a>
+                </li>
+
+                <li class="nav-item <?= (uri_string() == 'pengaduan') ? 'active' : ''; ?>">
+                    <a href="/pengaduan/verifikator/riwayat" class="nav-link <?= (uri_string() == 'pengaduan/verifikator/riwayat') ? 'active' : ''; ?>">
+                        <i class="nav-icon fas fa-check-circle"></i>
+                        <p>Riwayat Pengaduan</p>
                     </a>
                 </li>
                 <?php endif ?>
