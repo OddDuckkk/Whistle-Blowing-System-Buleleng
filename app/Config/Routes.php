@@ -18,6 +18,7 @@ $routes->post('/pengaduan/update/(:segment)', 'PengaduanController::update/$1');
 $routes->get('/pengaduan/delete/(:segment)', 'PengaduanController::delete/$1');
 $routes->post('/pengaduan/upload-file', 'PengaduanController::uploadFile');
 $routes->post('/pengaduan/delete-file', 'PengaduanController::deleteFile');
+$routes->post('/pengaduan/change-status', 'PengaduanController::changeStatus');
 
 $routes->get('/pengaduan/user/(:segment)', 'PengaduanController::getPelaporActivePengaduan/$1');
 $routes->get('/pengaduan/user/riwayat/(:segment)', 'PengaduanController::getPelaporInactivePengaduan/$1');

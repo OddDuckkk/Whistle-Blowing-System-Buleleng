@@ -1,3 +1,19 @@
+// Handle kirim button
+function handleKirim() {
+    
+}
+document.getElementById('kirim-pengaduan-form').addEventListener('submit', function (event) {
+    event.preventDefault(); 
+    showConfirmationModal({
+        title: 'Apakah Anda yakin?',
+        text: 'Pengaduan akan dikirim ke tim investigasi dan tidak dapat dirubah lagi!',
+        icon: 'warning',
+        confirmButtonText: 'Kirim',
+        cancelButtonText: 'Periksa lagi',
+        onConfirm: () => this.submit()
+    });
+});
+
 // Handle edit button
 function handleEdit(pengaduanId) {
         window.location.href = baseUrl + "/pengaduan/edit/" + pengaduanId;

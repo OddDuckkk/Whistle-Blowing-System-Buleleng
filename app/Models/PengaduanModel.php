@@ -13,7 +13,7 @@ class PengaduanModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['judul', 'tanggal', 'tempat', 'nominal', 'deskripsi', 'nomor_pengaduan', 'user_id'];
+    protected $allowedFields    = ['judul', 'tanggal', 'tempat', 'nominal', 'deskripsi', 'nomor_pengaduan', 'user_id', 'status'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

@@ -23,17 +23,22 @@
         <tr>
             <td class="w-25"><strong>Status</strong></td>
             <td class="w-75"><strong>: </strong><span class="badge custom-badge
-                    <?php if ($pengaduan['status'] == 'baru') echo 'badge-primary'; ?>
+                    <?php if ($pengaduan['status'] == 'baru') echo 'badge-secondary'; ?>
+                    <?php if ($pengaduan['status'] == 'dikirim') echo 'badge-primary'; ?>
                     <?php if ($pengaduan['status'] == 'diproses operator') echo 'badge-warning'; ?>
                     <?php if ($pengaduan['status'] == 'diproses verifikator') echo 'badge-warning'; ?>
                     <?php if ($pengaduan['status'] == 'selesai') echo 'badge-success'; ?>
-                    <?php if ($pengaduan['status'] == 'ditolak') echo 'badge-danger'; ?>">
+                    <?php if ($pengaduan['status'] == 'ditolak') echo 'badge-danger'; ?>
+                    <?php if ($pengaduan['status'] == 'dikembalikan') echo 'badge-warning'; ?>
+                    ">
 
-                    <?php if ($pengaduan['status'] == 'baru') echo 'baru'; ?>
+                    <?php if ($pengaduan['status'] == 'baru') echo 'draf'; ?>
+                    <?php if ($pengaduan['status'] == 'dikirim') echo 'dikirim'; ?>
                     <?php if ($pengaduan['status'] == 'diproses operator') echo 'diproses operator'; ?>
                     <?php if ($pengaduan['status'] == 'diproses verifikator') echo 'diproses operator'; ?>
                     <?php if ($pengaduan['status'] == 'selesai') echo 'selesai'; ?>
                     <?php if ($pengaduan['status'] == 'ditolak') echo 'ditolak'; ?>
+                    <?php if ($pengaduan['status'] == 'dikembalikan') echo 'dikembalikan'; ?>
                     </span></td>
         </tr>
         <tr>
@@ -110,21 +115,32 @@
     <p>Tidak ada lampiran.</p>
 <?php endif; ?>
 <hr>
-<div>
+<!-- <div>
     <h5 class="text-primary"><strong>AKSI</strong></h5>
-</div>
-<?php if ($pengaduan['user_id'] == session()->get('id_user')) : ?>
-    <div class="mt-3">
-        <button class="btn btn-success" onclick="handleKirim()">
-            <i class="fa fa-paper-plane"></i> Kirim
-        </button>
-        <button class="btn btn-warning" onclick="handleEdit('<?= $pengaduan['id'] ?>')">
-            <i class="fa fa-edit"></i> Edit
-        </button>
-        <button class="btn btn-danger" onclick="handleDelete('<?= $pengaduan['id'] ?>')">
-            <i class="fa fa-trash"></i> Hapus
-        </button>
+</div> -->
+<?php if ($pengaduan['user_id'] == session()->get('id_user') && ($pengaduan['status'] == 'baru' || $pengaduan['status'] == 'dikembalikan')): ?>
+    <div class="mt-3 row align-items-center">
+        <div class="col-auto">
+            <form action="<?= base_url('pengaduan/change-status') ?>" method="post" id="kirim-pengaduan-form">
+                <input type="hidden" name="pengaduan_id" value="<?= $pengaduan['id'] ?>">
+                <input type="hidden" name="status" value="dikirim">
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-paper-plane"></i> Kirim
+                </button>
+            </form>
+        </div>
+        <div class="col-auto me-3"> <!-- Added 'me-3' for right margin -->
+            <button class="btn btn-warning" onclick="handleEdit('<?= $pengaduan['id'] ?>')">
+                <i class="fa fa-edit"></i> Edit
+            </button>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-danger" onclick="handleDelete('<?= $pengaduan['id'] ?>')">
+                <i class="fa fa-trash"></i> Hapus
+            </button>
+        </div>
     </div>
+
 <!-- Conditional Buttons for Operator -->
 <?php elseif (in_array('operator', session()->get('level')) && $pengaduan['user_id'] != session()->get('id_user')) : ?>
     <div class="mt-3">

@@ -158,7 +158,7 @@ $(document).on('click', '.search-nip', function() {
             spinner.hide();
             icon.show();
             // Error jika terdapat kesalahan dalam menghubungkan ke server
-            showToast('Error', 'Failed to connect to the server.', 'error');
+            showToast('Error', 'Koneksi ke server gagal', 'error');
         }
     });
 });

@@ -483,4 +483,44 @@ class PengaduanController extends BaseController {
         ]);
     }
 
+    public function changeStatus() {
+        // Retrieve request body data
+        $pengaduanId = $this->request->getPost('pengaduan_id'); 
+        $newStatus = $this->request->getPost('status'); 
+
+        // Allowed statuses
+        $allowedStatuses = ['baru', 'dikirim', 'diproses operator', 'diproses verifikator', 'selesai', 'ditolak', 'dikembalikan'];
+
+        // Check if status is valid
+        if (!in_array($newStatus, $allowedStatuses)) {
+            session()->setFlashdata('failure_message', 'Status yang diberikan tidak valid!');
+            return redirect()->back()->withInput();
+        }
+
+        // Find the pengaduan record
+        $pengaduan = $this->pengaduanModel->find($pengaduanId);
+
+        // Check if pengaduan exists
+        if (!$pengaduan) {
+            session()->setFlashdata('failure_message', 'Pengaduan tidak ditemukan!');
+            return redirect()->back()->withInput();
+        }
+
+        // Update status
+        $data = [
+            'status' => $newStatus,
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
+
+        // Attempt to update the pengaduan status
+        if ($this->pengaduanModel->update($pengaduanId, $data)) {
+            session()->setFlashdata('success_message', 'Status pengaduan berhasil diubah!');
+        } else {
+            session()->setFlashdata('failure_message', 'Status gagal diubah!');
+        }
+
+        return redirect()->back()->withInput();
+    }
+
+
 }

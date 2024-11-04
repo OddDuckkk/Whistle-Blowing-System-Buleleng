@@ -47,17 +47,22 @@ Data Pengaduan
                 </td>
                 <td>
                     <span class="badge custom-badge 
-                    <?php if ($p['status'] == 'baru') echo 'badge-primary'; ?>
+                    <?php if ($p['status'] == 'baru') echo 'badge-secondary'; ?>
+                    <?php if ($p['status'] == 'dikirim') echo 'badge-primary'; ?>
                     <?php if ($p['status'] == 'diproses operator') echo 'badge-warning'; ?>
                     <?php if ($p['status'] == 'diproses verifikator') echo 'badge-warning'; ?>
                     <?php if ($p['status'] == 'selesai') echo 'badge-success'; ?>
-                    <?php if ($p['status'] == 'ditolak') echo 'badge-danger'; ?>">
+                    <?php if ($p['status'] == 'ditolak') echo 'badge-danger'; ?>
+                    <?php if ($p['status'] == 'dikembalikan') echo 'badge-warning'; ?>
+                    ">
 
-                    <?php if ($p['status'] == 'baru') echo 'baru'; ?>
+                    <?php if ($p['status'] == 'baru') echo 'draf'; ?>
+                    <?php if ($p['status'] == 'dikirim') echo 'dikirim'; ?>
                     <?php if ($p['status'] == 'diproses operator') echo 'diproses operator'; ?>
                     <?php if ($p['status'] == 'diproses verifikator') echo 'diproses operator'; ?>
                     <?php if ($p['status'] == 'selesai') echo 'selesai'; ?>
                     <?php if ($p['status'] == 'ditolak') echo 'ditolak'; ?>
+                    <?php if ($p['status'] == 'dikembalikan') echo 'dikembalikan'; ?>
                     </span>
                 </td>
                 <td>
