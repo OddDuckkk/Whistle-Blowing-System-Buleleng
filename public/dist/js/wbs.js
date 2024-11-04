@@ -113,3 +113,13 @@ function showFailureModal({title, text, confirmButtonText}) {
         confirmButtonText: confirmButtonText,
     })
 }
+
+function showInformationModal({title, text, confirmButtonText}) {
+    Swal.fire({
+        title: title,
+        text: text,
+        icon: 'info',
+        confirmButtonColor: '#007bff',
+        confirmButtonText: confirmButtonText,
+    })
+}

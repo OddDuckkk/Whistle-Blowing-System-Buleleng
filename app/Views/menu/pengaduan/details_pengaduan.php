@@ -8,7 +8,9 @@
 
 <!-- ======= Section Card Header ======= -->
 <?= $this->section('card-header') ?>
-<a href="<?= base_url('pengaduan'); ?>" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Kembali</a>
+<button onclick="history.back()" class="btn btn-primary">
+    <i class="fa fa-arrow-left"></i> Kembali
+</button>
 <?= $this->endSection('card-header') ?>
 
 <!-- ======= Section Isi ======= -->
@@ -107,10 +109,37 @@
 <?php else : ?>
     <p>Tidak ada lampiran.</p>
 <?php endif; ?>
+<hr>
+<div>
+    <h5 class="text-primary"><strong>AKSI</strong></h5>
 </div>
+<?php if ($pengaduan['user_id'] == session()->get('id_user')) : ?>
+    <div class="mt-3">
+        <button class="btn btn-success" onclick="handleKirim()">
+            <i class="fa fa-paper-plane"></i> Kirim
+        </button>
+        <button class="btn btn-warning" onclick="handleEdit('<?= $pengaduan['id'] ?>')">
+            <i class="fa fa-edit"></i> Edit
+        </button>
+        <button class="btn btn-danger" onclick="handleDelete('<?= $pengaduan['id'] ?>')">
+            <i class="fa fa-trash"></i> Hapus
+        </button>
+    </div>
+<!-- Conditional Buttons for Operator -->
+<?php elseif (in_array('operator', session()->get('level')) && $pengaduan['user_id'] != session()->get('id_user')) : ?>
+    <div class="mt-3">
+        <button class="btn btn-success" onclick="handleTeruskan()">
+            <i class="fa fa-arrow-right"></i> Teruskan
+        </button>
+        <button class="btn btn-danger" onclick="handleKembalikan()">
+            <i class="fa fa-arrow-left"></i> Kembalikan
+        </button>
+    </div>
+<?php endif; ?>
 <?= $this->endSection('isi') ?>
 
 <!-- ======= Section Scripts ======= -->
 <?= $this->section('scripts') ?>
-
+<!-- Script Halaman Detail Pengaduan -->
+<script src="<?= base_url() ?>/dist/js/pages/details_pengaduan.js"></script>
 <?= $this->endSection('scripts') ?>

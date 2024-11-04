@@ -56,14 +56,14 @@
                 <li class="nav-header">Operator</li>
                 <li class="nav-item <?= (uri_string() == 'pengaduan/operator') ? 'active' : ''; ?>">
                     <a href="/pengaduan/operator" class="nav-link <?= (uri_string() == 'pengaduan/operator') ? 'active' : ''; ?>">
-                        <i class="nav-icon fas fa-tasks"></i>
+                        <i class="nav-icon fas fa-envelope-open"></i>
                         <p>Pengaduan Masuk</p>
                     </a>
                 </li>
 
-                <li class="nav-item <?= (uri_string() == 'pengaduan/operator') ? 'active' : ''; ?>">
-                    <a href="/pengaduan/operator/riwayat" class="nav-link <?= (uri_string() == 'pengaduan/operator') ? 'active' : ''; ?>">
-                        <i class="nav-icon fas fa-tasks"></i>
+                <li class="nav-item <?= (uri_string() == 'pengaduan/operator/riwayat') ? 'active' : ''; ?>">
+                    <a href="/pengaduan/operator/riwayat" class="nav-link <?= (uri_string() == 'pengaduan/operator/riwayat') ? 'active' : ''; ?>">
+                        <i class="nav-icon fas fa-history"></i>
                         <p>Riwayat Pengaduan</p>
                     </a>
                 </li>
@@ -75,14 +75,14 @@
 
                 <li class="nav-item <?= (uri_string() == 'pengaduan') ? 'active' : ''; ?>">
                     <a href="/pengaduan/verifikator" class="nav-link <?= (uri_string() == 'pengaduan/verifikator') ? 'active' : ''; ?>">
-                        <i class="nav-icon fas fa-check-circle"></i>
+                        <i class="nav-icon fas fa-envelope-open"></i>
                         <p>Pengaduan Masuk</p>
                     </a>
                 </li>
 
                 <li class="nav-item <?= (uri_string() == 'pengaduan') ? 'active' : ''; ?>">
                     <a href="/pengaduan/verifikator/riwayat" class="nav-link <?= (uri_string() == 'pengaduan/verifikator/riwayat') ? 'active' : ''; ?>">
-                        <i class="nav-icon fas fa-check-circle"></i>
+                        <i class="nav-icon fas fa-history"></i>
                         <p>Riwayat Pengaduan</p>
                     </a>
                 </li>

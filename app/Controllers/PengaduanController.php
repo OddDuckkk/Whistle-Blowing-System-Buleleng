@@ -205,7 +205,8 @@ class PengaduanController extends BaseController {
         // Proses simpan data lampiran
         $this->saveLampiran($pengaduanId);
 
-        return redirect()->to('/pengaduan')->with('message', 'Pengaduan berhasil ditambahkan!');
+        session()->setFlashdata('info_message', 'Pengaduan berhasil disimpan sebagai draf. Jika sudah final, klik kirim untuk mulai mengajukan pengaduan');
+        return redirect()->to("/pengaduan/details/$pengaduanId");
     }
 
     public function viewEdit($id) {

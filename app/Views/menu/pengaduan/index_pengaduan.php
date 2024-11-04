@@ -61,14 +61,8 @@ Data Pengaduan
                     </span>
                 </td>
                 <td>
-                    <a href="<?= base_url('pengaduan/details/' . $p['id']); ?>" class="btn btn-info btn-sm">
+                    <a class="btn btn-info btn-sm" onclick="handleDetails('<?= $p['id'] ?>')">
                         <i class="fas fa-eye"></i> Lihat
-                    </a>
-                    <a href="<?= base_url('pengaduan/edit/' . $p['id']); ?>" class="btn btn-warning btn-sm">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    <a href="<?= base_url('pengaduan/delete/' . $p['id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus pengaduan ini?');">
-                        <i class="fas fa-trash"></i>
                     </a>
                 </td>
             </tr>

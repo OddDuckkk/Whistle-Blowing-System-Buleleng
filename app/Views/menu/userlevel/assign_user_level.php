@@ -8,7 +8,9 @@ Tambah Level ke Pengguna
 
 <!-- ======= Section Sub judul ======= -->
 <?= $this->section('card-header') ?>
-<a href="<?= base_url('/user-level'); ?>" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Kembali</a>
+<button onclick="history.back()" class="btn btn-primary">
+    <i class="fa fa-arrow-left"></i> Kembali
+</button>
 <?= $this->endSection('card-header') ?>
 
 <!-- ======= Section Isi ======= -->
