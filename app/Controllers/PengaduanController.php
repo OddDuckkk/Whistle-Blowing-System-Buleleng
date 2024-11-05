@@ -180,7 +180,7 @@ class PengaduanController extends BaseController {
         }
 
         // Generate nomor pengaduan 
-        $newNumber = $this->generateNomorPengaduan();
+        $newNumber = $this->pengaduanModel->generateNomorPengaduan();
 
         // Proses simpan data pengaduan 
         $data = [
@@ -189,7 +189,7 @@ class PengaduanController extends BaseController {
             'tempat' => $this->request->getPost('tempat'),
             'nominal' => $this->request->getPost('nominal'),
             'deskripsi' => $this->request->getPost('deskripsi'),
-            'status' => 'diproses operator',
+            'status' => 'baru',
             'nomor_pengaduan' => $newNumber,
             'user_id' => $userId,
             'created_at' => date('Y-m-d H:i:s'),
@@ -283,15 +283,6 @@ class PengaduanController extends BaseController {
         } else {
             return redirect()->to('/pengaduan')->with('error', 'Pengaduan tidak ditemukan!');
         }
-    }
-
-    protected function generateNomorPengaduan() {
-        // Mengambil nomor pengaduan terakhir
-        $lastPengaduan = $this->pengaduanModel->orderBy('id', 'DESC')->first();
-        // Mengambil digit akhir 
-        $lastId = $lastPengaduan ? intval(substr($lastPengaduan['nomor_pengaduan'], 3)) : 0;
-        // Mengembalikan nomor pengaduan baru
-        return 'WBS' . str_pad($lastId + 1, 5, '0', STR_PAD_LEFT);
     }
 
     protected function savePihakTerlibat($pengaduanId) {

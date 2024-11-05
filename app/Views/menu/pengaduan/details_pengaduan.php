@@ -98,23 +98,40 @@
 </div>
 <?php if (!empty($lampiran)) : ?>
     <div class="card-body">
+        <div class="row">
             <?php foreach ($lampiran as $lamp) : ?>
-                <div class="col-md-4 mb-3"> <!-- Adjust number of columns as needed -->
-                    <div class="d-flex flex-row">
-                        <a href="<?= base_url($lamp['file_lampiran']); ?>" target="_blank" class="p-2">
-                            <img src="<?= base_url($lamp['file_lampiran']); ?>" alt="<?= $lamp['deskripsi']; ?>" class="img-thumbnail" style="height: 150px; width: 150px; object-fit: cover;">
+                <div class="col-12 mb-3"> 
+                    <div class="lampiran-container"> 
+                        <a href="<?= base_url($lamp['file_lampiran']); ?>" 
+                           data-toggle="lightbox" 
+                           data-gallery="lampiran-gallery" 
+                           data-type="<?= (strpos($lamp['file_lampiran'], '.pdf') !== false) ? 'iframe' : 'image' ?>" 
+                           class="lampiran-link"> 
+                            <?php if (strpos($lamp['file_lampiran'], '.pdf') !== false) : ?>
+                                <img src="<?= base_url('dist/img/pdf-icon.svg'); ?>" 
+                                     alt="PDF Icon" 
+                                     class="lampiran-pdf pdf-icon"> 
+                            <?php else : ?>
+                                <img src="<?= base_url($lamp['file_lampiran']); ?>" 
+                                     alt="<?= $lamp['deskripsi']; ?>" 
+                                     class="lampiran-image img-thumbnail"> 
+                            <?php endif; ?>
                         </a>
-                        <div class="card-body">
-                            <h6 class="card-title"><?= $lamp['deskripsi']; ?></h6>
+                        <div class="lampiran-description"> 
+                            <h6><?= $lamp['deskripsi']; ?></h6>
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
+        </div>
     </div>
 <?php else : ?>
     <p>Tidak ada lampiran.</p>
 <?php endif; ?>
 <hr>
+<div>
+    <h5 class="text-primary"><strong>AKSI</strong></h5>
+</div>
 <?php if ($pengaduan['user_id'] == session()->get('id_user')): ?>
     <form action="<?= base_url('pengaduan/change-status') ?>" method="post" id="pelapor-pengaduan-status-form">
         <?php if ($pengaduan['status'] == 'baru' || $pengaduan['status'] == 'dikembalikan'): ?>
@@ -137,6 +154,8 @@
                 </button>
             </div>
         </div>
+        <?php else : ?>
+            <p>Tidak ada aksi yang dapat dilakukan.</p>
         <?php endif; ?>
     </form>
 <!-- Conditional Buttons for Operator -->
@@ -159,6 +178,8 @@
                 </button>
             </div>
         </div>
+        <?php else : ?>
+            <p>Tidak ada aksi yang dapat dilakukan.</p>
         <?php endif; ?>
     </form>
 
@@ -181,8 +202,12 @@
             </button>
         </div>
     </div>
+    <?php else : ?>
+        <p>Tidak ada aksi yang dapat dilakukan.</p>
     <?php endif; ?>
 </form>
+<?php else : ?>
+    <p>Tidak ada aksi yang dapat dilakukan.</p>
 <?php endif; ?>
 <?= $this->endSection('isi') ?>
 
