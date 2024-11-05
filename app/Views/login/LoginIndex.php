@@ -70,6 +70,8 @@
                         <?php endif; ?>
                     </div>
 
+                    <div class="g-recaptcha input-group mb-3" data-sitekey="6LcvfXUqAAAAAHATEXIXcLKq8PK0KHZv_S_OsDQu"></div>
+
                     <!-- Submit Button -->
                     <div>
                         <button type="submit" class="btn btn-primary btn-block">Masuk</button>
@@ -86,6 +88,9 @@
 
     <!-- AdminLTE JS -->
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
+
+    <!-- reCaptcha -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
 
 </html>

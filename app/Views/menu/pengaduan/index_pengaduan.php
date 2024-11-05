@@ -53,22 +53,32 @@ Data Pengaduan
                     <?php if ($p['status'] == 'diproses verifikator') echo 'badge-warning'; ?>
                     <?php if ($p['status'] == 'selesai') echo 'badge-success'; ?>
                     <?php if ($p['status'] == 'ditolak') echo 'badge-danger'; ?>
-                    <?php if ($p['status'] == 'dikembalikan') echo 'badge-warning'; ?>
+                    <?php if ($p['status'] == 'dikembalikan') echo 'badge-secondary'; ?>
                     ">
 
                     <?php if ($p['status'] == 'baru') echo 'draf'; ?>
                     <?php if ($p['status'] == 'dikirim') echo 'dikirim'; ?>
                     <?php if ($p['status'] == 'diproses operator') echo 'diproses operator'; ?>
-                    <?php if ($p['status'] == 'diproses verifikator') echo 'diproses operator'; ?>
+                    <?php if ($p['status'] == 'diproses verifikator') echo 'diproses verifikator'; ?>
                     <?php if ($p['status'] == 'selesai') echo 'selesai'; ?>
                     <?php if ($p['status'] == 'ditolak') echo 'ditolak'; ?>
                     <?php if ($p['status'] == 'dikembalikan') echo 'dikembalikan'; ?>
                     </span>
                 </td>
                 <td>
-                    <a class="btn btn-info btn-sm" onclick="handleDetails('<?= $p['id'] ?>')">
+                    <?php if (in_array('operator', session()->get('level')) && ($p['status'] == 'dikirim')): ?>
+                    <form action="<?= base_url('pengaduan/change-status') ?>" method="post" id="operator-pengaduan-status-form">
+                        <input type="hidden" name="pengaduan_id" value="<?= $p['id'] ?>">
+                        <input type="hidden" name="status" value="diproses operator"> 
+                        <button type="submit" class="btn btn-info btn-sm">
+                            <i class="fas fa-eye"></i> Lihat
+                        </button>
+                    </form>
+                    <?php else: ?>
+                    <button onclick="handleDetails('<?= $p['id'] ?>')" class="btn btn-info btn-sm">
                         <i class="fas fa-eye"></i> Lihat
-                    </a>
+                    </button>
+                    <?php endif; ?>
                 </td>
             </tr>
         <?php endforeach; ?>

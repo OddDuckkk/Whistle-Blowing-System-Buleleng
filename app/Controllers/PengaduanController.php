@@ -484,42 +484,51 @@ class PengaduanController extends BaseController {
     }
 
     public function changeStatus() {
-        // Retrieve request body data
+        // Ambil data dari request body
         $pengaduanId = $this->request->getPost('pengaduan_id'); 
         $newStatus = $this->request->getPost('status'); 
 
-        // Allowed statuses
         $allowedStatuses = ['baru', 'dikirim', 'diproses operator', 'diproses verifikator', 'selesai', 'ditolak', 'dikembalikan'];
 
-        // Check if status is valid
+        // cek apakah status valid
         if (!in_array($newStatus, $allowedStatuses)) {
             session()->setFlashdata('failure_message', 'Status yang diberikan tidak valid!');
             return redirect()->back()->withInput();
         }
 
-        // Find the pengaduan record
         $pengaduan = $this->pengaduanModel->find($pengaduanId);
 
-        // Check if pengaduan exists
+        // Cek apakah pengaduan valid
         if (!$pengaduan) {
             session()->setFlashdata('failure_message', 'Pengaduan tidak ditemukan!');
             return redirect()->back()->withInput();
-        }
-
-        // Update status
-        $data = [
-            'status' => $newStatus,
-            'updated_at' => date('Y-m-d H:i:s')
-        ];
-
-        // Attempt to update the pengaduan status
-        if ($this->pengaduanModel->update($pengaduanId, $data)) {
-            session()->setFlashdata('success_message', 'Status pengaduan berhasil diubah!');
         } else {
-            session()->setFlashdata('failure_message', 'Status gagal diubah!');
+            // proses simpan
+            $data = [
+                'status' => $newStatus,
+                'updated_at' => date('Y-m-d H:i:s')
+            ];
+            if ($newStatus == "dikirim") {
+                $message = "Pengaduan berhasil dikirim!";
+            } elseif ($newStatus == "diproses operator") {
+                $message = null;
+            } elseif ($newStatus == "diproses verifikator") {
+                $message = "Pengaduan berhasil diteruskan ke verifikator!";
+            } elseif ($newStatus == "ditolak") {
+                $message = "Pengaduan telah ditolak!";
+            } elseif ($newStatus == "dikembalikan") {
+                $message = "Pengaduan telah dikembalikan!";
+            } elseif ($newStatus == "selesai") {
+                $message = "Pengaduan telah diselesaikan!";
+            }
+            $this->pengaduanModel->update($pengaduanId, $data);
+            session()->setFlashdata('success_message', $message);
+            if ($newStatus == "diproses operator") {
+                return redirect()->to(site_url("/pengaduan/details/$pengaduanId"));
+            } else {
+                return redirect()->back()->withInput();
+            }
         }
-
-        return redirect()->back()->withInput();
     }
 
 
