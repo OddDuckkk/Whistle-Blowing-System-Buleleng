@@ -68,28 +68,68 @@ class PengaduanController extends BaseController {
 
     public function getByUserId($userId) {
         // Mengambil semua data pengaduan berdasarkan user_id
-        $data['pengaduan'] = $this->pengaduanModel->findByUserId($userId);
-        // Tampilkan data pengaduan
-        return view('menu/pengaduan/index_pengaduan', $data);
+        return $this->pengaduanModel->findByUserId($userId);
+
     }
-    public function getActivePengaduan($userId) {
-        $statuses = PengaduanModel::$activeStatuses;
+    public function getPelaporActivePengaduan($userId) {
+        $statuses = PengaduanModel::$pelaporActiveStatuses;
 
         $data['pengaduan'] = $this->pengaduanModel
-                                  ->filterByUserAndStatus($userId, $statuses)
+                                  ->findByUserId($userId)
+                                  ->filterByStatus($statuses)
                                   ->findAll();
 
         return view('menu/pengaduan/index_pengaduan', $data);
     }
 
-    public function getInactivePengaduan($userId) {
-        $statuses = PengaduanModel::$inactiveStatuses;
+    public function getPelaporInactivePengaduan($userId) {
+        $statuses = PengaduanModel::$pelaporInactiveStatuses;
 
         $data['pengaduan'] = $this->pengaduanModel
-                                  ->filterByUserAndStatus($userId, $statuses)
+                                  ->findByUserId($userId)
+                                  ->filterByStatus($statuses)
                                   ->findAll();
+
         return view('menu/pengaduan/index_pengaduan', $data);
     }
+    public function getOperatorActivePengaduan() {
+        $statuses = PengaduanModel::$operatorActiveStatuses;
+
+        $data['pengaduan'] = $this->pengaduanModel
+                                  ->filterByStatus($statuses)
+                                  ->findAll();
+
+        return view('menu/pengaduan/index_pengaduan', $data);
+    }
+    public function getOperatorInactivePengaduan() {
+        $statuses = PengaduanModel::$operatorInactiveStatuses;
+
+        $data['pengaduan'] = $this->pengaduanModel
+                                  ->filterByStatus($statuses)
+                                  ->findAll();
+
+        return view('menu/pengaduan/index_pengaduan', $data);
+    }
+
+    public function getVerifikatorActivePengaduan() {
+        $statuses = PengaduanModel::$verifikatorActiveStatuses;
+
+        $data['pengaduan'] = $this->pengaduanModel
+                                  ->filterByStatus($statuses)
+                                  ->findAll();
+
+        return view('menu/pengaduan/index_pengaduan', $data);
+    }
+    public function getVerifikatorInactivePengaduan() {
+        $statuses = PengaduanModel::$verifikatorInactiveStatuses;
+
+        $data['pengaduan'] = $this->pengaduanModel
+                                  ->filterByStatus($statuses)
+                                  ->findAll();
+
+        return view('menu/pengaduan/index_pengaduan', $data);
+    }
+
 
     public function getById($id) {
         //Mengambil semua data pengaduan berdasarkan id pengaduan 
@@ -165,7 +205,8 @@ class PengaduanController extends BaseController {
         // Proses simpan data lampiran
         $this->saveLampiran($pengaduanId);
 
-        return redirect()->to('/pengaduan')->with('message', 'Pengaduan berhasil ditambahkan!');
+        session()->setFlashdata('info_message', 'Pengaduan berhasil disimpan sebagai draf. Jika sudah final, klik kirim untuk mulai mengajukan pengaduan');
+        return redirect()->to("/pengaduan/details/$pengaduanId");
     }
 
     public function viewEdit($id) {
@@ -441,5 +482,54 @@ class PengaduanController extends BaseController {
             ],
         ]);
     }
+
+    public function changeStatus() {
+        // Ambil data dari request body
+        $pengaduanId = $this->request->getPost('pengaduan_id'); 
+        $newStatus = $this->request->getPost('status'); 
+
+        $allowedStatuses = ['baru', 'dikirim', 'diproses operator', 'diproses verifikator', 'selesai', 'ditolak', 'dikembalikan'];
+
+        // cek apakah status valid
+        if (!in_array($newStatus, $allowedStatuses)) {
+            session()->setFlashdata('failure_message', 'Status yang diberikan tidak valid!');
+            return redirect()->back()->withInput();
+        }
+
+        $pengaduan = $this->pengaduanModel->find($pengaduanId);
+
+        // Cek apakah pengaduan valid
+        if (!$pengaduan) {
+            session()->setFlashdata('failure_message', 'Pengaduan tidak ditemukan!');
+            return redirect()->back()->withInput();
+        } else {
+            // proses simpan
+            $data = [
+                'status' => $newStatus,
+                'updated_at' => date('Y-m-d H:i:s')
+            ];
+            if ($newStatus == "dikirim") {
+                $message = "Pengaduan berhasil dikirim!";
+            } elseif ($newStatus == "diproses operator") {
+                $message = null;
+            } elseif ($newStatus == "diproses verifikator") {
+                $message = "Pengaduan berhasil diteruskan ke verifikator!";
+            } elseif ($newStatus == "ditolak") {
+                $message = "Pengaduan telah ditolak!";
+            } elseif ($newStatus == "dikembalikan") {
+                $message = "Pengaduan telah dikembalikan!";
+            } elseif ($newStatus == "selesai") {
+                $message = "Pengaduan telah diselesaikan!";
+            }
+            $this->pengaduanModel->update($pengaduanId, $data);
+            session()->setFlashdata('success_message', $message);
+            if ($newStatus == "diproses operator") {
+                return redirect()->to(site_url("/pengaduan/details/$pengaduanId"));
+            } else {
+                return redirect()->back()->withInput();
+            }
+        }
+    }
+
 
 }

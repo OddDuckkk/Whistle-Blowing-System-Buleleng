@@ -8,8 +8,9 @@ Buat Pengaduan
 
 <!-- ======= Section Card Header ======= -->
 <?= $this->section('card-header') ?>
-<?php $userId = session()->get('id_user') ?>
-<a href="<?= base_url("pengaduan/user/$userId"); ?>" class="btn btn-primary"><i class="fa fa-arrow-left"></i>     Kembali</a>
+<button onclick="history.back()" class="btn btn-primary">
+    <i class="fa fa-arrow-left"></i> Kembali
+</button>
 <?= $this->endSection('card-header') ?>
 
 <!-- ======= Section Isi ======= -->

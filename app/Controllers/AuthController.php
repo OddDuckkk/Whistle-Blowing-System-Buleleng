@@ -36,7 +36,18 @@ class AuthController extends BaseController
         // Ambil NIP dan password dari input
         $nipuser = $this->request->getPost('nip');
         $password = $this->request->getPost('password');
-        
+        // $recaptchaResponse = $this->request->getPost('g-recaptcha-response');
+
+        // // Verify reCAPTCHA
+        // $recaptchaSecret = getenv('RECAPTCHA_SECRET_KEY');  // Secret key from your environment variables
+        // $recaptchaUrl = 'https://www.google.com/recaptcha/api/siteverify';
+        // $recaptchaValidation = json_decode(file_get_contents($recaptchaUrl . '?secret=' . $recaptchaSecret . '&response=' . $recaptchaResponse), true);
+
+        // if (!$recaptchaValidation['success']) {
+        //     // If reCAPTCHA failed, redirect with an error
+        //     session()->setFlashdata('error', 'CAPTCHA verification failed. Please try again.');
+        //     return redirect()->to(site_url('login/index'));
+        // }
         // Ambil data session
         $attempt = session()->get('login_attempt') ?? 0;  // Percobaan login saat ini
         $lockTime = session()->get('lockout_time');       // Waktu lockout (jika ada)

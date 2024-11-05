@@ -35,10 +35,10 @@ Daftar Level Pengguna
                         <td><?= esc($userLevel['unit_kerja']); ?></td>
                         <td><?= esc($userLevel['level']); ?></td> 
                         <td>
-                            <a href="<?= base_url('user-level/edit/' . $userLevel['nip']); ?>" class="btn btn-warning btn-sm">
+                            <a class="btn btn-warning btn-sm" onclick="handleEdit('<?= $userLevel['nip']; ?>')">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <a id="delete-user-level" class="btn btn-danger btn-sm" onclick="confirmDelete('<?= $userLevel['nip']; ?>')">
+                            <a class="btn btn-danger btn-sm" onclick="handleDelete('<?= $userLevel['nip']; ?>')">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </td>

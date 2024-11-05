@@ -9,9 +9,11 @@ Data Pengaduan
 <!-- ======= Section Card Header ======= -->
 <?= $this->section('card-header') ?>
 <div class="card-tools">
+    <?php if (preg_match('/^pengaduan\/user\/[a-zA-Z0-9-]+$/', uri_string())): ?>
         <a href="<?= base_url('pengaduan/create'); ?>" class="btn btn-primary">
             <i class="fas fa-plus"></i> Buat Pengaduan Baru
         </a>
+    <?php endif ?>
 </div>
 <?= $this->endSection('card-header') ?>
 
@@ -45,29 +47,38 @@ Data Pengaduan
                 </td>
                 <td>
                     <span class="badge custom-badge 
-                    <?php if ($p['status'] == 'baru') echo 'badge-primary'; ?>
+                    <?php if ($p['status'] == 'baru') echo 'badge-secondary'; ?>
+                    <?php if ($p['status'] == 'dikirim') echo 'badge-primary'; ?>
                     <?php if ($p['status'] == 'diproses operator') echo 'badge-warning'; ?>
                     <?php if ($p['status'] == 'diproses verifikator') echo 'badge-warning'; ?>
                     <?php if ($p['status'] == 'selesai') echo 'badge-success'; ?>
-                    <?php if ($p['status'] == 'ditolak') echo 'badge-danger'; ?>">
+                    <?php if ($p['status'] == 'ditolak') echo 'badge-danger'; ?>
+                    <?php if ($p['status'] == 'dikembalikan') echo 'badge-secondary'; ?>
+                    ">
 
-                    <?php if ($p['status'] == 'baru') echo 'baru'; ?>
+                    <?php if ($p['status'] == 'baru') echo 'draf'; ?>
+                    <?php if ($p['status'] == 'dikirim') echo 'dikirim'; ?>
                     <?php if ($p['status'] == 'diproses operator') echo 'diproses operator'; ?>
-                    <?php if ($p['status'] == 'diproses verifikator') echo 'diproses operator'; ?>
+                    <?php if ($p['status'] == 'diproses verifikator') echo 'diproses verifikator'; ?>
                     <?php if ($p['status'] == 'selesai') echo 'selesai'; ?>
                     <?php if ($p['status'] == 'ditolak') echo 'ditolak'; ?>
+                    <?php if ($p['status'] == 'dikembalikan') echo 'dikembalikan'; ?>
                     </span>
                 </td>
                 <td>
-                    <a href="<?= base_url('pengaduan/details/' . $p['id']); ?>" class="btn btn-info btn-sm">
+                    <?php if (in_array('operator', session()->get('level')) && ($p['status'] == 'dikirim')): ?>
+                    <form action="<?= base_url('pengaduan/change-status') ?>" method="post" id="operator-pengaduan-status-form">
+                        <input type="hidden" name="pengaduan_id" value="<?= $p['id'] ?>">
+                        <input type="hidden" name="status" value="diproses operator"> 
+                        <button type="submit" class="btn btn-info btn-sm">
+                            <i class="fas fa-eye"></i> Lihat
+                        </button>
+                    </form>
+                    <?php else: ?>
+                    <button onclick="handleDetails('<?= $p['id'] ?>')" class="btn btn-info btn-sm">
                         <i class="fas fa-eye"></i> Lihat
-                    </a>
-                    <a href="<?= base_url('pengaduan/edit/' . $p['id']); ?>" class="btn btn-warning btn-sm">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    <a href="<?= base_url('pengaduan/delete/' . $p['id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus pengaduan ini?');">
-                        <i class="fas fa-trash"></i>
-                    </a>
+                    </button>
+                    <?php endif; ?>
                 </td>
             </tr>
         <?php endforeach; ?>

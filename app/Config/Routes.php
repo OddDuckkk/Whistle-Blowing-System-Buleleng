@@ -8,6 +8,7 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'AuthController::index');
 $routes->get('/dashboard', 'MainController::viewDashboard');
 
+/* ======= Pengaduan Routes ======= */
 $routes->get('/pengaduan', 'PengaduanController::getAll');
 $routes->get('/pengaduan/create', 'PengaduanController::viewCreate');
 $routes->post('pengaduan/store', 'PengaduanController::store');
@@ -15,10 +16,20 @@ $routes->get('/pengaduan/details/(:segment)', 'PengaduanController::viewDetails/
 $routes->get('/pengaduan/edit/(:segment)', 'PengaduanController::viewEdit/$1');
 $routes->post('/pengaduan/update/(:segment)', 'PengaduanController::update/$1');
 $routes->get('/pengaduan/delete/(:segment)', 'PengaduanController::delete/$1');
-$routes->get('/pengaduan/user/(:segment)', 'PengaduanController::getActivePengaduan/$1');
-$routes->get('/pengaduan/user/riwayat/(:segment)', 'PengaduanController::getInactivePengaduan/$1');
 $routes->post('/pengaduan/upload-file', 'PengaduanController::uploadFile');
 $routes->post('/pengaduan/delete-file', 'PengaduanController::deleteFile');
+$routes->post('/pengaduan/change-status', 'PengaduanController::changeStatus');
+
+$routes->get('/pengaduan/user/(:segment)', 'PengaduanController::getPelaporActivePengaduan/$1');
+$routes->get('/pengaduan/user/riwayat/(:segment)', 'PengaduanController::getPelaporInactivePengaduan/$1');
+
+$routes->get('/pengaduan/operator', 'PengaduanController::getOperatorActivePengaduan');
+$routes->get('/pengaduan/operator/riwayat', 'PengaduanController::getOperatorInactivePengaduan');
+
+$routes->get('/pengaduan/verifikator', 'PengaduanController::getVerifikatorActivePengaduan');
+$routes->get('/pengaduan/verifikator/riwayat', 'PengaduanController::getVerifikatorInactivePengaduan');
+
+
 
 $routes->get('/login/index', 'AuthController::index');
 $routes->post('/login/auth', 'AuthController::login');

@@ -14,8 +14,13 @@ $(document).ready(function() {
     }).buttons().container().appendTo('#userLevelTable_wrapper .col-md-6:eq(0)');
 });
 
-// Function memanggil modal deletion
-function confirmDelete(nip) {
+// Handle edit button
+function handleEdit(nip) {
+    window.location.href = baseUrl + "/user-level/edit/" + nip;
+}
+
+// Handle delete button
+function handleDelete(nip) {
     showDeletionModal({
         title: 'Apakah Anda yakin?',
         text: 'User tidak akan lagi memiliki level tersebut!',

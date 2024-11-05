@@ -8,7 +8,9 @@
 
 <!-- ======= Section Card Header ======= -->
 <?= $this->section('card-header') ?>
-<a href="<?= base_url('pengaduan'); ?>" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Kembali</a>
+<button onclick="history.back()" class="btn btn-primary">
+    <i class="fa fa-arrow-left"></i> Kembali
+</button>
 <?= $this->endSection('card-header') ?>
 
 <!-- ======= Section Isi ======= -->
@@ -21,17 +23,22 @@
         <tr>
             <td class="w-25"><strong>Status</strong></td>
             <td class="w-75"><strong>: </strong><span class="badge custom-badge
-                    <?php if ($pengaduan['status'] == 'baru') echo 'badge-primary'; ?>
+                    <?php if ($pengaduan['status'] == 'baru') echo 'badge-secondary'; ?>
+                    <?php if ($pengaduan['status'] == 'dikirim') echo 'badge-primary'; ?>
                     <?php if ($pengaduan['status'] == 'diproses operator') echo 'badge-warning'; ?>
                     <?php if ($pengaduan['status'] == 'diproses verifikator') echo 'badge-warning'; ?>
                     <?php if ($pengaduan['status'] == 'selesai') echo 'badge-success'; ?>
-                    <?php if ($pengaduan['status'] == 'ditolak') echo 'badge-danger'; ?>">
+                    <?php if ($pengaduan['status'] == 'ditolak') echo 'badge-danger'; ?>
+                    <?php if ($pengaduan['status'] == 'dikembalikan') echo 'badge-secondary'; ?>
+                    ">
 
-                    <?php if ($pengaduan['status'] == 'baru') echo 'baru'; ?>
+                    <?php if ($pengaduan['status'] == 'baru') echo 'draf'; ?>
+                    <?php if ($pengaduan['status'] == 'dikirim') echo 'dikirim'; ?>
                     <?php if ($pengaduan['status'] == 'diproses operator') echo 'diproses operator'; ?>
-                    <?php if ($pengaduan['status'] == 'diproses verifikator') echo 'diproses operator'; ?>
+                    <?php if ($pengaduan['status'] == 'diproses verifikator') echo 'diproses verifikator'; ?>
                     <?php if ($pengaduan['status'] == 'selesai') echo 'selesai'; ?>
                     <?php if ($pengaduan['status'] == 'ditolak') echo 'ditolak'; ?>
+                    <?php if ($pengaduan['status'] == 'dikembalikan') echo 'dikembalikan'; ?>
                     </span></td>
         </tr>
         <tr>
@@ -107,10 +114,80 @@
 <?php else : ?>
     <p>Tidak ada lampiran.</p>
 <?php endif; ?>
-</div>
+<hr>
+<?php if ($pengaduan['user_id'] == session()->get('id_user')): ?>
+    <form action="<?= base_url('pengaduan/change-status') ?>" method="post" id="pelapor-pengaduan-status-form">
+        <?php if ($pengaduan['status'] == 'baru' || $pengaduan['status'] == 'dikembalikan'): ?>
+        <div class="mt-3 row align-items-center">
+            <div class="col-auto">
+                    <input type="hidden" name="pengaduan_id" value="<?= $pengaduan['id'] ?>">
+                    <input type="hidden" name="status" value="dikirim">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa fa-paper-plane"></i> Kirim
+                    </button>
+            </div>
+            <div class="col-auto me-3"> <!-- Added 'me-3' for right margin -->
+                <button class="btn btn-warning" onclick="handleEdit('<?= $pengaduan['id'] ?>')">
+                    <i class="fa fa-edit"></i> Edit
+                </button>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-danger" onclick="handleDelete('<?= $pengaduan['id'] ?>')">
+                    <i class="fa fa-trash"></i> Hapus
+                </button>
+            </div>
+        </div>
+        <?php endif; ?>
+    </form>
+<!-- Conditional Buttons for Operator -->
+<?php elseif (in_array('operator', session()->get('level')) && $pengaduan['user_id'] != session()->get('id_user')) : ?>
+    <form action="<?= base_url('pengaduan/change-status') ?>" method="post" id="operator-pengaduan-status-form">
+        <?php if ($pengaduan['status'] == 'dikirim' || $pengaduan['status'] == 'diproses operator'): ?>
+        <div class="mt-3 row align-items-center">
+            <input type="hidden" name="pengaduan_id" value="<?= $pengaduan['id'] ?>">
+            <input type="hidden" name="status" id="status-field">
+            <div class="col-auto">
+                <!-- Teruskan Button -->
+                <button type="submit" class="btn btn-success" onclick="setStatus('diproses verifikator')">
+                    <i class="fa fa-arrow-right"></i> Teruskan
+                </button>
+            </div>
+            <div class="col-auto">
+                <!-- Kembalikan Button -->
+                <button type="submit" class="btn btn-danger" onclick="setStatus('dikembalikan')">
+                    <i class="fa fa-arrow-left"></i> Kembalikan
+                </button>
+            </div>
+        </div>
+        <?php endif; ?>
+    </form>
+
+<?php elseif (in_array('verifikator', session()->get('level')) && $pengaduan['user_id'] != session()->get('id_user')) : ?>
+<form action="<?= base_url('pengaduan/change-status') ?>" method="post" id="verifikator-pengaduan-status-form">
+    <?php if ($pengaduan['status'] == 'diproses verifikator'): ?>
+    <div class="mt-3 row align-items-center">
+        <input type="hidden" name="pengaduan_id" value="<?= $pengaduan['id'] ?>">
+        <input type="hidden" name="status" id="status-field">
+        <div class="col-auto">
+            <!-- Selesai Button -->
+            <button type="submit" class="btn btn-success" onclick="setStatus('selesai')">
+                <i class="fa fa-check"></i> Selesai
+            </button>
+        </div>
+        <div class="col-auto">
+            <!-- Tolak Button -->
+            <button type="submit" class="btn btn-danger" onclick="setStatus('ditolak')">
+                <i class="fa fa-times"></i> Tolak
+            </button>
+        </div>
+    </div>
+    <?php endif; ?>
+</form>
+<?php endif; ?>
 <?= $this->endSection('isi') ?>
 
 <!-- ======= Section Scripts ======= -->
 <?= $this->section('scripts') ?>
-
+<!-- Script Halaman Detail Pengaduan -->
+<script src="<?= base_url() ?>/dist/js/pages/details_pengaduan.js"></script>
 <?= $this->endSection('scripts') ?>

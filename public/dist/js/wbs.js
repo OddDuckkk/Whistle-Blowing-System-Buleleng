@@ -113,3 +113,28 @@ function showFailureModal({title, text, confirmButtonText}) {
         confirmButtonText: confirmButtonText,
     })
 }
+
+function showInformationModal({title, text, confirmButtonText}) {
+    Swal.fire({
+        title: title,
+        text: text,
+        icon: 'info',
+        confirmButtonColor: '#007bff',
+        confirmButtonText: confirmButtonText,
+    })
+}
+
+// Fungsi ganti status pengaduan
+function changeStatus(pengaduanId, status) {
+    $.ajax({
+        url: baseUrl + "/pengaduan/change-status",
+        type: 'POST',
+        data: {
+            pengaduan_id: pengaduanId,
+            status: status
+        },
+        error: function() {
+            showToast('Error', 'Koneksi ke server gagal', 'error');
+        }
+    });
+}
