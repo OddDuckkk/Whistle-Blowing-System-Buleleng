@@ -132,6 +132,7 @@
 <div>
     <h5 class="text-primary"><strong>AKSI</strong></h5>
 </div>
+<!-- Conditional Buttons untuk Pelapor -->
 <?php if ($pengaduan['user_id'] == session()->get('id_user')): ?>
     <form action="<?= base_url('pengaduan/change-status') ?>" method="post" id="pelapor-pengaduan-status-form">
         <?php if ($pengaduan['status'] == 'baru' || $pengaduan['status'] == 'dikembalikan'): ?>
@@ -148,17 +149,19 @@
                     <i class="fa fa-edit"></i> Edit
                 </button>
             </div>
+            <?php if ($pengaduan['status'] == 'baru'): ?>
             <div class="col-auto">
                 <button class="btn btn-danger" onclick="handleDelete('<?= $pengaduan['id'] ?>')">
                     <i class="fa fa-trash"></i> Hapus
                 </button>
             </div>
+            <?php endif; ?>
         </div>
         <?php else : ?>
             <p>Tidak ada aksi yang dapat dilakukan.</p>
         <?php endif; ?>
     </form>
-<!-- Conditional Buttons for Operator -->
+<!-- Conditional Buttons untuk Operator -->
 <?php elseif (in_array('operator', session()->get('level')) && $pengaduan['user_id'] != session()->get('id_user')) : ?>
     <form action="<?= base_url('pengaduan/change-status') ?>" method="post" id="operator-pengaduan-status-form">
         <?php if ($pengaduan['status'] == 'dikirim' || $pengaduan['status'] == 'diproses operator'): ?>
@@ -182,7 +185,7 @@
             <p>Tidak ada aksi yang dapat dilakukan.</p>
         <?php endif; ?>
     </form>
-
+<!-- Conditional Buttons untuk Verifikator -->
 <?php elseif (in_array('verifikator', session()->get('level')) && $pengaduan['user_id'] != session()->get('id_user')) : ?>
 <form action="<?= base_url('pengaduan/change-status') ?>" method="post" id="verifikator-pengaduan-status-form">
     <?php if ($pengaduan['status'] == 'diproses verifikator'): ?>
