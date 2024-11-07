@@ -263,6 +263,8 @@ class PengaduanController extends BaseController {
     }
 
     public function delete($id) {
+        // Ambil id user
+        $userId = $this->session->get('id_user'); 
         // Temukan pengaduan berdasarkan ID
         $pengaduan = $this->pengaduanModel->find($id);
         if ($pengaduan) {
@@ -279,9 +281,12 @@ class PengaduanController extends BaseController {
             $this->lampiranModel->deleteByPengaduanId($id);
             // Hapus pengaduan
             $this->pengaduanModel->delete($id);
-            return redirect()->to('/pengaduan')->with('message', 'Pengaduan berhasil dihapus!');
+
+            session()->setFlashdata('success_message', 'Pengaduan berhasil dihapus!');
+            return redirect()->to("/pengaduan/user/$userId");
         } else {
-            return redirect()->to('/pengaduan')->with('error', 'Pengaduan tidak ditemukan!');
+            session()->setFlashdata('failure_message', 'Pengaduan tidak ditemukan!');
+            return redirect()->to("/pengaduan/user/$userId");
         }
     }
 
@@ -306,32 +311,32 @@ class PengaduanController extends BaseController {
     }
 
     public function uploadFile() {
-            if ($_FILES['file']['error'] === UPLOAD_ERR_OK) {
-                $file = $_FILES['file'];
+        if ($_FILES['file']['error'] === UPLOAD_ERR_OK) {
+            $file = $_FILES['file'];
 
-                // Penamaan file
-                $randomString = bin2hex(random_bytes(8)); // random string  
-                $fileName = pathinfo($file['name'], PATHINFO_FILENAME);  // nama file asli
-                $extension = pathinfo($file['name'], PATHINFO_EXTENSION);  // ekstensi file
-                $shortFileName = substr($fileName, 0, 40); // ambil 40 karakter pertama dari nama file  
-                $randomName = $randomString . '-' . $shortFileName . '.' . $extension; //hasil gabungan nama unik
+            // Penamaan file
+            $randomString = bin2hex(random_bytes(8)); // random string  
+            $fileName = pathinfo($file['name'], PATHINFO_FILENAME);  // nama file asli
+            $extension = pathinfo($file['name'], PATHINFO_EXTENSION);  // ekstensi file
+            $shortFileName = substr($fileName, 0, 40); // ambil 40 karakter pertama dari nama file  
+            $randomName = $randomString . '-' . $shortFileName . '.' . $extension; //hasil gabungan nama unik
 
-                // $randomName = bin2hex(random_bytes(8)) . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
-                $uploadDirectory = $_SERVER['DOCUMENT_ROOT'] . '/uploads/';
-                $uploadPath = $uploadDirectory . $randomName;
-                $urlPath = '/uploads/' . $randomName;
-        
-                if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
-                    $response = ['filePath' => $urlPath];
-                    echo json_encode($response);
-                } else {
-                    http_response_code(500);
-                    echo json_encode(['error' => 'Failed to move uploaded file.']);
-                }
+            // $randomName = bin2hex(random_bytes(8)) . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
+            $uploadDirectory = $_SERVER['DOCUMENT_ROOT'] . '/uploads/';
+            $uploadPath = $uploadDirectory . $randomName;
+            $urlPath = '/uploads/' . $randomName;
+    
+            if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
+                $response = ['filePath' => $urlPath];
+                echo json_encode($response);
             } else {
-                http_response_code(400);
-                echo json_encode(['error' => 'Upload error']);
+                http_response_code(500);
+                echo json_encode(['error' => 'Failed to move uploaded file.']);
             }
+        } else {
+            http_response_code(400);
+            echo json_encode(['error' => 'Upload error']);
+        }
     }
     public function deleteFile() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

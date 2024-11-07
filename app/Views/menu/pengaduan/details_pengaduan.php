@@ -145,13 +145,13 @@
                     </button>
             </div>
             <div class="col-auto me-3"> <!-- Added 'me-3' for right margin -->
-                <button class="btn btn-warning" onclick="handleEdit('<?= $pengaduan['id'] ?>')">
+                <button type="button" class="btn btn-warning" onclick="handleEdit('<?= $pengaduan['id'] ?>')">
                     <i class="fa fa-edit"></i> Edit
                 </button>
             </div>
             <?php if ($pengaduan['status'] == 'baru'): ?>
             <div class="col-auto">
-                <button class="btn btn-danger" onclick="handleDelete('<?= $pengaduan['id'] ?>')">
+                <button type="button" class="btn btn-danger" onclick="handleDelete('<?= $pengaduan['id'] ?>')">
                     <i class="fa fa-trash"></i> Hapus
                 </button>
             </div>
