@@ -216,7 +216,12 @@ const dropzone = new Dropzone("#dropzone-lampiran", {
             const detailsTable = document.getElementById("lampiranDetailsTable");
             detailsTable.style.display = "table";
 
-            // Tambahkan row pada tabel detail deskripsi lampiran
+            let originalFileName = file.name; 
+
+            if (document.querySelector(`input[name='old_deskripsi_lampiran[${rowIndex}]']`)) {
+                originalFileName = file.name.split('-').slice(1).join('-');  
+            };
+
             const rowId = `row-${file.upload.uuid}`;
             const deskripsiInput = document.querySelector(`input[name='old_deskripsi_lampiran[${rowIndex}]']`);
             const errorInput = document.querySelector(`input[name='old_error_deskripsi[${rowIndex}]']`);
@@ -227,7 +232,7 @@ const dropzone = new Dropzone("#dropzone-lampiran", {
             // Create a single row for each file
             const rowHtml = `
                 <tr id="${rowId}">
-                    <td style="width: 50%; word-break: break-all;">${file.name}</td>
+                    <td style="width: 50%; word-break: break-all;">${originalFileName}</td>
                     <td style="width: 50%;">
                         <textarea name="deskripsi_lampiran[]" 
                         class="form-control ${errorClass}" 

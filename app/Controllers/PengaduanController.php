@@ -308,7 +308,15 @@ class PengaduanController extends BaseController {
     public function uploadFile() {
             if ($_FILES['file']['error'] === UPLOAD_ERR_OK) {
                 $file = $_FILES['file'];
-                $randomName = bin2hex(random_bytes(8)) . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
+
+                // Penamaan file
+                $randomString = bin2hex(random_bytes(8)); // random string  
+                $fileName = pathinfo($file['name'], PATHINFO_FILENAME);  // nama file asli
+                $extension = pathinfo($file['name'], PATHINFO_EXTENSION);  // ekstensi file
+                $shortFileName = substr($fileName, 0, 40); // ambil 40 karakter pertama dari nama file  
+                $randomName = $randomString . '-' . $shortFileName . '.' . $extension; //hasil gabungan nama unik
+
+                // $randomName = bin2hex(random_bytes(8)) . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
                 $uploadDirectory = $_SERVER['DOCUMENT_ROOT'] . '/uploads/';
                 $uploadPath = $uploadDirectory . $randomName;
                 $urlPath = '/uploads/' . $randomName;
