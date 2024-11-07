@@ -340,7 +340,16 @@ Buat Pengaduan
                 </tr>
             </tbody>
         </table>
-
+        <?php if (old('deskripsi_lampiran')) : ?>
+            <?php foreach (old('deskripsi_lampiran') as $index => $deskripsiLampiran) : ?>
+                <input type="hidden" name="old_deskripsi_lampiran[<?= $index ?>]" value="<?= htmlspecialchars($deskripsiLampiran, ENT_QUOTES, 'UTF-8') ?>">
+                <?php if (isset(session()->getFlashdata('errDeskripsiLampiran')[$index])) : ?>
+                    <input type="hidden" name="old_error_deskripsi[<?= $index ?>]" value="true">
+                <?php else : ?>
+                    <input type="hidden" name="old_error_deskripsi[<?= $index ?>]" value="false">
+                <?php endif; ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
         <!-- Input Deskripsi Lampiran -->
         <table class="table table-borderless" id="lampiranDetailsTable" style="display: none;">
             <thead>

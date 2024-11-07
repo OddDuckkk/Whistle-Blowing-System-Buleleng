@@ -191,6 +191,7 @@ const dropzone = new Dropzone("#dropzone-lampiran", {
         const myDropzone = this;
         let isEmittingMockFile = false;
         let mockFilesCounter = 0;
+        let rowIndex = 0;
 
         // Fungsi event file ditambah
         myDropzone.on("addedfile", function(file) {
@@ -217,17 +218,31 @@ const dropzone = new Dropzone("#dropzone-lampiran", {
 
             // Tambahkan row pada tabel detail deskripsi lampiran
             const rowId = `row-${file.upload.uuid}`;
+            const deskripsiInput = document.querySelector(`input[name='old_deskripsi_lampiran[${rowIndex}]']`);
+            const errorInput = document.querySelector(`input[name='old_error_deskripsi[${rowIndex}]']`);
+            const deskripsiValue = deskripsiInput ? deskripsiInput.value : "";
+            const hasError = errorInput && errorInput.value === "true";
+            const errorClass = hasError ? "is-invalid" : "";
+
+            // Create a single row for each file
             const rowHtml = `
                 <tr id="${rowId}">
                     <td style="width: 50%; word-break: break-all;">${file.name}</td>
                     <td style="width: 50%;">
                         <textarea name="deskripsi_lampiran[]" 
-                        class="form-control" rows="2" 
-                        placeholder="Deskripsi Lampiran"></textarea>
+                        class="form-control ${errorClass}" 
+                        rows="2" 
+                        placeholder="Deskripsi Lampiran">${deskripsiValue}</textarea>
+                        ${hasError ? `
+                            <div class="invalid-feedback">
+                                Deskripsi lampiran tidak boleh kosong
+                            </div>
+                        ` : ""}
                     </td>
                 </tr>
             `;
             detailsTable.querySelector("tbody").insertAdjacentHTML("beforeend", rowHtml);
+
 
             // Inisialisasi hidden input untuk dikirimkan ke controller
             const input = document.createElement("input");
@@ -250,6 +265,8 @@ const dropzone = new Dropzone("#dropzone-lampiran", {
             } else {
                 dzMessage.style.display = 'none';
             }
+
+            rowIndex++;
         });
 
 
