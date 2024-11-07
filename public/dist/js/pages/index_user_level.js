@@ -16,7 +16,7 @@ $(document).ready(function() {
 
 // Handle edit button
 function handleEdit(nip) {
-    window.location.href = baseUrl + "/user-level/edit/" + nip;
+    window.location.href = baseUrl + "user-level/edit/" + nip;
 }
 
 // Handle delete button
@@ -27,7 +27,7 @@ function handleDelete(nip) {
         icon: 'warning',
         confirmButtonText: 'Hapus',
         cancelButtonText: 'Batal',
-        onConfirm: () => window.location.href = baseUrl + "/user-level/delete/" + nip
+        onConfirm: () => window.location.href = baseUrl + "user-level/delete/" + nip
     });
 }
 

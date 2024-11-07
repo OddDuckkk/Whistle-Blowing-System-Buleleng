@@ -80,7 +80,7 @@ if (verifikatorForm) {
 
 // Handle edit button
 function handleEdit(pengaduanId) {
-        window.location.href = baseUrl + "/pengaduan/edit/" + pengaduanId;
+        window.location.href = baseUrl + "pengaduan/edit/" + pengaduanId;
 }
 
 // Handle delete button
@@ -91,7 +91,7 @@ function handleDelete(nip) {
         icon: 'warning',
         confirmButtonText: 'Hapus',
         cancelButtonText: 'Batal',
-        onConfirm: () => window.location.href = baseUrl + "/pengaduan/delete/" + nip
+        onConfirm: () => window.location.href = baseUrl + "pengaduan/delete/" + nip
     });
 }
 

@@ -137,7 +137,7 @@ $(document).on('click', '.search-nip', function() {
 
     // teruskan ke controller
     $.ajax({
-        url: baseUrl + '/auth/search-nip', 
+        url: baseUrl + 'auth/search-nip', 
         method: 'POST',
         data: { nip: nip },
         success: function(res) {
@@ -181,7 +181,7 @@ document.getElementById('pengaduan_form').addEventListener('submit', function (e
 Dropzone.autoDiscover = false;
 
 const dropzone = new Dropzone("#dropzone-lampiran", {
-    url: baseUrl + "/pengaduan/upload-file",
+    url: baseUrl + "pengaduan/upload-file",
     maxFilesize: 10,
     maxFiles: 3,
     addRemoveLinks: true,
@@ -189,12 +189,18 @@ const dropzone = new Dropzone("#dropzone-lampiran", {
     acceptedFiles: ".jpeg,.jpg,.png,.pdf",
     init: function() {
         const myDropzone = this;
+        let isEmittingMockFile = false;
+        let mockFilesCounter = 0;
 
         // Fungsi event file ditambah
         myDropzone.on("addedfile", function(file) {
 
+            if (file.type === "application/pdf") {
+                myDropzone.emit("thumbnail", file, baseUrl + "dist/img/pdf-icon.svg"); 
+            }
+
             // Validasi jika file lebih dari yang ditentukan
-            if (myDropzone.files.length > myDropzone.options.maxFiles) {
+            if ((myDropzone.files.length + mockFilesCounter) > myDropzone.options.maxFiles) {
                 showToast('Warning', 'Jumlah maksimum file sudah diraih!', 'warning');
                 myDropzone.removeFile(file);
             } 
@@ -232,7 +238,20 @@ const dropzone = new Dropzone("#dropzone-lampiran", {
             document.getElementById("fileInputs").appendChild(input);
             file.hiddenInput = input; 
             file.rowId = rowId; 
+
+            if (file.isMock) {
+                file.hiddenInput.value = file.filePath; 
+                mockFilesCounter++;
+            }
+
+            const dzMessage = document.querySelector(".dz-message");
+            if ((myDropzone.files.length + mockFilesCounter) === 0) {
+                dzMessage.style.display = 'block';
+            } else {
+                dzMessage.style.display = 'none';
+            }
         });
+
 
         // Fungsi event file dihapus
         this.on("removedfile", function(file) {
@@ -255,7 +274,7 @@ const dropzone = new Dropzone("#dropzone-lampiran", {
 
             // Jalankan request hapus file ke controller
             const filePath = file.filePath.replace(/\\/g, ''); 
-            fetch(baseUrl + "/pengaduan/delete-file", {
+            fetch(baseUrl + "pengaduan/delete-file", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -266,6 +285,50 @@ const dropzone = new Dropzone("#dropzone-lampiran", {
             .then(data => {
                 console.log(data);
             });
+
+            if (file.isMock) {
+                mockFilesCounter--;
+            }
+
+            const dzMessage = document.querySelector(".dz-message");
+            if ((myDropzone.files.length + mockFilesCounter) === 0) {
+                dzMessage.style.display = 'block';
+            } else {
+                dzMessage.style.display = 'none';
+            }
+        });
+
+        // Handling repopulasi data
+        const savedFiles = document.querySelectorAll("input[name='old_file_lampiran[]']");
+        savedFiles.forEach((input, index) => {
+            const filePath = input.value;
+            const fileName = filePath.split('/').pop();
+
+            // Buat mock file
+            const mockFile = {
+                name: fileName,
+                size: 12345, 
+                filePath: filePath,
+                upload: { uuid: 'mock-' + index }, 
+                isMock: true
+            };
+
+            // isEmittingMockFile = true;
+
+            // Tambah mock file ke dropzone
+            myDropzone.emit("addedfile", mockFile);
+
+            // set thumbnail
+            if (filePath.endsWith(".pdf")) {
+                myDropzone.emit("thumbnail", mockFile, baseUrl + "dist/img/pdf-icon.svg");
+            } else {
+                myDropzone.emit("thumbnail", mockFile, baseUrl + filePath);
+            }
+
+            myDropzone.emit("complete", mockFile);
+
+            // isEmittingMockFile = false;
+
         });
 
         // Fungsi jika page di reload
@@ -275,7 +338,7 @@ const dropzone = new Dropzone("#dropzone-lampiran", {
                 if (!isFormSubmitted) {
                     if (filePath) {
                         // Synchronous request sehingga reload page menunggu penghapusan file selesai
-                        navigator.sendBeacon(baseUrl + "/pengaduan/delete-file", JSON.stringify({ filePath: filePath }));
+                        navigator.sendBeacon(baseUrl + "pengaduan/delete-file", JSON.stringify({ filePath: filePath }));
                     }
                 }
             });

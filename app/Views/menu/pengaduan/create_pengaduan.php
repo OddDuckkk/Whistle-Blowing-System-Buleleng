@@ -330,7 +330,11 @@ Buat Pengaduan
                             </div>
                         </div>
                         <div id="fileInputs">
-                            <!-- Hidden input path file ditambah secara dinamis (create_pengaduan.js) -->
+                        <?php if (old('file_lampiran')) : ?>
+                            <?php foreach (old('file_lampiran') as $index => $filePath) : ?>
+                                <input type="hidden" name="old_file_lampiran[]" value="<?= old('file_lampiran.' . $index) ?>">
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                         </div>
                     </td>
                 </tr>

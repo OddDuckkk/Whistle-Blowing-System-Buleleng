@@ -1,8 +1,9 @@
+/* Badge css */
 .custom-badge {
     padding: 0.4em 0.6em;
     font-size: 0.9rem; 
 }
-
+/* Dropzone css */
 .dropzone {
     background: white;
     border-radius: 5px;
@@ -11,7 +12,23 @@
     margin-left: auto;
     margin-right: auto;
 }
+.dz-image {
+    width: 100px; 
+    height: 100px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 4px;
+}
 
+.dz-image img {
+    width: auto;
+    height: 100%;
+    object-fit: contain; 
+}
+
+/* Detail lampiran css */
 .lampiran-container {
     display: flex;
     align-items: start;
@@ -32,3 +49,6 @@
     flex-grow: 1; 
     padding: 0; 
 }
+
+
+
