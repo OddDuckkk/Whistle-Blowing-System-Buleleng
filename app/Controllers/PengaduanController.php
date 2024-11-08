@@ -220,6 +220,8 @@ class PengaduanController extends BaseController {
 
     public function update($id) {
 
+        // Validasi data yang diinput dari form-CreatePengaduan 
+        // Menggunakan fungsi validatePengaduan
         if (!$this->validatePengaduan()) {
             $sessError = [
                 'errJudul' => $this->validation->getError('judul'),
@@ -227,16 +229,16 @@ class PengaduanController extends BaseController {
                 'errNominal' => $this->validation->getError('nominal'),
                 'errTempat' => $this->validation->getError('tempat'),
                 'errDeskripsi' => $this->validation->getError('deskripsi'),
-                'errNamaTerlapor' => $this->validation->getError('nama_terlapor[]'),
-                'errJabatanTerlapor' => $this->validation->getError('jabatan_terlapor[]'),
-                'errUnitKerja' => $this->validation->getError('unit_kerja[]'),
-                'errFileLampiran' => $this->validation->getError('file_lampiran[]'),
-                'errDeskripsiLampiran' => $this->validation->getError('deskripsi_lampiran[]')
+                'errNipTerlapor' => $this->extractArrayErrors($this->validation->getErrors(), 'nip_terlapor'),
+                'errNamaTerlapor' => $this->extractArrayErrors($this->validation->getErrors(), 'nama_terlapor'),
+                'errJabatanTerlapor' => $this->extractArrayErrors($this->validation->getErrors(), 'jabatan_terlapor'),
+                'errUnitKerja' => $this->extractArrayErrors($this->validation->getErrors(), 'unit_kerja'),
+                'errDeskripsiLampiran' => $this->extractArrayErrors($this->validation->getErrors(), 'deskripsi_lampiran'),
             ];
             session()->setFlashdata($sessError);
             return redirect()->to(site_url("/pengaduan/edit/$id"))->withInput();
         }
-
+    
         // Proses update data pengaduan
         $data = [
             'judul'      => $this->request->getPost('judul'),
@@ -246,21 +248,26 @@ class PengaduanController extends BaseController {
             'deskripsi'  => $this->request->getPost('deskripsi'),
             'updated_at' => date('Y-m-d H:i:s'), // Waktu update
         ];
-
+    
         // Update data pengaduan
         $this->pengaduanModel->update($id, $data);
-
+    
         // Hapus pihak terlibat lama
         $this->pihakTerlibatModel->where('pengaduan_id', $id)->delete();
-        /** Update data pihak terlibat */
+    
+        // Simpan data pihak terlibat baru
         $this->savePihakTerlibat($id);
+    
         // Hapus lampiran lama
         $this->lampiranModel->where('pengaduan_id', $id)->delete();
-        /** Update data lampiran  */
+    
+        // Simpan data lampiran baru
         $this->saveLampiran($id);
-
-        return redirect()->to('/pengaduan')->with('message', 'Pengaduan berhasil diperbarui!');
+    
+        session()->setFlashdata('success_message', 'Pengaduan berhasil diperbaharui!');
+        return redirect()->to("/pengaduan/details/$id");
     }
+    
 
     public function delete($id) {
         // Ambil id user
