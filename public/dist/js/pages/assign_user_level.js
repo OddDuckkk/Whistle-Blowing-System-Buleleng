@@ -3,7 +3,6 @@ $(document).on('click', '.search-user', function() {
     // Mengambil row dan nip
     let row = $(this).closest('tr');
     let nip = row.find('input[name="nip_pegawai"]').val();
-    const baseUrl = document.body.getAttribute('base-url');
 
     let spinner = row.find('.spinner-border');
     let icon = row.find('i.fa-search');
@@ -13,7 +12,7 @@ $(document).on('click', '.search-user', function() {
 
     // teruskan ke controller
     $.ajax({
-        url: baseUrl + '/auth/search-nip', 
+        url: baseUrl + 'auth/search-nip', 
         method: 'POST',
         data: { nip: nip },
         success: function(res) {

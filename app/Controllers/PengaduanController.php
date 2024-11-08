@@ -180,7 +180,7 @@ class PengaduanController extends BaseController {
         }
 
         // Generate nomor pengaduan 
-        $newNumber = $this->generateNomorPengaduan();
+        $newNumber = $this->pengaduanModel->generateNomorPengaduan();
 
         // Proses simpan data pengaduan 
         $data = [
@@ -189,7 +189,7 @@ class PengaduanController extends BaseController {
             'tempat' => $this->request->getPost('tempat'),
             'nominal' => $this->request->getPost('nominal'),
             'deskripsi' => $this->request->getPost('deskripsi'),
-            'status' => 'diproses operator',
+            'status' => 'baru',
             'nomor_pengaduan' => $newNumber,
             'user_id' => $userId,
             'created_at' => date('Y-m-d H:i:s'),
@@ -220,6 +220,8 @@ class PengaduanController extends BaseController {
 
     public function update($id) {
 
+        // Validasi data yang diinput dari form-CreatePengaduan 
+        // Menggunakan fungsi validatePengaduan
         if (!$this->validatePengaduan()) {
             $sessError = [
                 'errJudul' => $this->validation->getError('judul'),
@@ -227,16 +229,16 @@ class PengaduanController extends BaseController {
                 'errNominal' => $this->validation->getError('nominal'),
                 'errTempat' => $this->validation->getError('tempat'),
                 'errDeskripsi' => $this->validation->getError('deskripsi'),
-                'errNamaTerlapor' => $this->validation->getError('nama_terlapor[]'),
-                'errJabatanTerlapor' => $this->validation->getError('jabatan_terlapor[]'),
-                'errUnitKerja' => $this->validation->getError('unit_kerja[]'),
-                'errFileLampiran' => $this->validation->getError('file_lampiran[]'),
-                'errDeskripsiLampiran' => $this->validation->getError('deskripsi_lampiran[]')
+                'errNipTerlapor' => $this->extractArrayErrors($this->validation->getErrors(), 'nip_terlapor'),
+                'errNamaTerlapor' => $this->extractArrayErrors($this->validation->getErrors(), 'nama_terlapor'),
+                'errJabatanTerlapor' => $this->extractArrayErrors($this->validation->getErrors(), 'jabatan_terlapor'),
+                'errUnitKerja' => $this->extractArrayErrors($this->validation->getErrors(), 'unit_kerja'),
+                'errDeskripsiLampiran' => $this->extractArrayErrors($this->validation->getErrors(), 'deskripsi_lampiran'),
             ];
             session()->setFlashdata($sessError);
             return redirect()->to(site_url("/pengaduan/edit/$id"))->withInput();
         }
-
+    
         // Proses update data pengaduan
         $data = [
             'judul'      => $this->request->getPost('judul'),
@@ -246,23 +248,30 @@ class PengaduanController extends BaseController {
             'deskripsi'  => $this->request->getPost('deskripsi'),
             'updated_at' => date('Y-m-d H:i:s'), // Waktu update
         ];
-
+    
         // Update data pengaduan
         $this->pengaduanModel->update($id, $data);
-
+    
         // Hapus pihak terlibat lama
         $this->pihakTerlibatModel->where('pengaduan_id', $id)->delete();
-        /** Update data pihak terlibat */
+    
+        // Simpan data pihak terlibat baru
         $this->savePihakTerlibat($id);
+    
         // Hapus lampiran lama
         $this->lampiranModel->where('pengaduan_id', $id)->delete();
-        /** Update data lampiran  */
+    
+        // Simpan data lampiran baru
         $this->saveLampiran($id);
-
-        return redirect()->to('/pengaduan')->with('message', 'Pengaduan berhasil diperbarui!');
+    
+        session()->setFlashdata('success_message', 'Pengaduan berhasil diperbaharui!');
+        return redirect()->to("/pengaduan/details/$id");
     }
+    
 
     public function delete($id) {
+        // Ambil id user
+        $userId = $this->session->get('id_user'); 
         // Temukan pengaduan berdasarkan ID
         $pengaduan = $this->pengaduanModel->find($id);
         if ($pengaduan) {
@@ -279,19 +288,13 @@ class PengaduanController extends BaseController {
             $this->lampiranModel->deleteByPengaduanId($id);
             // Hapus pengaduan
             $this->pengaduanModel->delete($id);
-            return redirect()->to('/pengaduan')->with('message', 'Pengaduan berhasil dihapus!');
-        } else {
-            return redirect()->to('/pengaduan')->with('error', 'Pengaduan tidak ditemukan!');
-        }
-    }
 
-    protected function generateNomorPengaduan() {
-        // Mengambil nomor pengaduan terakhir
-        $lastPengaduan = $this->pengaduanModel->orderBy('id', 'DESC')->first();
-        // Mengambil digit akhir 
-        $lastId = $lastPengaduan ? intval(substr($lastPengaduan['nomor_pengaduan'], 3)) : 0;
-        // Mengembalikan nomor pengaduan baru
-        return 'WBS' . str_pad($lastId + 1, 5, '0', STR_PAD_LEFT);
+            session()->setFlashdata('success_message', 'Pengaduan berhasil dihapus!');
+            return redirect()->to("/pengaduan/user/$userId");
+        } else {
+            session()->setFlashdata('failure_message', 'Pengaduan tidak ditemukan!');
+            return redirect()->to("/pengaduan/user/$userId");
+        }
     }
 
     protected function savePihakTerlibat($pengaduanId) {
@@ -315,24 +318,32 @@ class PengaduanController extends BaseController {
     }
 
     public function uploadFile() {
-            if ($_FILES['file']['error'] === UPLOAD_ERR_OK) {
-                $file = $_FILES['file'];
-                $randomName = bin2hex(random_bytes(8)) . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
-                $uploadDirectory = $_SERVER['DOCUMENT_ROOT'] . '/uploads/';
-                $uploadPath = $uploadDirectory . $randomName;
-                $urlPath = '/uploads/' . $randomName;
-        
-                if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
-                    $response = ['filePath' => $urlPath];
-                    echo json_encode($response);
-                } else {
-                    http_response_code(500);
-                    echo json_encode(['error' => 'Failed to move uploaded file.']);
-                }
+        if ($_FILES['file']['error'] === UPLOAD_ERR_OK) {
+            $file = $_FILES['file'];
+
+            // Penamaan file
+            $randomString = bin2hex(random_bytes(8)); // random string  
+            $fileName = pathinfo($file['name'], PATHINFO_FILENAME);  // nama file asli
+            $extension = pathinfo($file['name'], PATHINFO_EXTENSION);  // ekstensi file
+            $shortFileName = substr($fileName, 0, 40); // ambil 40 karakter pertama dari nama file  
+            $randomName = $randomString . '-' . $shortFileName . '.' . $extension; //hasil gabungan nama unik
+
+            // $randomName = bin2hex(random_bytes(8)) . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
+            $uploadDirectory = $_SERVER['DOCUMENT_ROOT'] . '/uploads/';
+            $uploadPath = $uploadDirectory . $randomName;
+            $urlPath = '/uploads/' . $randomName;
+    
+            if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
+                $response = ['filePath' => $urlPath];
+                echo json_encode($response);
             } else {
-                http_response_code(400);
-                echo json_encode(['error' => 'Upload error']);
+                http_response_code(500);
+                echo json_encode(['error' => 'Failed to move uploaded file.']);
             }
+        } else {
+            http_response_code(400);
+            echo json_encode(['error' => 'Upload error']);
+        }
     }
     public function deleteFile() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

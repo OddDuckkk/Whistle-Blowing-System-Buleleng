@@ -16,7 +16,7 @@ $(document).ready(function() {
 
 // Handle button detail
 function handleDetails(pengaduanId) {
-    window.location.href = baseUrl + "/pengaduan/details/" + pengaduanId;
+    window.location.href = baseUrl + "pengaduan/details/" + pengaduanId;
 }
 // Pemanggilan modal sukses, jika terdapat sucess-message
 document.addEventListener("DOMContentLoaded", function() {

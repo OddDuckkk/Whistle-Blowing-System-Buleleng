@@ -88,13 +88,28 @@ class PengaduanModel extends Model
         return $data;
     }
 
-    public function findByUserId($userId)
-    {
+    public function generateNomorPengaduan() {
+        // Mulai transaksi untuk mengunci tabel
+        $this->db->transStart();
+    
+        // Ambil pengaduan terakhir berdasarkan nomor_pengaduan
+        $lastPengaduan = $this->db->query("SELECT * FROM {$this->table} ORDER BY nomor_pengaduan DESC FOR UPDATE")->getRowArray();
+    
+        // Buat nomor baru
+        $lastId = $lastPengaduan ? intval(substr($lastPengaduan['nomor_pengaduan'], 3)) : 0;
+        $newNomor = 'WBS' . str_pad($lastId + 1, 5, '0', STR_PAD_LEFT);
+    
+        // Selesaikan transaksi untuk membuka kunci tabel
+        $this->db->transComplete();
+    
+        return $newNomor;
+    }
+
+    public function findByUserId($userId) {
         return $this->where('user_id', $userId);
     }
 
-    public function filterByStatus($statuses)
-    {
+    public function filterByStatus($statuses) {
         return $this->whereIn('status', $statuses);
     }
 }
