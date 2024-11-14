@@ -50,5 +50,17 @@
     padding: 0; 
 }
 
+.btn-primary:hover {
+    background-color: #66B3FF; 
+    border-color: #66B3FF;
+}
 
+#pengaduanDetailsTable td {
+    padding-top: 10px;   /* Increase top padding */
+    padding-bottom: 10px; /* Increase bottom padding */
+}
+
+.accent-background-color {
+    background-color: #f0f4ff;
+}
 

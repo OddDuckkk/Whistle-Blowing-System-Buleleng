@@ -411,9 +411,10 @@ class PengaduanController extends BaseController {
         return $this->validate([
             'judul' => [
                 'label' => 'Judul',
-                'rules' => 'required',
+                'rules' => 'required|max_length[50]',
                 'errors' => [
-                    'required' => '{field} tidak boleh kosong'
+                    'required' => '{field} tidak boleh kosong',
+                    'max_length' => '{field} tidak boleh lebih dari {param} karakter'
                 ]
             ],
             'tanggal' => [

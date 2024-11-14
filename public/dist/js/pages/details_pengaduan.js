@@ -133,3 +133,27 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
+// This will initialize the lightbox only for image files
+$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+    var fileUrl = $(this).data('file'); // Get the file URL
+    // Only initialize the lightbox if the file is not a PDF
+    if (fileUrl && !fileUrl.endsWith('.pdf')) {
+        event.preventDefault();  // Prevent the default lightbox behavior for PDFs
+        $(this).ekkoLightbox();  // Initialize the lightbox for images
+    }
+});
+
+// When the lampiran-link is clicked, check if it's a PDF or image
+$(document).ready(function() {
+    $('.lampiran-link').click(function(e) {
+        var fileUrl = $(this).data('file'); // Get the file URL
+        var description = $(this).data('description'); // Get the description
+        if (fileUrl.endsWith('.pdf')) {
+            e.preventDefault(); // Prevent the lightbox for PDFs
+            // Open modal and set the iframe src to display the PDF
+            $('#pdfIframe').attr('src', fileUrl); // Set the PDF source
+            $('#pdfModalLabel').text(description); // Set the modal title to description
+            $('#pdfModal').modal('show'); // Show the modal
+        }
+    });
+});

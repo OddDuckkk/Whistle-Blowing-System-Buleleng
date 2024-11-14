@@ -1,5 +1,5 @@
 <!-- ======= Sidebar ======= -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-light-primary elevation-4">
     <!-- Identitas Aplikasi -->
     <a href="<?= base_url() ?>/index3.html" class="brand-link bg-primary">
         <img src="<?= base_url() ?>/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
