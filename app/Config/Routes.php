@@ -29,6 +29,8 @@ $routes->get('/pengaduan/operator/riwayat', 'PengaduanController::getOperatorIna
 $routes->get('/pengaduan/verifikator', 'PengaduanController::getVerifikatorActivePengaduan');
 $routes->get('/pengaduan/verifikator/riwayat', 'PengaduanController::getVerifikatorInactivePengaduan');
 
+$routes->get('/pengaduan/peninjau/riwayat', 'PengaduanController::getPeninjauInactivePengaduan');
+
 
 
 $routes->get('/login/index', 'AuthController::index');

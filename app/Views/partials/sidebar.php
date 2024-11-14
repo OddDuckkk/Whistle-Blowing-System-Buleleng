@@ -88,6 +88,18 @@
                 </li>
                 <?php endif ?>
 
+                <!-- Menu Level Peninjau -->
+                <?php if (in_array('peninjau', session()->get('level'))): ?>
+                <li class="nav-header">Peninjau</li>
+
+                <li class="nav-item <?= (uri_string() == 'pengaduan') ? 'active' : ''; ?>">
+                    <a href="/pengaduan/peninjau/riwayat" class="nav-link <?= (uri_string() == 'pengaduan/peninjau/riwayat') ? 'active' : ''; ?>">
+                        <i class="nav-icon fas fa-history"></i>
+                        <p>Riwayat Pengaduan</p>
+                    </a>
+                </li>
+                <?php endif ?>
+
                 <!-- Menu Level Superadmin -->
                 <?php if (in_array('superadmin', session()->get('level'))): ?>
                     <li class="nav-header">Super Admin</li>

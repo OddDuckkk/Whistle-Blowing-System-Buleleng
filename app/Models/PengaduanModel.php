@@ -80,6 +80,10 @@ class PengaduanModel extends Model
         self::STATUS_DITOLAK,
         self::STATUS_SELESAI
     ];
+    public static $peninjauInactiveStatuses = [
+        self::STATUS_DITOLAK,
+        self::STATUS_SELESAI
+    ];
 
 
     protected function generateUUID(array $data)
