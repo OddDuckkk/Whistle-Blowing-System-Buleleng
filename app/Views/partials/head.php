@@ -23,4 +23,4 @@
 <!-- Select2 CSS -->
 <link href="<?= base_url() ?>/public/plugins/select2/css/select2.min.css" rel="stylesheet">
 <!-- Ekko Lightbox CSS -->
-<link rel="stylesheet" href="<?= base_url('dist/plugins/ekko-lightbox/ekko-lightbox.css') ?>">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css">

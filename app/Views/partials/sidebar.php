@@ -1,5 +1,5 @@
 <!-- ======= Sidebar ======= -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-light-primary elevation-4">
     <!-- Identitas Aplikasi -->
     <a href="<?= base_url() ?>/index3.html" class="brand-link bg-primary">
         <img src="<?= base_url() ?>/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -82,6 +82,18 @@
 
                 <li class="nav-item <?= (uri_string() == 'pengaduan') ? 'active' : ''; ?>">
                     <a href="/pengaduan/verifikator/riwayat" class="nav-link <?= (uri_string() == 'pengaduan/verifikator/riwayat') ? 'active' : ''; ?>">
+                        <i class="nav-icon fas fa-history"></i>
+                        <p>Riwayat Pengaduan</p>
+                    </a>
+                </li>
+                <?php endif ?>
+
+                <!-- Menu Level Peninjau -->
+                <?php if (in_array('peninjau', session()->get('level'))): ?>
+                <li class="nav-header">Peninjau</li>
+
+                <li class="nav-item <?= (uri_string() == 'pengaduan') ? 'active' : ''; ?>">
+                    <a href="/pengaduan/peninjau/riwayat" class="nav-link <?= (uri_string() == 'pengaduan/peninjau/riwayat') ? 'active' : ''; ?>">
                         <i class="nav-icon fas fa-history"></i>
                         <p>Riwayat Pengaduan</p>
                     </a>

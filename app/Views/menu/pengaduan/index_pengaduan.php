@@ -66,16 +66,16 @@ Data Pengaduan
                     </span>
                 </td>
                 <td>
-                    <?php if (in_array('operator', session()->get('level')) && ($p['status'] == 'dikirim')): ?>
+                    <?php if (uri_string() == 'pengaduan/operator' && in_array('operator', session()->get('level')) && ($p['status'] == 'dikirim')): ?>
                     <form action="<?= base_url('pengaduan/change-status') ?>" method="post" id="operator-pengaduan-status-form">
                         <input type="hidden" name="pengaduan_id" value="<?= $p['id'] ?>">
                         <input type="hidden" name="status" value="diproses operator"> 
-                        <button type="submit" class="btn btn-info btn-sm">
+                        <button type="submit" class="btn btn-primary btn-sm">
                             <i class="fas fa-eye"></i> Lihat
                         </button>
                     </form>
                     <?php else: ?>
-                    <button onclick="handleDetails('<?= $p['id'] ?>')" class="btn btn-info btn-sm">
+                    <button onclick="handleDetails('<?= $p['id'] ?>')" class="btn btn-primary btn-sm">
                         <i class="fas fa-eye"></i> Lihat
                     </button>
                     <?php endif; ?>

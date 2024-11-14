@@ -14,12 +14,12 @@
         <?= $this->include('partials/sidebar') ?>
     
         <!-- ======= Main ======= -->
-        <div class="content-wrapper">
+        <div class="content-wrapper accent-background-color">
             <!-- Content Header -->
-            <section class="content-header">
+            <section class="content-header accent-background-color">
                 <div class="container-fluid">
                     <div class="row mb-2">
-                        <div class="col-sm-6">
+                        <div class="col-sm-12">
                             <h1>
                                 <?= $this->renderSection('judul') ?>
                             </h1>
@@ -29,7 +29,7 @@
             </section>
 
             <!-- Content Body -->
-            <section class="content">
+            <section class="content accent-background-color">
                 <div class="card card-outline card-primary">
                     <!-- Card Header -->
                     <div class="card-header">

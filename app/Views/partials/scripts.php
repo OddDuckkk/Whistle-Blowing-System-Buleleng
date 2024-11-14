@@ -32,7 +32,7 @@
 <!-- Select2 -->
 <script src="<?= base_url() ?>/public/plugins/select2/js/select2.min.js"></script>
 <!-- Ekko Lightbox JS -->
-<script src="<?= base_url('dist/plugins/ekko-lightbox/ekko-lightbox.min.js') ?>"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>
 
 <!-- CUSTOM APP SCRIPTS -->
 <script src="<?= base_url() ?>/dist/js/wbs.js"></script>
