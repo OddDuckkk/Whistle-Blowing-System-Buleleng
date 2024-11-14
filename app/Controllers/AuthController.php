@@ -23,6 +23,12 @@ use Exception;
     * FUNGSI LOGOUT
     * Menghapus data session
     * Mengarahkan user ke halaman login
+
+    * FUNGSI SEARCH NIP
+    * Mencari data pegawai berdasarkan nip
+    * input = nip pegawai
+    * proses = call api pegawai
+    * output = data pegawai
 */
 
 class AuthController extends BaseController

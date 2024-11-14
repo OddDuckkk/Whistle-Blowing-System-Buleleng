@@ -1,4 +1,3 @@
-<!-- ======= Sidebar ======= -->
 <aside class="main-sidebar sidebar-light-primary elevation-4">
     <!-- Identitas Aplikasi -->
     <a href="<?= base_url() ?>/index3.html" class="brand-link bg-primary">
@@ -92,6 +91,12 @@
                 <?php if (in_array('peninjau', session()->get('level'))): ?>
                 <li class="nav-header">Peninjau</li>
 
+                <li class="nav-item <?= (uri_string() == 'pengaduan') ? 'active' : ''; ?>">
+                    <a href="/pengaduan/peninjau/statistik" class="nav-link <?= (uri_string() == 'pengaduan/peninjau/statistik') ? 'active' : ''; ?>">
+                        <i class="nav-icon fas fa-chart-bar"></i>
+                        <p>Statistik Pengaduan</p>
+                    </a>
+                </li>
                 <li class="nav-item <?= (uri_string() == 'pengaduan') ? 'active' : ''; ?>">
                     <a href="/pengaduan/peninjau/riwayat" class="nav-link <?= (uri_string() == 'pengaduan/peninjau/riwayat') ? 'active' : ''; ?>">
                         <i class="nav-icon fas fa-history"></i>

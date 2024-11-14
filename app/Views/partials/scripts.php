@@ -1,4 +1,3 @@
-<!-- ======= Scripts ======= -->
 <body base-url="<?= base_url() ?>">
 <i id="success-message" data-flashdata="<?= session()->getFlashdata('success_message') ?>">
 <i id="failure-message" data-flashdata="<?= session()->getFlashdata('failure_message') ?>">
@@ -33,6 +32,10 @@
 <script src="<?= base_url() ?>/public/plugins/select2/js/select2.min.js"></script>
 <!-- Ekko Lightbox JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>
+<!-- Chart Js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 
 <!-- CUSTOM APP SCRIPTS -->
 <script src="<?= base_url() ?>/dist/js/wbs.js"></script>

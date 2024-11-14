@@ -1,4 +1,5 @@
-// Event listener mencari data nip
+/* =======  EVENT LISTENERS ======= */
+// Event listener button search data nip
 $(document).on('click', '.search-user', function() {
     // Mengambil row dan nip
     let row = $(this).closest('tr');
@@ -38,7 +39,7 @@ $(document).on('click', '.search-user', function() {
     });
 });
 
-// Memanggil modal konfirmasi simpan
+// Event listener form submit
 document.getElementById('assign-user-level-form').addEventListener('submit', function (event) {
     event.preventDefault(); 
 
@@ -52,7 +53,7 @@ document.getElementById('assign-user-level-form').addEventListener('submit', fun
     });
 });
 
-// Memanggil modal failure jika terdapat failure-message
+// Event listener failure-message
 document.addEventListener("DOMContentLoaded", function() {
     const flashData = document.getElementById("failure-message").getAttribute("data-flashdata");
 
@@ -65,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-// Pemanggilan modal sukses, jika terdapat sucess-message
+// Event listener sucess-message
 document.addEventListener("DOMContentLoaded", function() {
     const flashData = document.getElementById("success-message").getAttribute("data-flashdata");
 

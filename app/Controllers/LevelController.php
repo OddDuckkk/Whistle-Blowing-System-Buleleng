@@ -15,7 +15,25 @@ use CodeIgniter\HTTP\ResponseInterface;
     * Mencari dan mengembalikan semua user yang memiliki level khusus 
     * Menuju View Index Level 
 
-    
+    * FUNGSI VIEW ASSIGN
+    * Meneruskan user ke view formulir menambah user level
+
+    * FUNGSI STORE
+    * Menyimpan data user level yang dikirim oleh user kedalam database 
+
+    * FUNGSI VIEW EDIT
+    * Meneruskan user ke view formulir edit user level
+
+    * FUNGSI UPDATE
+    * Memperbaharui data user level yang dikirim oleh user
+
+    * FUNGSI DELETE
+    * Menghapus data user level berdasarkan nip
+
+    * FUNGSI VALIDATE USER LEVEL ASSIGNMENT
+    * Memvalidasi data User level yang dikirimkan melalui form
+    * Validasi menggunakan Code igniter validation dan custom validation
+    * Mengembalikan pesan error ke view apabila validasi gagal
 */
 
 class LevelController extends BaseController

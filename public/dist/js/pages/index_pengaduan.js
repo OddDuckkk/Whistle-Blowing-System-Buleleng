@@ -1,8 +1,9 @@
-// Config data table pengaduan
+/* =======  VARIABEL & KOMPONEN INIT ======= */
+// Inisialisasi tabel pengaduan
 $(document).ready(function() {
     $('#pengaduanTable').DataTable({
         "lengthMenu": [5, 10, 25, 50, 100],
-        "pageLength": 5,
+        "pageLength": 10,
         "responsive": true,
         "lengthChange": true,
         "autoWidth": false,
@@ -14,11 +15,14 @@ $(document).ready(function() {
     }).buttons().container().appendTo('#pengaduanTable_wrapper .col-md-6:eq(0)');
 });
 
+/* =======  FUNCTIONS ======= */
 // Handle button detail
 function handleDetails(pengaduanId) {
     window.location.href = baseUrl + "pengaduan/details/" + pengaduanId;
 }
-// Pemanggilan modal sukses, jika terdapat sucess-message
+
+/* =======  EVENT LISTENERS ======= */
+// Event listener success-message
 document.addEventListener("DOMContentLoaded", function() {
     const flashData = document.getElementById("success-message").getAttribute("data-flashdata");
 
@@ -31,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-// Memanggil modal failure jika terdapat failure-message
+// Event listener failure-message
 document.addEventListener("DOMContentLoaded", function() {
     const flashData = document.getElementById("failure-message").getAttribute("data-flashdata");
 

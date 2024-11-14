@@ -8,7 +8,7 @@
 
 <!-- ======= Section Card Header ======= -->
 <?= $this->section('card-header') ?>
-<button onclick="history.back()" class="btn btn-primary">
+<button onclick="handleBack()" class="btn btn-primary">
     <i class="fa fa-arrow-left"></i> Kembali
 </button>
 <?= $this->endSection('card-header') ?>

@@ -30,7 +30,7 @@ $routes->get('/pengaduan/verifikator', 'PengaduanController::getVerifikatorActiv
 $routes->get('/pengaduan/verifikator/riwayat', 'PengaduanController::getVerifikatorInactivePengaduan');
 
 $routes->get('/pengaduan/peninjau/riwayat', 'PengaduanController::getPeninjauInactivePengaduan');
-
+$routes->get('/pengaduan/peninjau/statistik', 'PengaduanController::viewStatistics');
 
 
 $routes->get('/login/index', 'AuthController::index');

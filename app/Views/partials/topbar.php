@@ -1,6 +1,3 @@
-<!-- ======= Topbar Content ======= -->
-<style>
-</style>
 <nav class="main-header navbar navbar-expand navbar-dark navbar-light bg-primary">
     <!-- Hamburger Button -->
     <ul class="navbar-nav">

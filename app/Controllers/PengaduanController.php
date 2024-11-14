@@ -60,6 +60,10 @@ use App\Models\PihakTerlibatModel;
     * FUNGSI VIEW CREATE
     * Meneruskan user ke view formulir membuat pengaduan 
 
+    * FUNGSI VIEW STATISTICS
+    * Mengambil data statistik pengaduan
+    * Menuju View Statistik Pengaduan
+
     * FUNGSI STORE
     * Menyimpan data pengaduan yang dikirim oleh user kedalam database 
 
@@ -223,6 +227,66 @@ class PengaduanController extends BaseController {
         // Tampilkan data create pengaduan
         return view('menu/pengaduan/create_pengaduan');
     }
+
+    public function viewStatistics() {
+        // Existing statistics queries
+        $totalPengaduan = $this->pengaduanModel->where('status !=', 'baru')
+                                             ->where('status !=', 'dikembalikan')
+                                             ->countAllResults();
+    
+        $completedPengaduan = $this->pengaduanModel->where('status', 'selesai')->countAllResults();
+        $rejectedPengaduan = $this->pengaduanModel->where('status', 'ditolak')->countAllResults();
+        $inProgressPengaduan = $this->pengaduanModel->whereIn('status', ['dikirim', 'diproses operator', 'diproses verifikator'])
+                                                  ->countAllResults();
+    
+        // Kalkulasi persentase
+        $completedPercentage = $totalPengaduan > 0 ? ($completedPengaduan / $totalPengaduan) * 100 : 0;
+        $rejectedPercentage = $totalPengaduan > 0 ? ($rejectedPengaduan / $totalPengaduan) * 100 : 0;
+        $inProgressPercentage = $totalPengaduan > 0 ? ($inProgressPengaduan / $totalPengaduan) * 100 : 0;
+    
+        // Data berdasarkan waktu
+        $pengaduanToday = $this->pengaduanModel->where('DATE(created_at)', date('Y-m-d'))
+                                                ->where('status !=', 'baru')
+                                                ->where('status !=', 'dikembalikan')
+                                                ->countAllResults();
+        $pengaduanThisMonth = $this->pengaduanModel->where('MONTH(created_at)', date('m'))
+                                                  ->where('YEAR(created_at)', date('Y'))
+                                                  ->where('status !=', 'baru')
+                                                ->where('status !=', 'dikembalikan')
+                                                ->countAllResults();
+        $pengaduanThisYear = $this->pengaduanModel->where('YEAR(created_at)', date('Y'))
+                                                ->where('status !=', 'baru')
+                                                ->where('status !=', 'dikembalikan')
+                                                ->countAllResults();
+    
+        // Query complaints by month for the current year
+        $monthlyData = [];
+        for ($month = 1; $month <= 12; $month++) {
+            $monthlyData[$month] = $this->pengaduanModel->where('MONTH(created_at)', $month)
+                                                        ->where('YEAR(created_at)', date('Y'))
+                                                        ->where('status !=', 'baru')
+                                                        ->where('status !=', 'dikembalikan')
+                                                        ->countAllResults();
+        }
+    
+        // Prepare data for view
+        $data = [
+            'totalPengaduan' => $totalPengaduan,
+            'completedPengaduan' => $completedPengaduan,
+            'rejectedPengaduan' => $rejectedPengaduan,
+            'inProgressPengaduan' => $inProgressPengaduan,
+            'completedPercentage' => $completedPercentage,
+            'rejectedPercentage' => $rejectedPercentage,
+            'inProgressPercentage' => $inProgressPercentage,
+            'pengaduanToday' => $pengaduanToday,
+            'pengaduanThisMonth' => $pengaduanThisMonth,
+            'pengaduanThisYear' => $pengaduanThisYear,
+            'monthlyData' => $monthlyData, // Pass monthly data to the view
+        ];
+    
+        // Display statistics view
+        return view('menu/pengaduan/statistik_pengaduan', $data);
+    }    
 
     public function store() {
         // ID User diambil dari session 
@@ -461,16 +525,12 @@ class PengaduanController extends BaseController {
 
     protected function extractArrayErrors(array $errors, string $fieldName) {
     $fieldErrors = [];
-    
-    // Check if the errors contain any for the specified array field name
     foreach ($errors as $key => $error) {
-        // Matches the field name and captures the specific index if present
         if (preg_match('/' . preg_quote($fieldName) . '\.(\d+)/', $key, $matches)) {
             $index = $matches[1];
-            $fieldErrors[$index] = $error; // Store the error message by index
+            $fieldErrors[$index] = $error; 
         }
     }
-
     return $fieldErrors;
     }
 

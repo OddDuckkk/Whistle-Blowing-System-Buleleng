@@ -1,6 +1,16 @@
-// Variabel base url
+/* =======  VARIABEL & KOMPONEN INIT ======= */
+// Base url
 const baseUrl = document.body.getAttribute('base-url');
 
+$(document).ready(function() {
+    // Inisialisasi tooltip
+    $('[data-toggle="tooltip"]').tooltip();
+
+    // Inisialisasi select2
+    $('.select2').select2();
+});
+
+/* =======  FUNCTIONS ======= */
 // Function memunculkan toast
 // Contoh penggunaan: showToast('Judul toast', 'Pesan yang akan ditampilkan', '(success/warning/danger)');
 function showToast(title, message, type) {
@@ -17,16 +27,6 @@ function showToast(title, message, type) {
     // Jalankan toast
     Toast.fire();
 }
-
-// Menampilkan tooltip
-$(document).ready(function() {
-    $('[data-toggle="tooltip"]').tooltip();
-});
-
-// Menampilkan select2
-$(document).ready(function() {
-    $('.select2').select2();
-});
 
 // Function menampilkan modal konfirmasi
 // Contoh penggunaan:
@@ -138,3 +138,7 @@ function changeStatus(pengaduanId, status) {
         }
     });
 }
+
+/* =======  EVENT LISTENER ======= */
+
+

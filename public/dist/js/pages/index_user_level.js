@@ -1,4 +1,6 @@
-// Config data table user-level 
+/* =======  VARIABEL & KOMPONEN INIT ======= */
+
+// Inisialisasi tabel user-level
 $(document).ready(function() {
     $('#userLevelTable').DataTable({
         "lengthMenu": [5, 10, 25, 50, 100],
@@ -14,12 +16,13 @@ $(document).ready(function() {
     }).buttons().container().appendTo('#userLevelTable_wrapper .col-md-6:eq(0)');
 });
 
-// Handle edit button
+/* =======  FUNCTIONS ======= */
+// Edit button
 function handleEdit(nip) {
     window.location.href = baseUrl + "user-level/edit/" + nip;
 }
 
-// Handle delete button
+// Delete button
 function handleDelete(nip) {
     showDeletionModal({
         title: 'Apakah Anda yakin?',
@@ -31,7 +34,8 @@ function handleDelete(nip) {
     });
 }
 
-// Pemanggilan modal sukses, jika terdapat sucess-message
+/* =======  EVENT LISTENER ======= */
+// Event listener success-message
 document.addEventListener("DOMContentLoaded", function() {
     const flashData = document.getElementById("success-message").getAttribute("data-flashdata");
 
@@ -44,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-// Memanggil modal failure jika terdapat failure-message
+// Event listener failure-message
 document.addEventListener("DOMContentLoaded", function() {
     const flashData = document.getElementById("failure-message").getAttribute("data-flashdata");
 
