@@ -9,7 +9,7 @@ $routes->get('/', 'AuthController::index');
 $routes->get('/dashboard', 'MainController::viewDashboard');
 
 /* ======= Pengaduan Routes ======= */
-$routes->get('/pengaduan', 'PengaduanController::getAll');
+// $routes->get('/pengaduan', 'PengaduanController::getAll');
 $routes->get('/pengaduan/create', 'PengaduanController::viewCreate');
 $routes->post('pengaduan/store', 'PengaduanController::store');
 $routes->get('/pengaduan/details/(:segment)', 'PengaduanController::viewDetails/$1');

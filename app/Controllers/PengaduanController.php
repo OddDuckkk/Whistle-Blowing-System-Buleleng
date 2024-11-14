@@ -11,17 +11,47 @@ use App\Models\PihakTerlibatModel;
 /** PENGADUAN CONTROLLER
  * Menangani berbagai fungsi terkait pengaduan 
 
+    * ====TIDAK DIGUNAKAN====
     * FUNGSI GET ALL
     * Mencari dan mengembalikan semua pengaduan yang ada
     * Menuju View Index Pengaduan 
 
+    * ====TIDAK DIGUNAKAN====
     * FUNGSI GET BY USER ID
     * Mencari dan mengembalikan semua pengaduan yang memiliki user id yang diberikan
     * Menuju View Index Pengaduan 
 
-    * FUNGSI GET BY ID
-    * Mencari dan mengembalikan semua pengaduan yang memiliki id yang diberikan
-    * Menuju View Index Pengaduan 
+    * FUNGSI GET PELAPOR ACTIVE PENGADUAN
+    * Mencari dan mengembalikan data pengaduan berdasarkan aturan khusus berikut: 
+    * user_id pengaduan == id pengguna (session -> id_user)
+    * status == baru / dikirim / diproses operator / diproses verifikator / dikembalikan
+    * Menuju View Index Pengaduan
+    
+    * FUNGSI GET PELAPOR INACTIVE PENGADUAN
+    * Mencari dan mengembalikan data pengaduan berdasarkan aturan khusus berikut: 
+    * user_id pengaduan == id pengguna (session -> id_user)
+    * status == ditolak / selesai
+    * Menuju View Index Pengaduan
+
+    * FUNGSI GET OPERATOR ACTIVE PENGADUAN
+    * Mencari dan mengembalikan data pengaduan berdasarkan aturan khusus berikut: 
+    * status == dikirim / diproses operator / dikembalikan
+    * Menuju View Index Pengaduan
+
+    * FUNGSI GET OPERATOR INACTIVE PENGADUAN
+    * Mencari dan mengembalikan data pengaduan berdasarkan aturan khusus berikut: 
+    * status == ditolak / selesai
+    * Menuju View Index Pengaduan
+
+    * FUNGSI GET VERIFIKATOR ACTIVE PENGADUAN
+    * Mencari dan mengembalikan data pengaduan berdasarkan aturan khusus berikut: 
+    * status == diproses verifikator
+    * Menuju View Index Pengaduan
+
+    * FUNGSI GET VERIFIKATOR INACTIVE PENGADUAN
+    * Mencari dan mengembalikan data pengaduan berdasarkan aturan khusus berikut: 
+    * status == ditolak / selesai
+    * Menuju View Index Pengaduan
 
     * FUNGSI VIEW DETAILS
     * Mencari data detil dari pengaduan berdasarkan id dan mengembalikannya
@@ -51,10 +81,25 @@ use App\Models\PihakTerlibatModel;
     * FUNGSI SAVE LAMPIRAN
     * Menyimpan data lampiran yang diunggah oleh user kedalam database
 
+    * FUNGSI UPLOAD FILE
+    * Menyimpan file lampiran ke server pada directory public/uploads
+
+    * FUNGSI DELETE FILE
+    * Menghapus file lampiran dari server pada directory public/uploads
+
+    * FUNGSI EXTRACT ARRAY ERRORS
+    * Fungsi bantuan untuk mengekstrak array
+
     * FUNGSI VALIDASI PENGADUAN
-    * Memvalidasi data pengaduan+ pihak terlibat + lampiran yang dikirimkan melalui form
+    * Memvalidasi data pengaduan + pihak terlibat + lampiran yang dikirimkan melalui form
     * Validasi menggunakan Code igniter validation dan custom validation
     * Mengembalikan pesan error ke view apabila validasi gagal
+
+    * FUNGSI CHANGE STATUS
+    * Mengganti status pada pengaduan
+    * Input = pengaduan id, status baru
+    * proses = mengganti status pengaduan menjadi status yang baru
+    * output = -
 */
 
 class PengaduanController extends BaseController {
@@ -69,83 +114,96 @@ class PengaduanController extends BaseController {
     public function getByUserId($userId) {
         // Mengambil semua data pengaduan berdasarkan user_id
         return $this->pengaduanModel->findByUserId($userId);
-
     }
+
     public function getPelaporActivePengaduan($userId) {
+        // Mengambil data status
         $statuses = PengaduanModel::$pelaporActiveStatuses;
 
+        // Query data pengaduan
         $data['pengaduan'] = $this->pengaduanModel
                                   ->findByUserId($userId)
                                   ->filterByStatus($statuses)
+                                  ->orderBy('nomor_pengaduan', 'DESC')
                                   ->findAll();
 
         return view('menu/pengaduan/index_pengaduan', $data);
     }
 
     public function getPelaporInactivePengaduan($userId) {
+        // Mengambil data status
         $statuses = PengaduanModel::$pelaporInactiveStatuses;
 
+        // Query data pengaduan
         $data['pengaduan'] = $this->pengaduanModel
                                   ->findByUserId($userId)
                                   ->filterByStatus($statuses)
+                                  ->orderBy('nomor_pengaduan', 'DESC')
                                   ->findAll();
 
         return view('menu/pengaduan/index_pengaduan', $data);
     }
     public function getOperatorActivePengaduan() {
+        // Mengambil data status
         $statuses = PengaduanModel::$operatorActiveStatuses;
 
+        // Query data pengaduan
         $data['pengaduan'] = $this->pengaduanModel
                                   ->filterByStatus($statuses)
+                                  ->orderBy('nomor_pengaduan', 'DESC')
                                   ->findAll();
 
         return view('menu/pengaduan/index_pengaduan', $data);
     }
     public function getOperatorInactivePengaduan() {
+        // Mengambil data status
         $statuses = PengaduanModel::$operatorInactiveStatuses;
 
+        // Query data pengaduan
         $data['pengaduan'] = $this->pengaduanModel
                                   ->filterByStatus($statuses)
+                                  ->orderBy('nomor_pengaduan', 'DESC')
                                   ->findAll();
 
         return view('menu/pengaduan/index_pengaduan', $data);
     }
 
     public function getVerifikatorActivePengaduan() {
+        // Mengambil data status
         $statuses = PengaduanModel::$verifikatorActiveStatuses;
 
+        // Query data pengaduan
         $data['pengaduan'] = $this->pengaduanModel
                                   ->filterByStatus($statuses)
+                                  ->orderBy('nomor_pengaduan', 'DESC')
                                   ->findAll();
 
         return view('menu/pengaduan/index_pengaduan', $data);
     }
     public function getVerifikatorInactivePengaduan() {
+        // Mengambil data status
         $statuses = PengaduanModel::$verifikatorInactiveStatuses;
 
+        // Query data pengaduan
         $data['pengaduan'] = $this->pengaduanModel
                                   ->filterByStatus($statuses)
+                                  ->orderBy('nomor_pengaduan', 'DESC')
                                   ->findAll();
 
         return view('menu/pengaduan/index_pengaduan', $data);
     }
 
     public function getPeninjauInactivePengaduan() {
+        // Mengambil data status
         $statuses = PengaduanModel::$peninjauInactiveStatuses;
 
+        // Query data pengaduan
         $data['pengaduan'] = $this->pengaduanModel
                                   ->filterByStatus($statuses)
+                                  ->orderBy('nomor_pengaduan', 'DESC')
                                   ->findAll();
 
         return view('menu/pengaduan/index_pengaduan', $data);
-    }
-
-
-    public function getById($id) {
-        //Mengambil semua data pengaduan berdasarkan id pengaduan 
-        $data['pengaduan'] = $this->pengaduanModel->find($id);
-        // Tampilkan data pengaduan 
-        return $data;
     }
 
     public function viewDetails($id) {
@@ -417,7 +475,9 @@ class PengaduanController extends BaseController {
     }
 
     private function validatePengaduan() {
-        
+        // Validasi file lampiran dilakukan di javaScript (create_pengaduan.js)
+
+        // Fungsi validasi input
         return $this->validate([
             'judul' => [
                 'label' => 'Judul',
@@ -485,16 +545,6 @@ class PengaduanController extends BaseController {
                     'required' => '{field} tidak boleh kosong'
                 ]
             ],
-            // 'file_lampiran.*' => [
-            //     'label' => 'File lampiran',
-            //     'rules' => 'uploaded[file_lampiran]|mime_in[file_lampiran,image/jpg,image/jpeg,image/png,application/pdf]|max_size[file_lampiran,10240]',
-            //     'errors' => [
-            //         'uploaded' => '{field} harus diunggah',
-            //         'mime_in' => '{field} harus berupa file dengan format jpg, jpeg, png, atau pdf',
-            //         'max_size' => '{field} tidak boleh lebih dari 10MB'
-            //     ]
-            // ], 
-            // Validasi file lampiran dilakukan di frontend (create_pengaduan.js)
             'deskripsi_lampiran.*' => [
                 'label' => 'Deskripsi lampiran',
                 'rules' => 'required',
@@ -530,6 +580,7 @@ class PengaduanController extends BaseController {
                 'status' => $newStatus,
                 'updated_at' => date('Y-m-d H:i:s')
             ];
+            // Handle message 
             if ($newStatus == "dikirim") {
                 $message = "Pengaduan berhasil dikirim!";
             } elseif ($newStatus == "diproses operator") {
