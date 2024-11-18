@@ -102,9 +102,6 @@ Data Pengaduan
                             </form>
                         <?php endif; ?>
                     <?php endif; ?>
-
-
-
                 </td>
             </tr>
         <?php endforeach; ?>

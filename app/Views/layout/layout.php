@@ -14,9 +14,9 @@
         <?= $this->include('partials/sidebar') ?>
     
         <!-- ======= Main ======= -->
-        <div class="content-wrapper accent-background-color">
+        <div class="content-wrapper background-color">
             <!-- Content Header -->
-            <section class="content-header accent-background-color">
+            <section class="content-header background-color">
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-12">
@@ -29,8 +29,8 @@
             </section>
 
             <!-- Content Body -->
-            <section class="content accent-background-color">
-                <div class="card card-outline card-primary">
+            <section class="content background-color">
+                <div class="card">
                     <!-- Card Header -->
                     <div class="card-header">
                         <h3 class="card-title">

@@ -60,10 +60,6 @@
     padding-bottom: 10px; /* Increase bottom padding */
 }
 
-.accent-background-color {
-    background-color: #f0f4ff;
-}
-
 #donutChart {
     max-width: 350px; /* Max width for the chart */
     max-height: 350px; /* Max height for the chart */
@@ -71,5 +67,13 @@
     height: 100%; /* Allow responsiveness */
     display: block; /* Ensures it's treated as a block element */
     margin: 0 auto; /* Centers it horizontally */
+}
+
+.background-color {
+    background-color: #f0f4ff;
+}
+
+.accent-color {
+    background-color: #66B3FF;
 }
 
