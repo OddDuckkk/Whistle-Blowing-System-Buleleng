@@ -42,8 +42,8 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <li class="nav-item <?= (preg_match('/^bookmark\/user\/[a-zA-Z0-9-]+$/', uri_string())) ? 'active' : ''; ?>">
+                    <a href="/bookmark/user/<?= $userId ?>" class="nav-link <?= (preg_match('/^bookmark\/user\/[a-zA-Z0-9-]+$/', uri_string())) ? 'active' : ''; ?>">
                         <i class="nav-icon fas fa-bookmark"></i>
                         <p>Bookmarks</p>
                     </a>

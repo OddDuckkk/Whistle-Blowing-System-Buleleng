@@ -12,6 +12,7 @@ use App\Models\PengaduanModel;
 use App\Models\LampiranModel;
 use App\Models\PihakTerlibatModel;
 use App\Models\LevelModel;
+use App\Models\BookmarkModel;
 
 /**
  * Class BaseController
@@ -58,6 +59,7 @@ abstract class BaseController extends Controller
     protected $pihakTerlibatModel;
     protected $lampiranModel;
     protected $levelModel;
+    protected $bookmarkModel;
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
@@ -71,6 +73,7 @@ abstract class BaseController extends Controller
         $this->pihakTerlibatModel = new PihakTerlibatModel();
         $this->lampiranModel = new LampiranModel();
         $this->levelModel = new LevelModel();
+        $this->bookmarkModel = new BookmarkModel();
         
     }
     

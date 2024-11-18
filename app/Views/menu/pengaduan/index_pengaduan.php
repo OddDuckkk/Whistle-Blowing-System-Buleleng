@@ -79,6 +79,32 @@ Data Pengaduan
                         <i class="fas fa-eye"></i> Lihat
                     </button>
                     <?php endif; ?>
+
+                    <!-- Add or Remove Bookmark Button -->
+                    <?php if (preg_match('/^pengaduan\/user\/[a-zA-Z0-9-]+$/', uri_string()) 
+                    || preg_match('/^pengaduan\/user\/riwayat\/[a-zA-Z0-9-]+$/', uri_string())
+                    || preg_match('/^bookmark\/user\/[a-zA-Z0-9-]+$/', uri_string())): ?>
+                        <?php if (in_array($p['id'], $bookmarkedIds)): ?>
+                            <!-- Remove Bookmark Button -->
+                            <form action="<?= base_url('bookmark/remove') ?>" method="post" class="d-inline">
+                                <input type="hidden" name="pengaduan_id" value="<?= $p['id'] ?>">
+                                <button type="submit" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-bookmark fa-lg"></i>
+                                </button>
+                            </form>
+                        <?php else: ?>
+                            <!-- Add Bookmark Button -->
+                            <form action="<?= base_url('bookmark/add') ?>" method="post" class="d-inline">
+                                <input type="hidden" name="pengaduan_id" value="<?= $p['id'] ?>">
+                                <button type="submit" class="btn btn-sm btn-outline-primary">
+                                    <i class="far fa-bookmark fa-lg"></i>
+                                </button>
+                            </form>
+                        <?php endif; ?>
+                    <?php endif; ?>
+
+
+
                 </td>
             </tr>
         <?php endforeach; ?>

@@ -130,6 +130,8 @@ class PengaduanController extends BaseController {
                                   ->filterByStatus($statuses)
                                   ->orderBy('nomor_pengaduan', 'DESC')
                                   ->findAll();
+        
+        $data['bookmarkedIds'] = $this->bookmarkModel->getUserBookmarks($userId) ?? [];
 
         return view('menu/pengaduan/index_pengaduan', $data);
     }
@@ -144,6 +146,8 @@ class PengaduanController extends BaseController {
                                   ->filterByStatus($statuses)
                                   ->orderBy('nomor_pengaduan', 'DESC')
                                   ->findAll();
+
+        $data['bookmarkedIds'] = $this->bookmarkModel->getUserBookmarks($userId) ?? [];
 
         return view('menu/pengaduan/index_pengaduan', $data);
     }

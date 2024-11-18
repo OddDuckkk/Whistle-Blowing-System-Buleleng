@@ -32,6 +32,10 @@ $routes->get('/pengaduan/verifikator/riwayat', 'PengaduanController::getVerifika
 $routes->get('/pengaduan/peninjau/riwayat', 'PengaduanController::getPeninjauInactivePengaduan');
 $routes->get('/pengaduan/peninjau/statistik', 'PengaduanController::viewStatistics');
 
+/* ======= Bookmark Routes ======= */
+$routes->get('/bookmark/user/(:segment)', 'BookmarkController::viewBookmarks/$1');
+$routes->post('bookmark/add', 'BookmarkController::addBookmark');
+$routes->post('bookmark/remove', 'BookmarkController::removeBookmark');
 
 $routes->get('/login/index', 'AuthController::index');
 $routes->post('/login/auth', 'AuthController::login');
