@@ -5,7 +5,7 @@
 <?= $this->include('partials/head') ?>
 </head>
 
-<body class="hold-transition sidebar-mini layout-navbar-fixed layout-fixed">
+<body class="hold-transition sidebar-mini layout-navbar-fixed layout-fixed background-color">
     <div class="wrapper">
         <!-- ======= Topbar ======= -->
         <?= $this->include('partials/topbar') ?>
@@ -30,23 +30,7 @@
 
             <!-- Content Body -->
             <section class="content background-color">
-                <div class="card">
-                    <!-- Card Header -->
-                    <div class="card-header">
-                        <h3 class="card-title">
-                        <?= $this->renderSection('card-header') ?>
-                        </h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <!-- Content -->
-                    <div class="card-body p-5">
-                    <?= $this->renderSection('isi') ?>
-                    </div>
-                </div>
+                <?= $this->renderSection('isi') ?>
             </section>
         </div>
         
