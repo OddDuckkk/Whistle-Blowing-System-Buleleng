@@ -8,7 +8,7 @@ Data Pengaduan
 
 <!-- ======= Section Isi ======= -->
 <?= $this->section('isi') ?>
-<div class="card">
+<div class="card container col-lg-12">
     <!-- Card Header -->
     <div class="card-header">
         <h3 class="card-title">

@@ -49,8 +49,8 @@ var data = {
         label: 'Pengaduan per Bulan',
         data: Object.values(monthlyData), // Get the monthly data values
         fill: true,
-        backgroundColor: 'rgba(60, 141, 188, 0.3)',
-        borderColor: 'rgba(60, 141, 188, 1)',
+        backgroundColor: 'rgba(102, 179, 255, 0.3)',
+        borderColor: 'rgba(102, 179, 255, 1)',
         borderWidth: 2,
     }]
 };

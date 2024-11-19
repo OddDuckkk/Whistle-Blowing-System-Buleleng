@@ -77,3 +77,36 @@
     background-color: #66B3FF;
 }
 
+.bg-gradient-primary {
+    background: linear-gradient(90deg, #007aff, #66b3ff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.heroes {
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+}
+
+.font-size-large {
+    font-size: 36px;
+}
+
+.font-size-medium {
+    font-size: 24px;
+}
+
+.font-size-small {
+    font-size: 18px;
+}
+
+.col-picture {
+    --bs-gutter-x: 0;
+    --bs-gutter-y: 0;
+    height: auto; 
+    padding: 0; 
+    margin: 0; 
+    max-width: 300px;
+    max-height: 300px;
+}
