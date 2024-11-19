@@ -3,7 +3,11 @@
 
 <!-- ======= Section Judul ======= -->
 <?= $this->section('judul') ?>
-Data Pengaduan
+<?php if (preg_match('/^bookmark\/user\/[a-zA-Z0-9-]+$/', uri_string())): ?>
+    Bookmark Saya
+<?php else : ?>
+    Data Pengaduan
+<?php endif ?>
 <?= $this->endSection('judul') ?>
 
 <!-- ======= Section Isi ======= -->

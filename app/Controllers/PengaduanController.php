@@ -221,7 +221,7 @@ class PengaduanController extends BaseController {
             $data['pihak_terlibat'] = $this->pihakTerlibatModel->findByPengaduanId($id);
             $data['lampiran'] = $this->lampiranModel->findByPengaduanId($id);
         } else {
-            // TO DO: HANDLE JIKA DATA DETAIL TIDAK DITEMUKAN
+            return redirect()->to('/not-found');
         }
         // Kirim data ke view details pengaduan
         return view('menu/pengaduan/details_pengaduan', $data);
@@ -233,11 +233,12 @@ class PengaduanController extends BaseController {
     }
 
     public function viewStatistics() {
-        // Existing statistics queries
+        // Query data pengaduan
         $totalPengaduan = $this->pengaduanModel->where('status !=', 'baru')
                                              ->where('status !=', 'dikembalikan')
                                              ->countAllResults();
     
+        //Hitung jumlah pengaduan                                     
         $completedPengaduan = $this->pengaduanModel->where('status', 'selesai')->countAllResults();
         $rejectedPengaduan = $this->pengaduanModel->where('status', 'ditolak')->countAllResults();
         $inProgressPengaduan = $this->pengaduanModel->whereIn('status', ['dikirim', 'diproses operator', 'diproses verifikator'])
@@ -248,7 +249,7 @@ class PengaduanController extends BaseController {
         $rejectedPercentage = $totalPengaduan > 0 ? ($rejectedPengaduan / $totalPengaduan) * 100 : 0;
         $inProgressPercentage = $totalPengaduan > 0 ? ($inProgressPengaduan / $totalPengaduan) * 100 : 0;
     
-        // Data berdasarkan waktu
+        // Hitung jumlah pengaduan per waktu
         $pengaduanToday = $this->pengaduanModel->where('DATE(created_at)', date('Y-m-d'))
                                                 ->where('status !=', 'baru')
                                                 ->where('status !=', 'dikembalikan')
@@ -263,7 +264,7 @@ class PengaduanController extends BaseController {
                                                 ->where('status !=', 'dikembalikan')
                                                 ->countAllResults();
     
-        // Query complaints by month for the current year
+        // Hitung jumlah pengaduan tiap bulannya
         $monthlyData = [];
         for ($month = 1; $month <= 12; $month++) {
             $monthlyData[$month] = $this->pengaduanModel->where('MONTH(created_at)', $month)
@@ -273,7 +274,7 @@ class PengaduanController extends BaseController {
                                                         ->countAllResults();
         }
     
-        // Prepare data for view
+        // siapkan data untuk view
         $data = [
             'totalPengaduan' => $totalPengaduan,
             'completedPengaduan' => $completedPengaduan,
@@ -288,7 +289,6 @@ class PengaduanController extends BaseController {
             'monthlyData' => $monthlyData, // Pass monthly data to the view
         ];
     
-        // Display statistics view
         return view('menu/pengaduan/statistik_pengaduan', $data);
     }    
 

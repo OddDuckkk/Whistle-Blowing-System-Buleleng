@@ -110,3 +110,19 @@
     max-width: 300px;
     max-height: 300px;
 }
+
+.card-accent .card-header {
+    background: linear-gradient(360deg, #007aff, #66b3ff);
+    color: white;
+}
+
+.card-invisible {
+    background-color: transparent;
+}
+
+.text-color-gradient {
+    background: linear-gradient(90deg, #007aff, #66b3ff);
+    background-clip: text;
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent;
+}

@@ -34,13 +34,13 @@
     </div>
 </div>
 <div class="container col-lg-11 justify-content-center">
-    <div class="card text-center p-4 rounded-lg shadow">
+    <div class="card card-invisible text-center p-4 rounded-lg shadow">
         <div class="card-body">
             <div class="container mt-4">
 
                 <!-- Timeline Section -->
                 <div class="mt-5">
-                    <h2 class="text-center mb-4">Proses Pengaduan</h2>
+                    <h2 class="text-center mb-4 font-weight-bold text-color-gradient">Proses Pengaduan</h2>
                     <div class="timeline text-left">
                         <div class="timeline-item">
                             <div class="timeline-icon bg-primary text-white"><i class="fa fa-edit"></i></div>
