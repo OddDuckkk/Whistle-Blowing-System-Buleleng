@@ -124,6 +124,31 @@ function showInformationModal({title, text, confirmButtonText}) {
     })
 }
 
+// Function menampilkan modal konfirmasi dengan field komentar
+function showConfirmationModalWithInput({ title, text, icon, confirmButtonText, cancelButtonText, inputFieldName, inputPlaceholder, onConfirm }) {
+    Swal.fire({
+        title: title,
+        text: text,
+        icon: icon,
+        showCancelButton: true,
+        confirmButtonColor: '#007bff',
+        confirmButtonText: confirmButtonText,
+        cancelButtonText: cancelButtonText,
+        input: 'textarea', 
+        inputPlaceholder: inputPlaceholder,
+        inputValidator: (value) => {
+            if (!value) {
+                return inputFieldName + ' tidak boleh kosong!';
+            }
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('comment-field').value = result.value;
+            onConfirm(); 
+        }
+    });
+}
+
 // Fungsi ganti status pengaduan
 function changeStatus(pengaduanId, status) {
     $.ajax({
@@ -138,6 +163,7 @@ function changeStatus(pengaduanId, status) {
         }
     });
 }
+
 
 /* =======  EVENT LISTENER ======= */
 

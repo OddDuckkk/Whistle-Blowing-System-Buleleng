@@ -18,10 +18,10 @@
                     <div class="text-center">
                         <h2 class="d-flex justify-content-center align-items-center gap-2 mb-4">
                             <span class="display-1 fw-bold">4</span>
-                            <i class="bi bi-exclamation-circle-fill text-danger display-4">0</i>
+                            <i class="bi bi-exclamation-circle-fill text-primary display-4">0</i>
                             <span class="display-1 fw-bold bsb-flip-h">3</span>
                         </h2>
-                        <h3 class="h2 mb-2">Oops!</h3>
+                        <h3 class="h2 mb-2 text-primary">Oops!</h3>
                         <p class="mb-5">Akses dilarang! Anda tidak memiliki akses untuk halaman ini.</p>
                     </div>
                 </div>

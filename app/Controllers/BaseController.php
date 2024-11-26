@@ -13,6 +13,7 @@ use App\Models\LampiranModel;
 use App\Models\PihakTerlibatModel;
 use App\Models\LevelModel;
 use App\Models\BookmarkModel;
+use App\Models\CommentModel;
 
 /**
  * Class BaseController
@@ -60,6 +61,7 @@ abstract class BaseController extends Controller
     protected $lampiranModel;
     protected $levelModel;
     protected $bookmarkModel;
+    protected $commentModel;
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
@@ -74,6 +76,7 @@ abstract class BaseController extends Controller
         $this->lampiranModel = new LampiranModel();
         $this->levelModel = new LevelModel();
         $this->bookmarkModel = new BookmarkModel();
+        $this->commentModel = new CommentModel();
         
     }
     

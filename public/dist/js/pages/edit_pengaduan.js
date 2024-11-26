@@ -138,18 +138,20 @@ const dropzone = new Dropzone("#dropzone-lampiran", {
             }
 
             // Jalankan request hapus file ke controller
-            const filePath = file.filePath.replace(/\\/g, ''); 
-            fetch(baseUrl + "pengaduan/delete-file", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ filePath: filePath })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-            });
+            if (!file.isMock) {
+                const filePath = file.filePath.replace(/\\/g, ''); 
+                fetch(baseUrl + "pengaduan/delete-file", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ filePath: filePath })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                });
+            }
 
             if (file.isMock) {
                 mockFilesCounter--;

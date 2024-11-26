@@ -26,7 +26,111 @@
     <div class="card-body p-5">
         <div>
             <div>
+                <h5 class="text-primary"><strong>PROGRESS PENGADUAN</strong></h5>
+            </div>
+            <!-- Timeline -->
+            <div class="status-timeline">
+                <!-- First Stage -->
+                <div class="timeline-item <?= 
+                $pengaduan['status'] === 'baru' 
+                || in_array($pengaduan['status'], ['dikirim', 'diproses operator', 'diproses verifikator', 'selesai', 'ditolak', 'dikembalikan']) 
+                ? 'active' : '' 
+                ?>">
+                    <div class="timeline-dot">
+                        <i class="fas fa-pencil-alt"></i>
+                    </div>
+                    <span class="<?= $pengaduan['status'] === 'baru' ? 'font-weight-bold' : '' ?>">
+                        Pengaduan Dibuat
+                    </span>
+                </div>
+
+                <!-- Second Stage -->
+                <div class="timeline-item <?= 
+                $pengaduan['status'] === 'dikirim' 
+                || in_array($pengaduan['status'], ['diproses operator', 'diproses verifikator', 'selesai', 'ditolak', 'dikembalikan']) 
+                ? 'active' : '' 
+                ?>">
+                    <div class="timeline-dot">
+                        <i class="fas fa-paper-plane"></i>
+                    </div>
+                    <span class="<?= $pengaduan['status'] === 'dikirim' ? 'font-weight-bold' : '' ?>">
+                        Pengaduan Dikirim
+                    </span>
+                </div>
+
+                <!-- Third Stage -->
+                <div class="timeline-item <?= 
+                in_array($pengaduan['status'], ['diproses operator', 'diproses verifikator', 'selesai', 'ditolak', 'dikembalikan']) 
+                ? (in_array($pengaduan['status'], ['dikembalikan', 'ditolak'])  
+                ?  'danger' : 'active') : '' 
+                ?>">
+                    <div class="timeline-dot">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <span class="<?= $pengaduan['status'] === 'diproses operator' ? 'font-weight-bold' : '' ?>">
+                        Diproses Operator
+                    </span>
+                </div>
+
+                <!-- Fourth Stage -->
+                <div class="timeline-item <?= 
+                in_array($pengaduan['status'], ['diproses verifikator', 'selesai', 'ditolak', 'dikembalikan']) 
+                ? (in_array($pengaduan['status'], ['dikembalikan', 'ditolak']) 
+                ?  'danger' : 'active') : '' ?>">
+                    <div class="timeline-dot">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <span class="<?= $pengaduan['status'] === 'diproses verifikator' ? 'font-weight-bold' : '' ?>">
+                        Diproses Verifikator
+                    </span>
+                </div>
+
+                <!-- Fifth Stage -->
+                <div class="timeline-item <?= 
+                in_array($pengaduan['status'], ['selesai', 'ditolak', 'dikembalikan']) 
+                ? (in_array($pengaduan['status'], ['dikembalikan', 'ditolak']) 
+                ?  'danger' : 'active') : '' ?>">
+                    <div class="timeline-dot">
+                        <i class="fas <?= $pengaduan['status'] === 'ditolak' ? 'fa-times-circle' 
+                        : ($pengaduan['status'] === 'dikembalikan' ? 'fa-undo' 
+                        : 'fa-check-circle') ?>"></i>
+                    </div>
+                    <span class="<?= in_array($pengaduan['status'], ['selesai', 'ditolak', 'dikembalikan']) ? 'font-weight-bold' : '' ?>">
+                        <?= $pengaduan['status'] === 'ditolak' ? 'Ditolak' 
+                        : ($pengaduan['status'] === 'dikembalikan' ? 'Dikembalikan' 
+                        : 'Selesai') ?>
+                    </span>
+                </div>
+            </div>
+            <div>
                 <h5 class="text-primary"><strong>DETAIL LAPORAN</strong></h5>
+            </div>
+            <div class="row mt-4">
+                <?php if (isset($comment) && !empty($comment)): ?>
+                    <?php foreach ($comment as $com): ?>
+                        <div class="col-md-12">
+                            <div class="alert alert-dismissible <?= 
+                            in_array($com['new_status'], ['selesai', 'diproses verifikator', 'ditolak', 'dikembalikan']) 
+                            ? ($com['new_status'] === 'selesai' 
+                            ? 'alert-success' : (in_array($com['new_status'], ['dikembalikan', 'ditolak']) 
+                            ? 'alert-danger' : 'alert-primary')) : '' ?>">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <h5><i class="icon fas fa-info"></i> 
+                                <?= 
+                                ($com['new_status'] === 'selesai' ? 'Pengaduan Selesai' 
+                                : ($com['new_status'] === 'dikembalikan' ? 'Pengaduan Dikembalikan'
+                                : ($com['new_status'] === 'ditolak' ? 'Pengaduan Ditolak' 
+                                : ($com['new_status'] === 'diproses verifikator' ? 'Pengaduan Diteruskan' : '')))) 
+                                ?>
+                                </h5>
+                                <div class="row pt-2">
+                                    <h6 class="col-md-6"><?= nl2br(htmlspecialchars($com['comment'])) ?></h6>
+                                    <h6 class="col-md-6 text-right"><small><?= date('d-m-Y H:i', strtotime($com['created_at'])) ?></small></h6>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
             <div class="card card-outline">
                 <div class="card-header">
@@ -245,6 +349,7 @@
                 <form action="<?= base_url('pengaduan/change-status') ?>" method="post" id="operator-pengaduan-status-form">
                     <?php if ($pengaduan['status'] == 'dikirim' || $pengaduan['status'] == 'diproses operator'): ?>
                     <div class="mt-3 row align-items-center">
+                        <input type="hidden" name="comment" id="comment-field">
                         <input type="hidden" name="pengaduan_id" value="<?= $pengaduan['id'] ?>">
                         <input type="hidden" name="status" id="status-field">
                         <div class="col-auto">
@@ -275,6 +380,7 @@
             <form action="<?= base_url('pengaduan/change-status') ?>" method="post" id="verifikator-pengaduan-status-form">
                 <?php if ($pengaduan['status'] == 'diproses verifikator'): ?>
                 <div class="mt-3 row align-items-center">
+                    <input type="hidden" name="comment" id="comment-field">
                     <input type="hidden" name="pengaduan_id" value="<?= $pengaduan['id'] ?>">
                     <input type="hidden" name="status" id="status-field">
                     <div class="col-auto">

@@ -220,6 +220,7 @@ class PengaduanController extends BaseController {
         if ($data['pengaduan']) {
             $data['pihak_terlibat'] = $this->pihakTerlibatModel->findByPengaduanId($id);
             $data['lampiran'] = $this->lampiranModel->findByPengaduanId($id);
+            $data['comment'] = $this->commentModel->findByPengaduanId($id);
         } else {
             return redirect()->to('/not-found');
         }
@@ -341,7 +342,7 @@ class PengaduanController extends BaseController {
         // Proses simpan data lampiran
         $this->saveLampiran($pengaduanId);
 
-        session()->setFlashdata('info_message', 'Pengaduan berhasil disimpan sebagai draf. Jika sudah final, klik kirim untuk mulai mengajukan pengaduan');
+        session()->setFlashdata('info_message', 'Pengaduan berhasil disimpan sebagai draf. Jika sudah final, klik kirim untuk mulai mengajukan pengaduan. Atau klik edit untuk merubah apabila terdapat kesalahan.');
         return redirect()->to("/pengaduan/details/$pengaduanId");
     }
 
@@ -393,14 +394,23 @@ class PengaduanController extends BaseController {
     
         // Simpan data pihak terlibat baru
         $this->savePihakTerlibat($id);
-    
-        // Hapus lampiran lama
+
+        // Hapus lampiran dari 'uploads' directory
+        $oldFiles = $this->lampiranModel->where('pengaduan_id', $id)->findAll();
+        foreach ($oldFiles as $file) {
+            $filePath = WRITEPATH . 'uploads/' . $file['file_lampiran'];
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
+
+        // Hapus lampiran dari database
         $this->lampiranModel->where('pengaduan_id', $id)->delete();
     
         // Simpan data lampiran baru
         $this->saveLampiran($id);
     
-        session()->setFlashdata('success_message', 'Pengaduan berhasil diperbaharui!');
+        session()->setFlashdata('info_message', 'Pengaduan berhasil diperbaharui! Klik kirim untuk untuk mulai mengajukan pengaduan.');
         return redirect()->to("/pengaduan/details/$id");
     }
     
@@ -486,10 +496,9 @@ class PengaduanController extends BaseController {
             $data = json_decode(file_get_contents('php://input'), true);
             
             if (isset($data['filePath'])) {
-                // Ensure the path is correct; it should match the upload path
+                
                 $filePath = $_SERVER['DOCUMENT_ROOT'] . $data['filePath'];
     
-                // Ensure the path is correct, and then delete the file
                 if (file_exists($filePath)) {
                     if (unlink($filePath)) {
                         echo json_encode(['success' => true, 'message' => 'File deleted successfully.']);
@@ -622,7 +631,22 @@ class PengaduanController extends BaseController {
     public function changeStatus() {
         // Ambil data dari request body
         $pengaduanId = $this->request->getPost('pengaduan_id'); 
-        $newStatus = $this->request->getPost('status'); 
+        $newStatus = $this->request->getPost('status');
+        $comment = $this->request->getPost('comment');
+        $userId = session()->get('id_user'); 
+
+        // simpan komentar jika ada
+        if ($comment) {
+            $commentData = [
+                'pengaduan_id' => $pengaduanId,
+                'new_status' => $newStatus,
+                'created_by' => $userId,
+                'comment' => $comment,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
+            $this->commentModel->insert($commentData);
+        }
 
         $allowedStatuses = ['baru', 'dikirim', 'diproses operator', 'diproses verifikator', 'selesai', 'ditolak', 'dikembalikan'];
 

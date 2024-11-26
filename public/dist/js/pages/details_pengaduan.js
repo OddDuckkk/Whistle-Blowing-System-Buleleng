@@ -102,17 +102,20 @@ $(document).on('click', '[data-toggle="lightbox"]', function(event) {
 });
 
 // Event listener pelapor-pengaduan-status-form
-document.getElementById('pelapor-pengaduan-status-form').addEventListener('submit', function (event) {
-    event.preventDefault(); 
-    showConfirmationModal({
-        title: 'Apakah Anda yakin?',
-        text: 'Pengaduan akan dikirim ke tim investigasi dan tidak dapat dirubah lagi!',
-        icon: 'warning',
-        confirmButtonText: 'Kirim',
-        cancelButtonText: 'Periksa lagi',
-        onConfirm: () => this.submit()
+const pelaporForm = document.getElementById('pelapor-pengaduan-status-form');
+if (pelaporForm) {
+    document.getElementById('pelapor-pengaduan-status-form').addEventListener('submit', function (event) {
+        event.preventDefault(); 
+        showConfirmationModal({
+            title: 'Apakah Anda yakin?',
+            text: 'Pengaduan akan dikirim ke tim investigasi dan tidak dapat dirubah lagi!',
+            icon: 'warning',
+            confirmButtonText: 'Kirim',
+            cancelButtonText: 'Periksa lagi',
+            onConfirm: () => this.submit()
+        });
     });
-});
+}
 
 // Event listener operator-pengaduan-status-form
 const operatorForm = document.getElementById('operator-pengaduan-status-form');
@@ -121,33 +124,40 @@ if (operatorForm) {
     document.getElementById('operator-pengaduan-status-form').addEventListener('submit', function (event) {
         event.preventDefault(); 
         let newStatus = document.getElementById('status-field');
+        console.log(newStatus);
         if (newStatus.value === 'diproses verifikator') {
-            showConfirmationModal({
+            showConfirmationModalWithInput({
                 title: 'Apakah Anda yakin?',
                 text: 'Pengaduan akan diteruskan ke verifikator untuk proses verifikasi!',
                 icon: 'warning',
                 confirmButtonText: 'Teruskan',
                 cancelButtonText: 'Periksa lagi',
+                inputFieldName: 'Komentar',
+                inputPlaceholder: 'Tambahkan keterangan untuk pelapor...',
                 onConfirm: () => this.submit()
             }); 
         }
         else if (newStatus.value === 'dikembalikan') {
-            showConfirmationModal({
+            showConfirmationModalWithInput({
                 title: 'Apakah Anda yakin?',
                 text: 'Pengaduan akan dikembalikan ke pelapor untuk di evaluasi kembali!',
                 icon: 'warning',
                 confirmButtonText: 'Kembalikan',
                 cancelButtonText: 'Periksa lagi',
+                inputFieldName: 'Komentar',
+                inputPlaceholder: 'Tambahkan keterangan untuk pelapor...',
                 onConfirm: () => this.submit()
             }); 
         }
         else if (newStatus.value === 'ditolak') {
-            showConfirmationModal({
+            showConfirmationModalWithInput({
                 title: 'Apakah Anda yakin?',
                 text: 'Pengaduan akan ditolak, dan tidak dapat diubah lagi!',
                 icon: 'warning',
                 confirmButtonText: 'Tolak',
                 cancelButtonText: 'Periksa lagi',
+                inputFieldName: 'Komentar',
+                inputPlaceholder: 'Tambahkan keterangan untuk pelapor...',
                 onConfirm: () => this.submit()
             }); 
         }
@@ -162,12 +172,14 @@ if (verifikatorForm) {
         event.preventDefault(); 
         let newStatus = document.getElementById('status-field');
         if (newStatus.value === 'selesai') {
-            showConfirmationModal({
+            showConfirmationModalWithInput({
                 title: 'Apakah Anda yakin?',
                 text: 'Pengaduan akan diselesaikan, dan tidak dapat diubah lagi!',
                 icon: 'warning',
                 confirmButtonText: 'Selesaikan',
                 cancelButtonText: 'Periksa lagi',
+                inputFieldName: 'Komentar',
+                inputPlaceholder: 'Tambahkan keterangan untuk pelapor...',
                 onConfirm: () => this.submit()
             }); 
         }

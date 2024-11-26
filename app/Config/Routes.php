@@ -49,8 +49,8 @@ $routes->post('/auth/search-nip', 'AuthController::searchNip');
 
 /* ======= User Level Routes ======= */
 $routes->get('/user-level', 'LevelController::getAllUserLevels', ['filter' => 'level:superadmin']);
-$routes->get('/user-level/assign', 'LevelController::viewAssign', ['filter' => 'level:superadmin']);
-$routes->post('/user-level/store', 'LevelController::store', ['filter' => 'level:superadmin']);
+$routes->get('/user-level/assign', 'LevelController::viewAssign');
+$routes->post('/user-level/store', 'LevelController::store');
 $routes->get('/user-level/edit/(:segment)', 'LevelController::viewEdit/$1', ['filter' => 'level:superadmin']);
 $routes->post('/user-level/update/(:segment)', 'LevelController::update/$1', ['filter' => 'level:superadmin']);
 $routes->get('/user-level/delete/(:segment)', 'LevelController::delete/$1', ['filter' => 'level:superadmin']);
