@@ -21,6 +21,10 @@ function handleDetails(pengaduanId) {
     window.location.href = baseUrl + "pengaduan/details/" + pengaduanId;
 }
 
+function handleChat(pengaduanId) {
+    window.location.href = baseUrl + "pengaduan/chat/" + pengaduanId;
+}
+
 /* =======  EVENT LISTENERS ======= */
 // Event listener success-message
 document.addEventListener("DOMContentLoaded", function() {

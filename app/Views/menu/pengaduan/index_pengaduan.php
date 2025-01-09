@@ -90,6 +90,12 @@
                                 <i class="fas fa-eye"></i> Lihat
                             </button>
                             <?php endif; ?>
+                            
+                            <?php // if ($p['status'] == 'diproses verifikator') : ?>
+                            <button onclick="handleChat('<?= $p['id'] ?>')" class="btn btn-primary btn-sm">
+                                <i class="fas fa-comments"></i> Chat
+                            </button>
+                            <?php // endif; ?>
 
                             <!-- Add or Remove Bookmark Button -->
                             <?php if (preg_match('/^pengaduan\/user\/[a-zA-Z0-9-]+$/', uri_string()) 

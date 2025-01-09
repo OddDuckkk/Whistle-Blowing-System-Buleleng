@@ -628,6 +628,21 @@ class PengaduanController extends BaseController {
         ]);
     }
 
+    private function validateLampiran() {
+        // Validasi file lampiran dilakukan di javaScript (create_pengaduan.js)
+
+        // Fungsi validasi input
+        return $this->validate([
+            'deskripsi_lampiran.*' => [
+                'label' => 'Deskripsi lampiran',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ]
+            ],
+        ]);
+    }
+
     public function changeStatus() {
         // Ambil data dari request body
         $pengaduanId = $this->request->getPost('pengaduan_id'); 
@@ -692,5 +707,41 @@ class PengaduanController extends BaseController {
         }
     }
 
+    public function viewTambahLampiran($id) {
+        // Mengambil data pengaduan 
+        $data['pengaduan'] = $this->pengaduanModel->find($id);
+        $data['pihak_terlibat'] = $this->pihakTerlibatModel->findByPengaduanId($id);
+        $data['lampiran'] = $this->lampiranModel->findByPengaduanId($id);
+        // Mengembalikan data ke view edit 
+        return view('menu/pengaduan/add_lampiran_pengaduan', $data);
+    }
+
+    public function storeAdditionalLampiran ($id) {
+        if (!$this->validateLampiran()) {
+            $sessError = [
+                'errDeskripsiLampiran' => $this->extractArrayErrors($this->validation->getErrors(), 'deskripsi_lampiran'),
+            ];
+            session()->setFlashdata($sessError);
+            return redirect()->to(site_url("/pengaduan/tambah-lampiran/$id"))->withInput();
+        }
+
+        // Hapus lampiran dari 'uploads' directory
+        $oldFiles = $this->lampiranModel->where('pengaduan_id', $id)->findAll();
+        foreach ($oldFiles as $file) {
+            $filePath = WRITEPATH . 'uploads/' . $file['file_lampiran'];
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
+
+        // Hapus lampiran dari database
+        $this->lampiranModel->where('pengaduan_id', $id)->delete();
+    
+        // Simpan data lampiran baru
+        $this->saveLampiran($id);
+        
+        session()->setFlashdata('success_message', 'lampiran berhasil diperbaharui!');
+        return redirect()->to("/pengaduan/details/$id");
+    }
 
 }

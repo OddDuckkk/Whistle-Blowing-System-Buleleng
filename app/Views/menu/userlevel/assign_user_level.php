@@ -6,11 +6,6 @@
 Tambah Level ke Pengguna
 <?= $this->endSection('judul') ?>
 
-<!-- ======= Section Sub judul ======= -->
-<?= $this->section('card-header') ?>
-
-<?= $this->endSection('card-header') ?>
-
 <!-- ======= Section Isi ======= -->
 <?= $this->section('isi') ?>
 <div class="card">

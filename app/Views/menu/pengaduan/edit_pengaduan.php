@@ -359,7 +359,11 @@ Buat Pengaduan
                                     </div>
                                 </div>
                                 <div id="fileInputs">
-                                <?php if (!empty($lampiran)): ?>
+                                <?php if (old('file_lampiran')) : ?>
+                                        <?php foreach (old('file_lampiran') as $index => $filePath) : ?>
+                                            <input type="hidden" name="old_file_lampiran[]" value="<?= old('file_lampiran.' . $index) ?>">
+                                        <?php endforeach; ?>
+                                <?php elseif (!empty($lampiran)): ?>
                                     <?php foreach ($lampiran as $index => $lamp): ?>
                                         <input type="hidden" name="old_file_lampiran[]" value="<?= old('file_lampiran.' . $index, $lamp['file_lampiran']) ?>">
                                     <?php endforeach; ?>
@@ -369,7 +373,16 @@ Buat Pengaduan
                         </tr>
                     </tbody>
                 </table>
-                <?php if (!empty($lampiran)) : ?>
+                <?php if (old('deskripsi_lampiran')) : ?>
+                    <?php foreach (old('deskripsi_lampiran') as $index => $deskripsiLampiran) : ?>
+                        <input type="hidden" name="old_deskripsi_lampiran[<?= $index ?>]" value="<?= htmlspecialchars($deskripsiLampiran, ENT_QUOTES, 'UTF-8') ?>">
+                        <?php if (isset(session()->getFlashdata('errDeskripsiLampiran')[$index])) : ?>
+                            <input type="hidden" name="old_error_deskripsi[<?= $index ?>]" value="true">
+                        <?php else : ?>
+                            <input type="hidden" name="old_error_deskripsi[<?= $index ?>]" value="false">
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php elseif (!empty($lampiran)) : ?>
                     <?php foreach ($lampiran as $index => $lamp) : ?>
                         <input type="hidden" name="old_deskripsi_lampiran[<?= $index ?>]" value="<?= htmlspecialchars(old('deskripsi_lampiran.' . $index, $lamp['deskripsi']), ENT_QUOTES, 'UTF-8') ?>">
                         <?php if (isset(session()->getFlashdata('errDeskripsiLampiran')[$index])) : ?>

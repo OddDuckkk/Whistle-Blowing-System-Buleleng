@@ -340,6 +340,19 @@
                         </div>
                         <?php endif; ?>
                     </div>
+                    <?php elseif ($pengaduan['status'] == 'diproses verifikator'): ?>
+                    <div class="mt-3 row align-items-center">
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-primary" onclick="handleAddLampiran('<?= $pengaduan['id'] ?>')">
+                                <i class="fas fa-file"></i> Tambah Bukti
+                            </button>
+                        </div>
+                        <div class="col-auto me-3">
+                            <button type="button" onclick="handleChat('<?= $pengaduan['id'] ?>')" class="btn btn-primary">
+                                <i class="fas fa-comments"></i> Chat
+                            </button>
+                        </div>
+                    </div>
                     <?php else : ?>
                         <p>Tidak ada aksi yang dapat dilakukan.</p>
                     <?php endif; ?>

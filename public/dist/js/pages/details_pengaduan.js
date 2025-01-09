@@ -3,7 +3,9 @@
 $(document).ready(function() {
     $('.lampiran-link').click(function(e) {
         var fileUrl = $(this).data('file'); // ambil file url
-        originalFileName = fileUrl.split('-').slice(1).join('-'); // nama file
+        var decodedUrl = decodeURIComponent(fileUrl);
+        var fileName = decodedUrl.substring(decodedUrl.lastIndexOf('/') + 1); //hapus directory
+        originalFileName = fileName.split('-').slice(1).join('-'); // nama file 
         if (fileUrl.endsWith('.pdf')) {
             e.preventDefault(); 
             // Modal khusus pdf
@@ -49,7 +51,13 @@ function handleBack() {
     }
 }
 
+function handleChat(pengaduanId) {
+    window.location.href = baseUrl + "pengaduan/chat/" + pengaduanId;
+}
 
+function handleAddLampiran (pengaduanId) {
+    window.location.href = baseUrl + "pengaduan/tambah-lampiran/" + pengaduanId;
+}
 
 
 /* =======  EVENT LISTENERS ======= */

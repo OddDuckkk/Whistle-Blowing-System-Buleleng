@@ -244,20 +244,16 @@ Buat Pengaduan
                                         class="btn btn-success add-row"
                                         data-toggle="tooltip" 
                                         title="Tambah Baris"><span class="fa fa-plus"></span></button>
-                                        <button type="button" 
-                                        class="btn btn-info change-non-asn" 
-                                        data-toggle="tooltip" 
-                                        title="Ganti menjadi non-ASN"><span class="fas fa-sync-alt"></span></button>
                                     <?php else: ?>
                                         <button type="button" 
                                         class="btn btn-danger remove-row"
                                         data-toggle="tooltip" 
                                         title="Hapus Baris"><span class="fa fa-minus"></span></button>
+                                    <?php endif; ?>
                                         <button type="button" 
                                         class="btn btn-info change-non-asn" 
                                         data-toggle="tooltip" 
-                                        title="Ganti menjadi non-ASN"><span class="fas fa-sync-alt"></span></button>
-                                    <?php endif; ?>
+                                        title="Ganti menjadi non-ASN"><span class="fas fa-exchange-alt"></span></button>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
@@ -307,7 +303,7 @@ Buat Pengaduan
                                     <button type="button" 
                                     class="btn btn-info change-non-asn" 
                                     data-toggle="tooltip" 
-                                    title="Ganti menjadi non-ASN"><span class="fas fa-sync-alt"></span></button>
+                                    title="Ganti menjadi non-ASN"><span class="fas fa-exchange-alt"></span></button>
                                 </td>
                             </tr>
                         <?php endif; ?>

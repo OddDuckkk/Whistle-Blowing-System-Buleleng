@@ -14,6 +14,7 @@ use App\Models\PihakTerlibatModel;
 use App\Models\LevelModel;
 use App\Models\BookmarkModel;
 use App\Models\CommentModel;
+use App\Models\PostModel;
 
 /**
  * Class BaseController
@@ -55,6 +56,7 @@ abstract class BaseController extends Controller
 
     protected $session;
     protected $validation;
+    protected $encrypter;
 
     protected $pengaduanModel;
     protected $pihakTerlibatModel;
@@ -62,6 +64,7 @@ abstract class BaseController extends Controller
     protected $levelModel;
     protected $bookmarkModel;
     protected $commentModel;
+    protected $postModel;
 
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
@@ -71,12 +74,14 @@ abstract class BaseController extends Controller
         // Preload any models, libraries, etc, here.
         $this->session = \Config\Services::session();
         $this->validation = \Config\Services::validation();
+        $this->encrypter = service('encrypter');
         $this->pengaduanModel = new PengaduanModel();
         $this->pihakTerlibatModel = new PihakTerlibatModel();
         $this->lampiranModel = new LampiranModel();
         $this->levelModel = new LevelModel();
         $this->bookmarkModel = new BookmarkModel();
         $this->commentModel = new CommentModel();
+        $this->postModel = new PostModel();
         
     }
     

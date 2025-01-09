@@ -1,26 +1,4 @@
 /* =======  VARIABEL & KOMPONEN INIT ======= */
-// Inisialisasi date time picker
-$(function () {
-    $('#tanggalkejadian').datetimepicker({
-        format: 'YYYY-MM-DD', 
-        icons: {
-            time: 'fa fa-clock',
-            date: 'fa fa-calendar',
-            up: 'fa fa-chevron-up',
-            down: 'fa fa-chevron-down',
-            previous: 'fa fa-chevron-left',
-            next: 'fa fa-chevron-right',
-            today: 'fa fa-calendar-check',
-            clear: 'fa fa-trash',
-            close: 'fa fa-times'
-        }
-    });
-
-    $('#tanggal').on('focus', function() {
-        $('#tanggalkejadian').datetimepicker('show');
-    });
-});
-
 // Inisialisasi dropzone
 Dropzone.autoDiscover = false;
 const dropzone = new Dropzone("#dropzone-lampiran", {
@@ -138,18 +116,20 @@ const dropzone = new Dropzone("#dropzone-lampiran", {
             }
 
             // Jalankan request hapus file ke controller
-            const filePath = file.filePath.replace(/\\/g, ''); 
-            fetch(baseUrl + "pengaduan/delete-file", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ filePath: filePath })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-            });
+            if (!file.isMock) {
+                const filePath = file.filePath.replace(/\\/g, ''); 
+                fetch(baseUrl + "pengaduan/delete-file", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ filePath: filePath })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                });
+            }
 
             if (file.isMock) {
                 mockFilesCounter--;
@@ -235,156 +215,14 @@ const dropzone = new Dropzone("#dropzone-lampiran", {
 });
 
 /* =======  EVENT LISTENERS ======= */
-// Event listener menambahkan row pihak terlibat
-$('#pihakTerlibatTable').on('click', '.add-row', function() {
-    var newRow = `<tr>
-                    <td>
-                            <div class="input-group">
-                                <input type="text" 
-                                name="nip_terlapor[]" 
-                                class="form-control" 
-                                placeholder="NIP Terlapor">
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-primary search-nip">
-                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <input type="text" 
-                            name="nama_terlapor[]" 
-                            class="form-control" 
-                            placeholder="Nama Terlapor" 
-                            readonly>
-                        </td>
-                        <td>
-                            <input type="text" 
-                            name="jabatan_terlapor[]" 
-                            class="form-control" 
-                            placeholder="Jabatan Terlapor" 
-                            readonly>
-                        </td>
-                        <td>
-                            <input type="text" 
-                            name="unit_kerja[]" 
-                            class="form-control" 
-                            placeholder="Unit Kerja Terlapor" 
-                            readonly>
-                        </td>
-                    <td>
-                    <button type="button" 
-                    class="btn btn-danger remove-row"
-                    data-toggle="tooltip" 
-                    title="Hapus Baris"><span class="fa fa-minus"></span></button>
-                    <button type="button" 
-                    class="btn btn-info change-non-asn" 
-                    data-toggle="tooltip" 
-                    title="Ganti menjadi non-ASN"><span class="fas fa-exchange-alt"></span></button>
-                    </td>
-                </tr>`;
-    $('#pihakTerlibatTable tbody').append(newRow);
-});
-
-// Event listener menghapus row pihak terlibat
-$('#pihakTerlibatTable').on('click', '.remove-row', function() {
-    $(this).closest('tr').remove();
-});
-
-// Event listener mengganti mode row pihak terlibat menjadi non-asn
-$('#pihakTerlibatTable').on('click', '.change-non-asn', function() {
-    const $row = $(this).closest('tr');
-    const isNonAsn = $(this).data('non-asn') || false; //cek state dari row
-
-    if (isNonAsn) {
-        // Ubah ke mode ASN
-        $row.find('input[name="nip_terlapor[]"]').removeAttr('readonly').val('');
-        $row.find('input[name="nama_terlapor[]"]').attr('readonly', 'true').val('');
-        $row.find('input[name="jabatan_terlapor[]"]').attr('readonly', 'true').val('');
-        $row.find('input[name="unit_kerja[]"]').attr('readonly', 'true').val('');
-        
-        $row.find('.change-non-asn').attr('data-original-title', 'Ganti menjadi non-ASN').tooltip('show'); // Update tooltip title and show it
-        $(this).data('non-asn', false);
-    } else {
-        // Ubah ke mode non ASN
-        $row.find('input[name="nip_terlapor[]"]').attr('readonly', 'true').val('Non-ASN');
-        $row.find('input[name="nama_terlapor[]"]').removeAttr('readonly').val('');
-        $row.find('input[name="jabatan_terlapor[]"]').removeAttr('readonly').val('');
-        $row.find('input[name="unit_kerja[]"]').removeAttr('readonly').val('');
-        
-        $row.find('.change-non-asn').attr('data-original-title', 'Ganti menjadi ASN').tooltip('show'); // Update tooltip title and show it
-        $(this).data('non-asn', true);
-    }
-    
-});
-
-// Event listener menampilkan tooltip info non-asn
-$(document).ready(function () {
-    $('[data-toggle="tooltip"]').tooltip();
-
-    $('#non-asn-info').on('click', function (e) {
-        e.preventDefault();
-
-        const $nonAsnButton = $('.change-non-asn').first();
-        
-        if ($nonAsnButton.length) {
-            $nonAsnButton.tooltip('show');
-            $nonAsnButton.focus();
-            setTimeout(() => {
-                $nonAsnButton.tooltip('hide');
-            }, 2000);
-        }
-    });
-});
-
-// Event listener mencari data nip
-$(document).on('click', '.search-nip', function() {
-    // Mengambil row dan nip
-    let row = $(this).closest('tr');
-    let nip = row.find('input[name="nip_terlapor[]"]').val();
-
-    let spinner = row.find('.spinner-border');
-    let icon = row.find('i.fa-search');
-
-    spinner.show();
-    icon.hide();
-
-    // teruskan ke controller
-    $.ajax({
-        url: baseUrl + 'auth/search-nip', 
-        method: 'POST',
-        data: { nip: nip },
-        success: function(res) {
-            spinner.hide();
-            icon.show();
-
-            if (!res.is_error) {
-                // Isi field lain dengan data yang didapat
-                row.find('input[name="nama_terlapor[]"]').val(res.nama_pegawai);
-                row.find('input[name="jabatan_terlapor[]"]').val(res.jabatan_pegawai);
-                row.find('input[name="unit_kerja[]"]').val(res.unit_kerja);
-            } else {
-                // Error jika data tidak ditemukan
-                showToast('Error', 'Data Pegawai tidak ditemukan', 'error');
-            }
-        },
-        error: function() {
-            spinner.hide();
-            icon.show();
-            // Error jika terdapat kesalahan dalam menghubungkan ke server
-            showToast('Error', 'Koneksi ke server gagal', 'error');
-        }
-    });
-});
 
 // Event listener form submit
-document.getElementById('pengaduan_form').addEventListener('submit', function (event) {
+document.getElementById('lampiran_form').addEventListener('submit', function (event) {
     event.preventDefault(); 
-    
+    // Tampilkan modal konfirmasi
     showConfirmationModal({
         title: 'Konfirmasi',
-        text: 'Apakah Anda yakin ingin menyimpan pengaduan ini?',
+        text: 'Apakah Anda yakin untuk menyimpan lampiran ini?',
         icon: 'warning',
         confirmButtonText: 'Simpan',
         cancelButtonText: 'Periksa Lagi',

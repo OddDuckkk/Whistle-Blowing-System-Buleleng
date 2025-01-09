@@ -19,6 +19,13 @@ $routes->get('/pengaduan/delete/(:segment)', 'PengaduanController::delete/$1');
 $routes->post('/pengaduan/upload-file', 'PengaduanController::uploadFile');
 $routes->post('/pengaduan/delete-file', 'PengaduanController::deleteFile');
 $routes->post('/pengaduan/change-status', 'PengaduanController::changeStatus');
+$routes->get('/pengaduan/tambah-lampiran/(:segment)', 'PengaduanController::viewTambahLampiran/$1');
+$routes->post('/pengaduan/store-additional-lampiran/(:segment)', 'PengaduanController::storeAdditionalLampiran/$1');
+
+$routes->get('/pengaduan/chat/(:segment)', 'PostController::viewChat/$1');
+$routes->post('/pengaduan/chat/store', 'PostController::store');
+$routes->get('/pengaduan/chat/delete/(:segment)', 'PostController::delete/$1');
+$routes->get('/pengaduan/chat/new-messages/(:segment)/(:any)', 'PostController::getNewMessages/$1/$2');
 
 /* ======= Pelapor Routes ======= */
 $routes->get('/pengaduan/user/(:segment)', 'PengaduanController::getPelaporActivePengaduan/$1', ['filter' => 'owner']);
