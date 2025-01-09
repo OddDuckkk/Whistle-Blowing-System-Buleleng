@@ -11,12 +11,10 @@ class PostController extends BaseController
     {
         $data['pengaduan'] = $this->pengaduanModel->find($pengaduanId);
         
-        // Retrieve all posts (including replies)
         $posts = $this->postModel->where('pengaduan_id', $pengaduanId)
                                   ->orderBy('created_at', 'ASC')
                                   ->findAll();
 
-        // Process each post
         foreach ($posts as &$post) {
             $post['message'] = $this->decryptMessage($post['message']);
             if($post['parent_id'] ) {
@@ -37,12 +35,10 @@ class PostController extends BaseController
     {
         $postModel = new \App\Models\PostModel();
 
-        // Retrieve replies for the given post (parentId)
         $replies = $postModel->where('parent_id', $parentId)
                              ->orderBy('created_at', 'ASC')
                              ->findAll();
 
-        // Decrypt each reply's message
         foreach ($replies as &$reply) {
             $reply['message'] = $this->decryptMessage($reply['message']);
         }
@@ -57,16 +53,13 @@ class PostController extends BaseController
         $parentId = $this->request->getPost('parent_id');
         $userId = session()->get('id_user');
 
-        // Validate the message
         if (empty($message)) {
             return redirect()->back()->with('error', 'Pesan tidak boleh kosong');
         }
 
-        // Encrypt the message
         $encryptedMessage = $this->encrypter->encrypt($message);
         $encryptedMessage = base64_encode($encryptedMessage);
 
-        // Prepare the post data
         $postData = [
             'pengaduan_id' => $pengaduanId,
             'user_id' => $userId,
@@ -81,7 +74,6 @@ class PostController extends BaseController
             $postData['parent_id'] = null;
         }
 
-        // Save the post (either a new post or a reply)
         $this->postModel->save($postData);
 
         return redirect()->to('/pengaduan/chat/' . $pengaduanId);
@@ -96,14 +88,12 @@ class PostController extends BaseController
             return redirect()->back()->with('error', 'Postingan tidak ditemukan.');
         }
 
-        // Update the post message to indicate it has been deleted
         $this->postModel->update($postId, [
             'message' => '',
             'updated_at' => date('Y-m-d H:i:s'),
             'is_deleted' => true,
         ]);
 
-        // Redirect back to the chat
         return redirect()->to('/pengaduan/chat/' . $post['pengaduan_id']);
     }
 
@@ -124,14 +114,12 @@ class PostController extends BaseController
 
     public function getNewMessages($pengaduan_id, $last_timestamp)
 {
-    // Fetch messages that were created after the last received timestamp
     $messages = $this->postModel
         ->where('pengaduan_id', $pengaduan_id)
         ->where('created_at >', $last_timestamp)
         ->orderBy('created_at', 'ASC')
         ->findAll();
 
-    // Process each post, decrypting the message and handling replies
     foreach ($messages as &$message) {
         $message['message'] = $this->decryptMessage($message['message']);
 
@@ -143,7 +131,6 @@ class PostController extends BaseController
         }
     }
 
-    // Return the messages as a JSON response
     return $this->response->setJSON($messages);
 }
 
